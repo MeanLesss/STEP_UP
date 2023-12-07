@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\MasterController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,7 +15,9 @@ use App\Http\Controllers\LoginController;
 |
 */
 
-// Route::get('/login', 'LoginController@login//')->name('login');
+Route::get('/login_app', [LoginController::class,'index'])->name('login_app');
+Route::post('/login_submit', [LoginController::class,'web_login'])->name('login_submit');
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/index', [MasterController::class,'index'])->name('master');
