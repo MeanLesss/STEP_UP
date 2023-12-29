@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingVertical="20dp"
+    android:paddingHorizontal="30dp"
+    android:background="@drawable/round_corner_background">
+
+    <TextView
+        android:id="@+id/dialogTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center_horizontal"
+        android:text="Dialog Title"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/dialogIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="Dialog icon"
+        android:src="@drawable/icon_warning" />
+
+    <TextView
+        android:id="@+id/dialogDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="Dialog description"
+        android:textSize="15sp"
+        android:maxLines="3"
+        android:ellipsize="end"/>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnOkay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:textAllCaps="false"
+        android:text="OK"
+        android:backgroundTint="@color/primary_color"
+        android:textSize="15sp"/>
+
+
+</LinearLayout>
