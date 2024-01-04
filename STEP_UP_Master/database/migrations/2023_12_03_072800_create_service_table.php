@@ -16,15 +16,18 @@ return new class extends Migration
             $table->string('title');
             $table->string('description')->nullable();
             $table->integer('status')->default(0);
-            $table->string('attachments')->nullable();
-            $table->string('Requirement')->nullable();
+            $table->integer('view')->default(0);
+            $table->integer('service_rate')->default(0);
+            $table->integer('service_ordered_count')->default(0);
+            $table->json('attachments')->default(DB::raw('(JSON_ARRAY())'))->nullable();
+            $table->string('requirement')->nullable();
             $table->double('price')->default(5.00)->comment('Greater than $5');
             $table->double('discount')->default(0.00)->nullable();
             $table->string('service_type')->nullable()->comment('Software Developement, Graphic Design : as dropdown');
             $table->date('start_date');
             $table->date('end_date');
-            $table->unsignedBigInteger('Created_By');
-            $table->unsignedBigInteger('Updated_By')->nullable();
+            $table->unsignedBigInteger('created_by');
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
     }

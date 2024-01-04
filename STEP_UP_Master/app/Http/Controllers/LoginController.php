@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Exception;
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\UserDetail;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -32,10 +33,12 @@ class LoginController extends Controller
         $response = $this->login($request)->original;
         if($response['verified']){
             session(['user_token' => $response['data']['user_token']]);
-            return response($response);
+            return response()->json($response);
+            // return view('layouts.page_template.auth', ['activePage' => 'home','namePage'=>'home']);
+            // return view('home', ['activePage' => 'home','namePage'=>'home']);
         }else{
             // return var_dump($response);
-            return response($response);
+            return response()->json($response);
         }
     }
 
@@ -43,33 +46,30 @@ class LoginController extends Controller
     {
         if (Auth::check()) {
             try {
+                session()->forget('user_token');
                 Auth::user()->tokens()->delete();
                 return response()->json([
                     'verified' => true,
                     'status' =>  'success',
                     'msg' =>  'User logged out',
-                    'error_msg' => '',
-                ]);
+                ],200);
             } catch (Exception $e) {
                 return response()->json([
                     'verified' => false,
                     'status' =>  'error',
-                    'msg' =>  '',
-                    'error_msg' => $e->getMessage(),
-                ]);
+                    'msg' =>  $e->getMessage(),
+                ],500);
             }
         } else {
             return response()->json([
                 'verified' => false,
                 'status' =>  'error',
                 'msg' =>  'No user is authenticated',
-                'error_msg' => '',
-            ]);
+            ],401);
         }
     }
 
-    public function login(Request $request)
-    // public function login($email,$password)
+    public function login(Request $request) // public function login($email,$password)
     {
         try{
             $validator = Validator::make($request->all(), [
@@ -77,39 +77,92 @@ class LoginController extends Controller
                     'password' => 'required',
                 ]);
 
-                if ($validator->fails()) {
-                    return response()->json([
-                        'verified' => false,
-                        'status' =>  'error',
-                        'msg' =>  '',
-                        'error_msg' => $validator->errors(),
-                    ], 400);
+            if ($validator->fails()) {
+                return response()->json([
+                    'verified' => false,
+                    'status' =>  'error',
+                    'msg' =>  'Invalid Credential',
+                    // 'error_msg' => $validator->errors(),
+                ],401);
             }
 
             if (!Auth::attempt($request->only('email', 'password'))) {
-                    return response()->json([
-                        'verified' => false,
-                        'status' =>  'error',
-                        'msg' =>  '',
-                        'error_msg' => 'The provided credentials are incorrect.',
-                    ]);
-                }
-                // return var_dump([2,2,3,3]);
-                return response()->json([
-                    'verified' => true,
-                    'status' =>  'success',
-                    'msg' => 'Login Successfully',
-                    'error_msg' => '',
-                    'data' =>['user_token' => Auth::user()->createToken('token')->plainTextToken,],
 
-                ]);
+                $check = User::where('email', $request->email)->first();
+                if($check){
+                    if($check->login_attempt <= 5){
+                        $check->update(['login_attempt' => $check->login_attempt + 1]);
+                    }else{
+                        return response()->json([
+                            'verified' => false,
+                            'status' =>  'error',
+                            'msg' =>  'Too many attempts, please reset your password!',
+                        ],401);
+                    }
+                }
+                return response()->json([
+                    'verified' => false,
+                    'status' =>  'error',
+                    'msg' =>  'The provided credentials are incorrect.',
+                ],401);
+            }
+
+            Auth::user()->update(['login_attempt' => 0]);
+            // return var_dump([2,2,3,3]);
+            if(Auth::user()->role == 1000){
+                $user_token = Auth::user()->createToken('token',[
+                    'service:create',
+                    'service:update',
+                    'service:delete',
+                    'service:cancel',
+                    'service:read',
+                    'service:view',
+                    'service:ban',
+                    'serviceOrder:view',
+                    'user:status',
+                    'service:purchase',
+                    'self:update'])->plainTextToken;
+            }
+            if(Auth::user()->role == 100){
+                $user_token = Auth::user()->createToken('token',[
+                    'service:create',
+                    'service:update',
+                    'service:delete',
+                    'service:cancel',
+                    'service:read',
+                    'service:view',
+                    'serviceOrder:view',
+                    'service:purchase',
+                    'free:update'])->plainTextToken;
+            }
+            if(Auth::user()->role == 101){
+                $user_token = Auth::user()->createToken('token',[
+                    'service:read',
+                    'service:view',
+                    'service:cancel',
+                    'service:purchase',
+                    'serviceOrder:view',
+                    'client:update'])->plainTextToken;
+            }
+            if(Auth::user()->role == 10){
+                $user_token = Auth::user()->createToken('token',[
+                    'service:read',
+                    'service:view',
+                    'guest:update' ])->plainTextToken;
+            }
+
+            return response()->json([
+                'verified' => true,
+                'status' =>  'success',
+                'msg' => 'Login Successfully',
+                'data' =>['user_token' => $user_token],
+            ],200);
         }catch(Exception $e){
             return response()->json([
                 'verified' => false,
                 'status' =>  'error',
-                'msg' =>  '',
-                'error_msg' => Str::limit($e->getMessage(), 150, '...') ,
-            ]);
+                'msg' =>  Str::limit($e->getMessage(), 150, '...') ,
+            ],500);
         }
     }
     /**
@@ -127,19 +180,24 @@ class LoginController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'guest' => 'required|boolean',
+            'freelancer' => 'required|boolean',
             'name' => 'required_if:guest,false',
             'email' => 'required_if:guest,false|email',
             'password' => 'required_if:guest,false',
-            'confirm_password' => 'required_if:guest,false'
+            'confirm_password' => 'required_if:guest,false',
+            'phone_number' => 'required_if:guest,false',
+            'id_number' => 'required_if:guest,false',
+            'job_type' => 'required_if:guest,false'
+
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'verified' => false,
                 'status' =>  'error',
-                'msg' =>  '',
-                'error_msg' => $validator->errors(),
-            ], 400);
+                'msg' =>  'Please input all the required fields!',
+                // 'error_msg' => $validator->errors(),
+            ],401);
         }
 
         try{
@@ -147,11 +205,13 @@ class LoginController extends Controller
             //     ->orWhere('email', $request->email)
             //     ->exists();
             $user = new User();
+            $userDetail = new UserDetail();
             if($request->guest)
             {
                 $user->name = $request->name != '' ? $request->name.'_'.Str::random(10) : 'Guest_'.Str::random(10);
                 $user->email = $user->name.'@guest.com';
                 $user->isGuest = true;
+                $user->role = 10;
                 $user->password = '';
                 $user->created_at = Carbon::now();
                 $user->updated_at = Carbon::now();
@@ -160,56 +220,77 @@ class LoginController extends Controller
                     'verified' => true,
                     'status' =>  'success',
                     'msg' => 'Sign up as guest Successfully',
-                    'error_msg' => '',
                     'data' =>[ 'user_token' => $user->createToken('token')->plainTextToken,],
-
-
-                ]);
+                ],200);
             }else{
-                $userExists = User::where('email', $request->email)->exists();
-
+                $userExists = User::where('email', $request->email)->first();
                 if($userExists){
-                    return response()->json([
-                        'verified' => false,
-                        'status' =>  'error',
-                        'msg' =>  '',
-                        'error_msg' => 'Sorry try other credential!',
-                    ], 200);
+                    if($request->freelancer){
+                        if($userExists->role != 100){
+                            $userExists->update(['role'=>100]);
+                            return response()->json([
+                                'verified' => true,
+                                'status' =>  'success',
+                                'msg' => 'Successfully become a freelaner, let begin the journey!',
+                                // 'data' =>['user_token' => $user->createToken('token')->plainTextToken, ],
+                            ],200);
+                        }else{
+                            return response()->json([
+                                'verified' => false,
+                                'status' =>  'error',
+                                'msg' => '',
+                                'error_msg' => 'You are already a freelancer!',
+                                // 'data' =>['user_token' => $user->createToken('token')->plainTextToken, ],
+                            ],200);
+                        }
+                    }else{
+                        return response()->json([
+                            'verified' => false,
+                            'status' =>  'error',
+                            'msg' =>  'Sorry try other credential!',
+                        ], 401);
+                    }
                 }
                 if($request->password == $request->confirm_password){
 
                     $user->name = $request->name;
                     $user->email = $request->email;
                     $user->isGuest = false;
+                    $user->role = $request->freelancer ? 100 : 101;
                     $user->password = Hash::make($request->password);
                     $user->created_at = Carbon::now();
                     $user->updated_at = Carbon::now();
                     $user->save();
+                    $userDetail = new UserDetail();
+                    $userDetail->user_id = $user->id;
+                    $userDetail->phone = $request->phone_number;
+                    $userDetail->id_card_no = $request->id_number;
+                    $userDetail->job_type = $request->job_type;
+                    $userDetail->created_by = $user->id;
+                    $userDetail->updated_by = $user->id;
+                    $userDetail->created_at = Carbon::now();
+                    $userDetail->updated_at = Carbon::now();
+                    $userDetail->save();
                     return response()->json([
                         'verified' => true,
                         'status' =>  'success',
                         'msg' => 'Sign up Successfully',
-                        'error_msg' => '',
                         'data' =>['user_token' => $user->createToken('token')->plainTextToken, ],
-
-
                     ]);
                 }else{
                     return response()->json([
                         'verified' => false,
                         'status' =>  'error',
-                        'msg' => 'Sign up failed!',
-                        'error_msg' => 'The password does not match!' ,
-                    ]);
+                        'msg' => 'The password does not match!',
+                    ],401);
                 }
             }
         }catch(Exception $e){
             return response()->json([
                 'verified' => false,
                 'status' =>  'error',
-                'msg' => 'Sign up failed!',
-                'error_msg' => Str::limit($e->getMessage(), 150, '...') ,
-            ]);
+                'msg' =>  Str::limit($e->getMessage(), 150, '...'),
+            ],500);
         }
     }
     public function userUpdate(Request $request){
@@ -222,13 +303,13 @@ class LoginController extends Controller
             return response()->json([
                 'verified' => false,
                 'status' =>  'error',
-                'msg' =>  '',
-                'error_msg' => $validator->errors(),
-            ], 400);
+                'msg' =>  'Name or Email Cannot be empty!',
+                // 'error_msg' => $validator->errors(),
+            ],401);
         }
 
         try{
-            if (Auth::check()) {
+            if (Auth::check() ) {
                 $user = Auth::user();
                 if($user->email != $request->email){
                     $userExists = User::where('email', $request->email)->exists();
@@ -236,12 +317,11 @@ class LoginController extends Controller
                         return response()->json([
                             'verified' => false,
                             'status' =>  'error',
-                            'msg' =>  '',
-                            'error_msg' => 'Sorry try other credential!',
-                        ], 200);
+                            'msg' =>  'Sorry please try other credential!',
+                        ],401);
                     }
                 }
-                if($user->isGuest){
+                if($user->tokenCan('guest:update')){
                     if($request->password == $request->confirm_password){
                         $user->update([
                             'name' => $request->name,
@@ -268,25 +348,37 @@ class LoginController extends Controller
                         }
                     }
                 }
+
+                $userDetail = UserDetail::where('user_id',$user->id)->first();
+                if(!isset($userDetail)){
+                    $userDetail = new UserDetail();
+                }
+                $userDetail->user_id = $user->id;
+                $userDetail->phone = $request->phone_number;
+                $userDetail->id_card_no = $request->id_number;
+                $userDetail->job_type = $request->job_type;
+                $userDetail->created_by = $user->id;
+                $userDetail->updated_by = $user->id;
+                $userDetail->created_at = Carbon::now();
+                $userDetail->updated_at = Carbon::now();
+                $userDetail->save();
                 // If the user is authenticated, return the user data
                 return response()->json([
                     'verified' => true,
                     'status' =>  'success',
                     'msg' => 'Update Successfully!',
-                    'error_msg' => '',
+                    // 'error_msg' => '',
                 ]);
             } else {
                 // If the user is not authenticated, return a custom message
                 return response()->json(['error' => 'Authenticated failed! Please try again!']);
             }
-
         }catch(Exception $e){
             return response()->json([
                 'verified' => false,
                 'status' =>  'error',
-                'msg' => 'Sign up failed!',
-                'error_msg' => Str::limit($e->getMessage(), 150, '...') ,
-            ]);
+                'msg' => Str::limit($e->getMessage(), 150, '...'),
+            ],500);
         }
     }
 
@@ -305,10 +397,7 @@ class LoginController extends Controller
                     'verified' => true,
                     'status' =>  'success',
                     'msg' => 'success',
-                    'error_msg' => '',
-                    'data' =>[ 'user_info' => $request->user() ],
-
-
+                    'data' =>[ 'user_info' => $request->user(),'user_detail'=> UserDetail::where('user_id',$request->user()->id)->first() ],
                 ]);
                 //return response()->json(Auth::user(), 200);
             } else {
@@ -319,9 +408,8 @@ class LoginController extends Controller
             return response()->json([
                 'verified' => false,
                 'status' =>  'error',
-                'msg' => '',
-                'error_msg' => Str::limit($e->getMessage(), 150, '...'),
-            ]);
+                'msg' =>  Str::limit($e->getMessage(), 150, '...'),
+            ],500);
         }
     }
 
