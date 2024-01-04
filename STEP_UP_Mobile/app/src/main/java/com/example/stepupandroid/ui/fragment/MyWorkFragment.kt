@@ -1,5 +1,6 @@
 package com.example.stepupandroid.ui.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,7 +9,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.stepupandroid.adapter.MyWorkAdapter
 import com.example.stepupandroid.databinding.FragmentMyWorkBinding
+import com.example.stepupandroid.helper.ApiKey
+import com.example.stepupandroid.helper.SharedPreferenceUtil
 import com.example.stepupandroid.model.MyWork
+import com.example.stepupandroid.ui.LoginActivity
 import java.util.Random
 
 
@@ -19,6 +23,12 @@ class MyWorkFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentMyWorkBinding.inflate(layoutInflater)
+
+        if(SharedPreferenceUtil().getFromSp(ApiKey.SharedPreferenceKey.token).isNullOrEmpty()){
+            val intent = Intent(requireActivity(), LoginActivity::class.java)
+            intent.putExtra("from", "MyWork")
+            requireActivity().startActivity(intent)
+        }
 
         binding.myWorkRecyclerView.layoutManager = LinearLayoutManager(requireActivity())
 

@@ -24,7 +24,6 @@ class LoginViewModel(context: Context) : BaseViewModel(context) {
         loadingDialog.show()
         loginDataSubscription = ApiImp().login(body).subscribe({
             loadingDialog.hide()
-//            Constant.setUser(it.data?.user)
             it.data?.user_token?.let { token ->
                 SharedPreferenceUtil().addToSp(
                     ApiKey.SharedPreferenceKey.token,

@@ -16,12 +16,18 @@ import com.example.stepupandroid.ui.fragment.ServiceFragment
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
     private lateinit var fragmentManager: FragmentManager
+
+    private var from = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         fragmentManager = supportFragmentManager
+
+        if(intent.hasExtra("from")){
+            from = intent.getStringExtra("from").toString()
+        }
 
         binding.navigation.setOnNavigationItemSelectedListener { item ->
             // Logic for selecting items
@@ -51,7 +57,16 @@ class HomeActivity : AppCompatActivity() {
         }
 
         // Set default selected item
-        binding.navigation.selectedItemId = R.id.navigation_service
+        if(from.isNotEmpty()){
+            when(from){
+                "MyWork" -> binding.navigation.selectedItemId = R.id.navigation_my_work
+                "MyService" -> binding.navigation.selectedItemId = R.id.navigation_my_service
+                "MyOrder" -> binding.navigation.selectedItemId = R.id.navigation_my_order
+                "Profile" -> binding.navigation.selectedItemId = R.id.navigation_profile
+            }
+        }else {
+            binding.navigation.selectedItemId = R.id.navigation_service
+        }
     }
 
     private fun replaceFragment(fragment: Fragment) {
