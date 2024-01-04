@@ -33,7 +33,7 @@ class LoginViewModel(context: Context) : BaseViewModel(context) {
             loginLiveData.value = it.data!!
         }, { throwable ->
             // Handle error response
-            object : CallBackWrapper(throwable) {
+            object : CallBackWrapper() {
                 override fun onCallbackWrapper(
                     status: ApiManager.NetworkErrorStatus,
                     data: String

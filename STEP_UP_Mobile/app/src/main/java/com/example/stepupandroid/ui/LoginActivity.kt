@@ -1,14 +1,13 @@
 package com.example.stepupandroid.ui
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import com.example.stepupandroid.databinding.ActivityHomeBinding
 import com.example.stepupandroid.databinding.ActivityLoginBinding
+import com.example.stepupandroid.helper.Constants
+import com.example.stepupandroid.helper.CustomDialog
 import com.example.stepupandroid.viewmodel.LoginViewModel
-import com.google.gson.Gson
-import kotlin.math.log
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
@@ -47,8 +46,14 @@ class LoginActivity : AppCompatActivity() {
         }
 
         viewModel.errorResultState.observe(this){
-            Log.d("bug test", it.toString())
+            CustomDialog("","", Constants.ERROR).show(supportFragmentManager, "CustomDialog")
         }
 
+    }
+
+    @Deprecated("Deprecated in Java")
+    @SuppressLint("MissingSuperCall")
+    override fun onBackPressed() {
+        binding.backBtn.performClick()
     }
 }

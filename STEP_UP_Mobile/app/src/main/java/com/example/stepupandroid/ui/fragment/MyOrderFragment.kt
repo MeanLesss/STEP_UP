@@ -1,15 +1,11 @@
 package com.example.stepupandroid.ui.fragment
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.stepupandroid.databinding.FragmentMyOrderBinding
-import com.example.stepupandroid.helper.ApiKey
-import com.example.stepupandroid.helper.SharedPreferenceUtil
-import com.example.stepupandroid.ui.LoginActivity
 
 class MyOrderFragment : Fragment() {
     private lateinit var binding: FragmentMyOrderBinding
@@ -19,12 +15,6 @@ class MyOrderFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentMyOrderBinding.inflate(layoutInflater)
-
-        if(SharedPreferenceUtil().getFromSp(ApiKey.SharedPreferenceKey.token).isNullOrEmpty()){
-            val intent = Intent(requireActivity(), LoginActivity::class.java)
-            intent.putExtra("from", "MyOrder")
-            requireActivity().startActivity(intent)
-        }
 
         return binding.root
     }

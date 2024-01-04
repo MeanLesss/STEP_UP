@@ -18,7 +18,7 @@ class LoadingDialog(
 
     override fun show() {
         try {
-            if (!isShowing && this != null) {
+            if (!isShowing) {
                 super.show()
             }
         } catch (e: Exception) {
@@ -28,7 +28,7 @@ class LoadingDialog(
 
     override fun hide() {
         try {
-            if (isShowing && this != null) {
+            if (isShowing) {
                 super.dismiss()
             }
         } catch (e: Exception) {

@@ -7,7 +7,7 @@ import org.json.JSONObject
 import retrofit2.HttpException
 import java.util.concurrent.TimeoutException
 
-abstract class CallBackWrapper(e: Throwable) {
+abstract class CallBackWrapper {
     protected abstract fun onCallbackWrapper(status: ApiManager.NetworkErrorStatus, data: String)
 
     // New method to handle the exception, to be called after the construction
@@ -48,7 +48,7 @@ abstract class CallBackWrapper(e: Throwable) {
         return try {
             val json: String? = responseBody?.string()
             val jsonObject = JSONObject(json!!)
-            return jsonObject.getString("message")
+            return jsonObject.getString("error_msg")
         } catch (e: Exception) {
             e.printStackTrace()
             ""
@@ -59,19 +59,6 @@ abstract class CallBackWrapper(e: Throwable) {
         const val DEFAULT_ERROR_MESSAGE = "Please try again."
         const val NETWORK_ERROR_MESSAGE = "No Internet Connection!"
         const val SERVER_ERROR_MESSAGE = "We sorry your connection timeout, please try again later!"
-    }
-
-    object ErrorCode {
-        const val BadRequest = 400
-        const val Unauthorized = 401
-        const val Forbidden = 403
-        const val NotFound = 404
-        const val MethodNotAllowed = 405
-        const val RequestEntityTooLarge = 413
-        const val UnProcessableEntity = 422
-        const val InternalServerError = 500
-        const val BadGateway = 502
-        const val GatewayTimeout = 504
     }
 
 }
