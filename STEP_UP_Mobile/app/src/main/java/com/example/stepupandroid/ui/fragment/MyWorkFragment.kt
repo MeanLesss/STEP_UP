@@ -24,7 +24,7 @@ class MyWorkFragment : Fragment() {
 
         // Sample data for testing
         val itemList = mutableListOf<MyWork>()
-        for (i in 1..100) {
+        for (i in 1..50) {
             val item = MyWork(
                 "Title $i",
                 "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.  ........ $i",
