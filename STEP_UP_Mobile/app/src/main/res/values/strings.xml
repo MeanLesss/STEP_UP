@@ -1,3 +1,28 @@
 <resources>
     <string name="app_name">STEP UP Android</string>
+
+    //General
+    <string name="back">Back</string>
+    <string name="cancel">Cancel</string>
+
+    //Home screen
+    <string name="my_work">My Works</string>
+    <string name="my_service">My Services</string>
+    <string name="service">Services</string>
+    <string name="my_order">My Orders</string>
+    <string name="profile">Profile</string>
+
+    //Welcome screen
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="does_not_have_an_account">Doesn\'t have an account?</string>
+    <string name="continue_as_guest">Continue as guest</string>
+    <string name="sign_up_with_email">Sign up with Email</string>
+    <string name="connect_with_us">Connect with us</string>
+    <string name="sign_in_with_email">Sign in with Email</string>
+    <string name="sign_in_with_google">Sign in with Google</string>
+
+    //Login screen
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
 </resources>
