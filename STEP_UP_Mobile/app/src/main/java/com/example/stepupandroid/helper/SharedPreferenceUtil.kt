@@ -18,7 +18,7 @@ class SharedPreferenceUtil {
 
             val myEdit = sharedPreferences.edit()
             myEdit.putString(key, data)
-            myEdit.commit()
+            myEdit.apply()
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -32,7 +32,7 @@ class SharedPreferenceUtil {
 
             val myEdit = sharedPreferences.edit()
             myEdit.remove(key)
-            myEdit.commit()
+            myEdit.apply()
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -44,8 +44,7 @@ class SharedPreferenceUtil {
     ): String? {
         return try {
             val sharedPreferences = context.getSharedPreferences(key, mode)
-            val string = sharedPreferences.getString(key, null)?.replace("\"\"", "\"")
-            return string
+            return sharedPreferences.getString(key, null)?.replace("\"\"", "\"")
         } catch (e: Exception) {
             e.printStackTrace()
             null

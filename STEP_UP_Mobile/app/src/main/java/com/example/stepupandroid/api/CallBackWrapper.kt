@@ -1,6 +1,7 @@
 import android.util.Log
 import com.example.stepupandroid.api.ApiManager
 import okhttp3.ResponseBody
+import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.HttpException
 import java.io.IOException
@@ -11,22 +12,39 @@ abstract class CallBackWrapper {
 
     fun handleException(e: Throwable) {
         when (e) {
-            is TimeoutException -> onCallbackWrapper(ApiManager.NetworkErrorStatus.ON_TIMEOUT, SERVER_ERROR_MESSAGE)
-            is IOException -> onCallbackWrapper(ApiManager.NetworkErrorStatus.ON_UNKNOWN_ERROR, DEFAULT_ERROR_MESSAGE)
+            is TimeoutException -> onCallbackWrapper(
+                ApiManager.NetworkErrorStatus.ON_TIMEOUT,
+                SERVER_ERROR_MESSAGE
+            )
+
+            is IOException -> onCallbackWrapper(
+                ApiManager.NetworkErrorStatus.ON_UNKNOWN_ERROR,
+                DEFAULT_ERROR_MESSAGE
+            )
+
             is HttpException -> {
                 Log.d("Logger", "" + e.code())
                 when (e.code()) {
-                    504 -> onCallbackWrapper(ApiManager.NetworkErrorStatus.ON_TIMEOUT, "Gateway timeout. Please try again.")
+                    504 -> onCallbackWrapper(
+                        ApiManager.NetworkErrorStatus.ON_TIMEOUT,
+                        "Gateway timeout. Please try again."
+                    )
+
                     else -> {
                         val responseBody = e.response()?.errorBody()
-                        onCallbackWrapper(ApiManager.NetworkErrorStatus.ON_ERROR, getErrorMessage(responseBody))
+                        onCallbackWrapper(
+                            ApiManager.NetworkErrorStatus.ON_ERROR,
+                            getErrorMessage(responseBody)
+                        )
                     }
                 }
             }
+
             else -> {
                 var responseBody = e.message ?: ""
                 if (responseBody.isEmpty()) {
-                    responseBody = "We are encountering a technical issue. Please check at the counter."
+                    responseBody =
+                        "We are encountering a technical issue. Please check at the counter."
                 }
                 onCallbackWrapper(ApiManager.NetworkErrorStatus.ON_ERROR, responseBody)
             }
@@ -37,7 +55,11 @@ abstract class CallBackWrapper {
         return try {
             val json: String? = responseBody?.string()
             val jsonObject = JSONObject(json!!)
-            jsonObject.getString("msg")
+            try {
+                jsonObject.getString("msg")
+            } catch (e: JSONException) {
+                jsonObject.getString("message")
+            }
         } catch (e: Exception) {
             e.printStackTrace()
             ""

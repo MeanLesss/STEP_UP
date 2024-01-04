@@ -62,11 +62,11 @@ class ServiceFragment : Fragment() {
                 } else if (!recyclerView.canScrollVertically(1)) {
                     if (!isShown) {
                         isShown = true
-                        val customDialog = CustomDialog("", "No More Item", Constants.WARNING)
-                        customDialog.onDismissListener = {
-                            isShown = false
-                        }
-                        customDialog.show(childFragmentManager, "CustomDialog")
+//                        val customDialog = CustomDialog("", "No More Item", Constants.WARNING)
+//                        customDialog.onDismissListener = {
+//                            isShown = false
+//                        }
+//                        customDialog.show(childFragmentManager, "CustomDialog")
                     }
                 }
             }

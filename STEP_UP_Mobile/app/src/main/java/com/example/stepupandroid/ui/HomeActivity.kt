@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentTransaction
 import com.example.stepupandroid.R
 import com.example.stepupandroid.databinding.ActivityHomeBinding
 import com.example.stepupandroid.helper.ApiKey
+import com.example.stepupandroid.helper.Constants
 import com.example.stepupandroid.helper.SharedPreferenceUtil
 import com.example.stepupandroid.ui.fragment.MyOrderFragment
 import com.example.stepupandroid.ui.fragment.MyServiceFragment
@@ -60,10 +61,15 @@ class HomeActivity : AppCompatActivity() {
         )
 
         navigationMap[itemId]?.let { (fragment, titleResId) ->
-            if (fragment !is ServiceFragment && SharedPreferenceUtil().getFromSp(ApiKey.SharedPreferenceKey.token)
-                    .isNullOrEmpty()
-            ) {
-                redirectToWelcome(getFragmentName(fragment))
+            if (fragment !is ServiceFragment) {
+                if (SharedPreferenceUtil().getFromSp(ApiKey.SharedPreferenceKey.token)
+                        .isNullOrEmpty() || SharedPreferenceUtil().getFromSp(ApiKey.SharedPreferenceKey.isGuest) == "true"
+                ) {
+                    redirectToWelcome(getFragmentName(fragment))
+                } else {
+                    replaceFragment(fragment)
+                    binding.fragmentTitle.text = getString(titleResId)
+                }
             } else {
                 replaceFragment(fragment)
                 binding.fragmentTitle.text = getString(titleResId)

@@ -10,6 +10,7 @@ import com.example.stepupandroid.databinding.FragmentProfileBinding
 import com.example.stepupandroid.helper.ApiKey
 import com.example.stepupandroid.helper.SharedPreferenceUtil
 import com.example.stepupandroid.ui.HomeActivity
+import com.example.stepupandroid.ui.WelcomeActivity
 
 class ProfileFragment : Fragment() {
     private lateinit var binding: FragmentProfileBinding
@@ -22,7 +23,7 @@ class ProfileFragment : Fragment() {
 
         binding.logoutBtn.setOnClickListener {
             SharedPreferenceUtil().removeFromSp(ApiKey.SharedPreferenceKey.token)
-            val intent = Intent(requireActivity(), HomeActivity::class.java)
+            val intent = Intent(requireActivity(), WelcomeActivity::class.java)
             startActivity(intent)
             requireActivity().finishAffinity()
         }

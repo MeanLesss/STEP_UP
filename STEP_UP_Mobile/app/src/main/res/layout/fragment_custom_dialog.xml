@@ -17,6 +17,7 @@
         android:gravity="center_horizontal"
         android:text="Dialog Title"
         android:textSize="25sp"
+        android:textColor="@color/white"
         android:textStyle="bold" />
 
     <ImageView
@@ -34,7 +35,9 @@
         android:gravity="center"
         android:text="Dialog description"
         android:textSize="15sp"
+        android:layout_marginVertical="10dp"
         android:maxLines="3"
+        android:textColor="@color/white"
         android:ellipsize="end"/>
 
 

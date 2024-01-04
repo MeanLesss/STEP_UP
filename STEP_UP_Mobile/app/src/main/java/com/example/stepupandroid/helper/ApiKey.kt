@@ -20,6 +20,7 @@ interface ApiKey {
     interface SharedPreferenceKey {
         companion object {
             const val token = "token"
+            const val isGuest = "isGuest"
         }
     }
 }

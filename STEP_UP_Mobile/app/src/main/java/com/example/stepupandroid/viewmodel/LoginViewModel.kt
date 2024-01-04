@@ -8,10 +8,10 @@ import com.example.stepupandroid.api.ApiImp
 import com.example.stepupandroid.api.ApiManager
 import com.example.stepupandroid.base.BaseViewModel
 import com.example.stepupandroid.helper.ApiKey
+import com.example.stepupandroid.helper.Constants
 import com.example.stepupandroid.helper.SharedPreferenceUtil
 import com.example.stepupandroid.model.response.LoginResponse
 import io.reactivex.disposables.Disposable
-import rx.Subscription
 
 class LoginViewModel(context: Context) : BaseViewModel(context) {
     private var loginDataSubscription: Disposable? = null
@@ -25,6 +25,7 @@ class LoginViewModel(context: Context) : BaseViewModel(context) {
         loadingDialog.show()
         loginDataSubscription = ApiImp().login(body).subscribe({
             loadingDialog.hide()
+            SharedPreferenceUtil().removeFromSp(ApiKey.SharedPreferenceKey.isGuest)
             it.data?.user_token?.let { token ->
                 SharedPreferenceUtil().addToSp(
                     ApiKey.SharedPreferenceKey.token,

@@ -19,24 +19,25 @@
         android:layout_marginTop="10dp"
         android:textAllCaps="false"/>
 
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/step_up_logo"
+        android:layout_marginTop="150dp"/>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
+        android:layout_marginBottom="100dp"
+        android:layout_below="@id/logo"
         android:orientation="vertical">
-
-        <ImageView
-            android:id="@+id/logo"
-            android:layout_centerHorizontal="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/step_up_logo"
-            android:layout_marginBottom="50dp"/>
 
         <LinearLayout
             android:id="@+id/connectLayout"
             android:layout_width="match_parent"
-            android:layout_below="@id/logo"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginHorizontal="50dp"
@@ -115,7 +116,6 @@
             android:layout_alignStart="@id/connectLayout"
             android:background="@drawable/white_border_drawable"
             android:paddingHorizontal="8dp"
-            android:layout_below="@id/logo"
             android:paddingVertical="2dp">
 
             <TextView

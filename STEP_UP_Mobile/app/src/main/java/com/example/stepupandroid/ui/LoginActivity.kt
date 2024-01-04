@@ -21,7 +21,7 @@ class LoginActivity : AppCompatActivity() {
 
         viewModel = LoginViewModel(this)
 
-        if(intent.hasExtra("from")){
+        if (intent.hasExtra("from")) {
             from = intent.getStringExtra("from").toString()
         }
 
@@ -37,17 +37,17 @@ class LoginActivity : AppCompatActivity() {
             finish()
         }
 
-        viewModel.loginResultState.observe(this){
+        viewModel.loginResultState.observe(this) {
             val intent = Intent(this, HomeActivity::class.java)
-            if(from.isNotEmpty()){
+            if (from.isNotEmpty()) {
                 intent.putExtra("from", from)
             }
             startActivity(intent)
             finishAffinity()
         }
 
-        viewModel.errorResultState.observe(this){
-            CustomDialog("","", Constants.ERROR).show(supportFragmentManager, "CustomDialog")
+        viewModel.errorResultState.observe(this) {
+            CustomDialog("", it, Constants.ERROR).show(supportFragmentManager, "CustomDialog")
         }
 
     }
