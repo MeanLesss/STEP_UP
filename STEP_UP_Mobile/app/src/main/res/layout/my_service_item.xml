@@ -12,9 +12,10 @@
         android:id="@+id/containerLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/border_drawable"
+        android:background="@drawable/service_border"
         android:orientation="vertical"
-        android:padding="15dp">
+        android:paddingVertical="15dp"
+        android:paddingHorizontal="25dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -45,7 +46,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
-                        android:text="Success"
+                        android:text="Active"
+                        android:textColor="@color/status_active"
                         android:textSize="13sp" />
 
                     <ImageView
@@ -53,7 +55,7 @@
                         android:layout_width="16dp"
                         android:layout_height="16dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/icon_in_progress"/>
+                        android:src="@drawable/icon_success"/>
 
 
                 </LinearLayout>
@@ -62,24 +64,52 @@
 
         </LinearLayout>
 
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginTop="5dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/sample_image"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.RoundCornerImageView" />
+
         <TextView
             android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:ellipsize="end"
+            android:maxLines="3"
             android:text="Description"
             android:textColor="@color/white"
-            android:maxLines="3"
-            android:ellipsize="end"
             android:textSize="13sp" />
 
-        <TextView
-            android:id="@+id/name"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Name"
-            android:textColor="@color/white"
-            android:textSize="13sp" />
+            android:orientation="horizontal"
+            android:layout_marginTop="3dp">
+
+            <TextView
+                android:id="@+id/serviceTypeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="Service type:"
+                android:textColor="@color/white"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/serviceType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="5dp"
+                android:text="Software Development"
+                android:textColor="@color/white"
+                android:textSize="13sp" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

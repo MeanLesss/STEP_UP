@@ -37,11 +37,7 @@ abstract class CallBackWrapper {
         return try {
             val json: String? = responseBody?.string()
             val jsonObject = JSONObject(json!!)
-<<<<<<< HEAD
-            jsonObject.getString("message")
-=======
-            return jsonObject.getString("error_msg")
->>>>>>> b89524bb35ce90d4876b3125b5e30338b275c426
+            jsonObject.getString("msg")
         } catch (e: Exception) {
             e.printStackTrace()
             ""
@@ -53,9 +49,4 @@ abstract class CallBackWrapper {
         const val NETWORK_ERROR_MESSAGE = "No Internet Connection!"
         const val SERVER_ERROR_MESSAGE = "We sorry your connection timeout, please try again later!"
     }
-<<<<<<< HEAD
 }
-=======
-
-}
->>>>>>> b89524bb35ce90d4876b3125b5e30338b275c426

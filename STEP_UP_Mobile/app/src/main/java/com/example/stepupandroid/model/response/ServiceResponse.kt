@@ -23,7 +23,7 @@ data class ServiceItem(
     val status: Int,
     val attachments: Map<String, String>?,
     val requirement: Any?, // You may want to replace "Any?" with a specific type
-    val price: Int,
+    val price: String,
     val discount: Int,
     val service_type: String,
     val start_date: String,

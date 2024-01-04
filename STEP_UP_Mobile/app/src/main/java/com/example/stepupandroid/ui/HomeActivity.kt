@@ -63,7 +63,7 @@ class HomeActivity : AppCompatActivity() {
             if (fragment !is ServiceFragment && SharedPreferenceUtil().getFromSp(ApiKey.SharedPreferenceKey.token)
                     .isNullOrEmpty()
             ) {
-                redirectToLogin(getFragmentName(fragment))
+                redirectToWelcome(getFragmentName(fragment))
             } else {
                 replaceFragment(fragment)
                 binding.fragmentTitle.text = getString(titleResId)
@@ -71,8 +71,8 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun redirectToLogin(fromFragment: String) {
-        val intent = Intent(this, LoginActivity::class.java)
+    private fun redirectToWelcome(fromFragment: String) {
+        val intent = Intent(this, WelcomeActivity::class.java)
         intent.putExtra("from", fromFragment)
         startActivity(intent)
     }

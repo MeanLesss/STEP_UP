@@ -33,14 +33,15 @@ class LoginActivity : AppCompatActivity() {
             viewModel.login(body)
         }
 
-        binding.backBtn.setOnClickListener {
-            startActivity(Intent(this, HomeActivity::class.java))
-            finishAffinity()
+        binding.cancelBtn.setOnClickListener {
+            finish()
         }
 
         viewModel.loginResultState.observe(this){
             val intent = Intent(this, HomeActivity::class.java)
-            intent.putExtra("from", from)
+            if(from.isNotEmpty()){
+                intent.putExtra("from", from)
+            }
             startActivity(intent)
             finishAffinity()
         }
@@ -51,9 +52,4 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
-    @Deprecated("Deprecated in Java")
-    @SuppressLint("MissingSuperCall")
-    override fun onBackPressed() {
-        binding.backBtn.performClick()
-    }
 }

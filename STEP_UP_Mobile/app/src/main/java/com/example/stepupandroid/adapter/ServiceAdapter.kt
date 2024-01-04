@@ -43,6 +43,7 @@ class ServiceAdapter(private val context: Context, private val itemList: Mutable
         holder.viewCount.text = currentItem.view.toString()
         holder.rating.rating = currentItem.service_rate.toFloat()
         holder.serviceType.text = currentItem.service_type
+        holder.price.text = currentItem.price
 
         // Handle the click event for the "View" button here if needed
         holder.priceButton.setOnClickListener {

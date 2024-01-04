@@ -14,7 +14,13 @@
     <color name="selected_color">#161A3A</color>
     <color name="logo_color">#FAFF00</color>
 
-    <color name="status_completed">#218838</color>
+    <color name="status_new">#28A745</color>
+    <color name="status_paid">#218838</color>
     <color name="status_in_progress">#FFC107</color>
+    <color name="status_finished">#17A2B8</color>
+    <color name="status_confirmed">#20C997</color>
+    <color name="status_completed">#218838</color>
     <color name="status_canceled">#DC3545</color>
+    <color name="status_active">#319B9B</color>
+
 </resources>
