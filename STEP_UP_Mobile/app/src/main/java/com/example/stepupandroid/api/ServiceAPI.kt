@@ -4,10 +4,10 @@ import com.example.stepupandroid.model.ApiResWrapper
 import com.example.stepupandroid.model.param.GetServiceParam
 import com.example.stepupandroid.model.response.LoginResponse
 import com.example.stepupandroid.model.response.ServiceResponse
-import io.reactivex.Observable
 import retrofit2.http.Body
 import retrofit2.http.HeaderMap
 import retrofit2.http.POST
+import io.reactivex.Observable
 
 interface ServiceAPI {
     @POST("api/login")

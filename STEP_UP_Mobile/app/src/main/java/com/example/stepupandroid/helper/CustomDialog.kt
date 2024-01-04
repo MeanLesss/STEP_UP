@@ -2,10 +2,13 @@ package com.example.stepupandroid.helper
 
 import android.app.Dialog
 import android.content.DialogInterface
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import androidx.fragment.app.DialogFragment
 import com.example.stepupandroid.R
 import com.example.stepupandroid.databinding.FragmentCustomDialogBinding
@@ -20,6 +23,9 @@ class CustomDialog(private val title: String, private val description : String, 
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentCustomDialogBinding.inflate(layoutInflater)
+        if (dialog != null && dialog?.window != null) {
+            dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        }
 
         if(title.isNotEmpty()) {
             binding.dialogTitle.text = title

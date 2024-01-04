@@ -63,6 +63,7 @@ dependencies {
 
     implementation("io.reactivex.rxjava2:rxjava:2.2.21")
     implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
+    implementation("io.reactivex:rxandroid:1.2.1")
 
     implementation("androidx.multidex:multidex:2.0.1")
     implementation("com.github.bumptech.glide:glide:4.16.0")
