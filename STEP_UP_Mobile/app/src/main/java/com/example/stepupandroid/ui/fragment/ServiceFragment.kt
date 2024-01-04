@@ -62,15 +62,30 @@ class ServiceFragment : Fragment() {
                 } else if (!recyclerView.canScrollVertically(1)) {
                     if (!isShown) {
                         isShown = true
-//                        val customDialog = CustomDialog("", "No More Item", Constants.WARNING)
-//                        customDialog.onDismissListener = {
-//                            isShown = false
-//                        }
-//                        customDialog.show(childFragmentManager, "CustomDialog")
+                        val customDialog = CustomDialog("", "No More Item", Constants.WARNING)
+                        customDialog.onDismissListener = {
+                            isShown = false
+                        }
+                        customDialog.show(childFragmentManager, "CustomDialog")
                     }
                 }
             }
         })
+
+        return binding.root
+    }
+
+    private fun initRecyclerView() {
+        adapter =
+            ServiceAdapter(requireActivity(), mutableListOf()) // Initialize with an empty list
+        binding.serviceRecyclerView.layoutManager = LinearLayoutManager(requireActivity())
+        binding.serviceRecyclerView.adapter = adapter
+    }
+
+    private fun loadServiceData() {
+        isLoading = true // Set loading flag to true
+        val body = GetServiceParam("", range, page)
+        viewModel.getService(body)
 
         viewModel.getServiceResultState.observe(requireActivity()) { result ->
             isLoading = false // Reset loading flag
@@ -89,22 +104,5 @@ class ServiceFragment : Fragment() {
             isLoading = false // Reset loading flag
             Log.d("bug test", it.toString())
         }
-
-        return binding.root
-    }
-
-    private fun initRecyclerView() {
-        adapter =
-            ServiceAdapter(requireActivity(), mutableListOf()) // Initialize with an empty list
-        binding.serviceRecyclerView.layoutManager = LinearLayoutManager(requireActivity())
-        binding.serviceRecyclerView.adapter = adapter
-    }
-
-    private fun loadServiceData() {
-        isLoading = true // Set loading flag to true
-        val body = GetServiceParam("", range, page)
-        viewModel.getService(body)
-
-
     }
 }
