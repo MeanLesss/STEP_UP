@@ -1,7 +1,6 @@
 package com.example.stepupandroid.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,11 +12,11 @@ import com.example.stepupandroid.databinding.FragmentServiceBinding
 import com.example.stepupandroid.helper.Constants
 import com.example.stepupandroid.helper.CustomDialog
 import com.example.stepupandroid.model.param.GetServiceParam
-import com.example.stepupandroid.viewmodel.GetServiceViewModel
+import com.example.stepupandroid.viewmodel.ServiceViewModel
 
 class ServiceFragment : Fragment() {
     private lateinit var binding: FragmentServiceBinding
-    private lateinit var viewModel: GetServiceViewModel
+    private lateinit var viewModel: ServiceViewModel
 
     private lateinit var adapter: ServiceAdapter
     private val range = 10
@@ -31,7 +30,7 @@ class ServiceFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentServiceBinding.inflate(layoutInflater)
-        viewModel = GetServiceViewModel(requireActivity())
+        viewModel = ServiceViewModel(requireActivity())
 
         initViewModel()
 
@@ -81,13 +80,13 @@ class ServiceFragment : Fragment() {
         binding.serviceRecyclerView.adapter = adapter
     }
 
-    private fun initViewModel(){
+    private fun initViewModel() {
 
         viewModel.getServiceResultState.observe(requireActivity()) { result ->
             isLoading = false // Reset loading flag
-            if (result.data.isNotEmpty()) {
+            if (result.result.data.isNotEmpty()) {
                 // Append the new data to the adapter
-                adapter.addData(result.data)
+                adapter.addData(result.result.data)
 
                 //Increment for next page
                 page++
@@ -98,7 +97,8 @@ class ServiceFragment : Fragment() {
 
         viewModel.errorResultState.observe(requireActivity()) {
             isLoading = false // Reset loading flag
-            Log.d("bug test", it.toString())
+            val customDialog = CustomDialog("", it, Constants.WARNING)
+            customDialog.show(childFragmentManager, "CustomDialog")
         }
 
     }

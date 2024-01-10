@@ -12,10 +12,12 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.stepupandroid.R
-import com.example.stepupandroid.model.MyWork
+import com.example.stepupandroid.helper.Util
+import com.example.stepupandroid.model.response.MyServiceItem
 
-class MyServiceAdapter(private val context: Context, private val itemList: List<MyWork>) :
+class MyServiceAdapter(private val context: Context, private val itemList: List<MyServiceItem>) :
     RecyclerView.Adapter<MyServiceAdapter.ItemViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -27,10 +29,21 @@ class MyServiceAdapter(private val context: Context, private val itemList: List<
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val currentItem = itemList[position]
 
+        if (!currentItem.attachments.isNullOrEmpty()) {
+            val firstImageUrl = currentItem.attachments.values.firstOrNull() // Get the value of the first map entry
+            Glide.with(context)
+                .load(firstImageUrl)
+                .error(R.drawable.no_image)
+                .into(holder.image)
+        } else {
+            holder.image.setImageResource(R.drawable.no_image)
+        }
+
         holder.titleTextView.text = currentItem.title
         holder.descriptionTextView.text = currentItem.description
-        holder.startDateTextView.text = currentItem.startDate
-        holder.endDateTextView.text = currentItem.endDate
+        holder.serviceType.text = currentItem.service_type
+        holder.startDateTextView.text = Util.convertDateFormat(currentItem.start_date)
+        holder.endDateTextView.text = Util.convertDateFormat(currentItem.end_date)
 
         // Set the background drawable with the border color
         val backgroundDrawable = ContextCompat.getDrawable(holder.itemView.context, R.drawable.border_drawable)
@@ -38,33 +51,49 @@ class MyServiceAdapter(private val context: Context, private val itemList: List<
         // Cast the drawable to a GradientDrawable (assuming your border drawable is a GradientDrawable)
         if (backgroundDrawable is GradientDrawable) {
             // Set the stroke color
-            when(currentItem.status){
-                "completed" -> {
-                    backgroundDrawable.setStroke(5, ContextCompat.getColor(context, R.color.status_completed))
-                    holder.statusText.setTextColor(ContextCompat.getColor(context, R.color.status_completed))
-                    holder.statusIcon.setImageResource(R.drawable.icon_success)
-                    holder.statusIcon.imageTintList = ColorStateList.valueOf(
-                        ContextCompat.getColor(context, R.color.status_completed)
-                    )
-                }
-                "canceled" -> {
-                    backgroundDrawable.setStroke(5, ContextCompat.getColor(context, R.color.status_canceled))
-                    holder.statusText.setTextColor(ContextCompat.getColor(context, R.color.status_canceled))
+            when(currentItem.stringStatus){
+                "Expired/Declined" -> {
+                    backgroundDrawable.setStroke(5, ContextCompat.getColor(context, R.color.status_declined))
+                    holder.statusText.setTextColor(ContextCompat.getColor(context, R.color.status_declined))
                     holder.statusIcon.setImageResource(R.drawable.icon_failed)
                     holder.statusIcon.imageTintList = ColorStateList.valueOf(
-                        ContextCompat.getColor(context, R.color.status_canceled)
+                        ContextCompat.getColor(context, R.color.status_declined)
                     )
                 }
-                "in progress" -> {
-                    backgroundDrawable.setStroke(5, ContextCompat.getColor(context, R.color.status_in_progress))
-                    holder.statusText.setTextColor(ContextCompat.getColor(context, R.color.status_in_progress))
+                "Pending" -> {
+                    backgroundDrawable.setStroke(5, ContextCompat.getColor(context, R.color.status_pending))
+                    holder.statusText.setTextColor(ContextCompat.getColor(context, R.color.status_pending))
                     holder.statusIcon.setImageResource(R.drawable.icon_in_progress)
                     holder.statusIcon.imageTintList = ColorStateList.valueOf(
-                        ContextCompat.getColor(context, R.color.status_in_progress)
+                        ContextCompat.getColor(context, R.color.status_pending)
+                    )
+                }
+                "Active" -> {
+                    backgroundDrawable.setStroke(5, ContextCompat.getColor(context, R.color.status_active))
+                    holder.statusText.setTextColor(ContextCompat.getColor(context, R.color.status_active))
+                    holder.statusIcon.setImageResource(R.drawable.icon_success)
+                    holder.statusIcon.imageTintList = ColorStateList.valueOf(
+                        ContextCompat.getColor(context, R.color.status_active)
+                    )
+                }
+                "Cancel" -> {
+                    backgroundDrawable.setStroke(5, ContextCompat.getColor(context, R.color.status_fail))
+                    holder.statusText.setTextColor(ContextCompat.getColor(context, R.color.status_fail))
+                    holder.statusIcon.setImageResource(R.drawable.icon_failed)
+                    holder.statusIcon.imageTintList = ColorStateList.valueOf(
+                        ContextCompat.getColor(context, R.color.status_fail)
+                    )
+                }
+                else -> {
+                    backgroundDrawable.setStroke(5, ContextCompat.getColor(context, R.color.status_unknown))
+                    holder.statusText.setTextColor(ContextCompat.getColor(context, R.color.status_unknown))
+                    holder.statusIcon.setImageResource(R.drawable.icon_unknown)
+                    holder.statusIcon.imageTintList = ColorStateList.valueOf(
+                        ContextCompat.getColor(context, R.color.status_unknown)
                     )
                 }
             }
-            holder.statusText.text = currentItem.status
+            holder.statusText.text = currentItem.stringStatus
             backgroundDrawable.setColor(ContextCompat.getColor(context, R.color.selected_color))
             // Apply the modified drawable to the containerLayout's background
             holder.containerLayout.background = backgroundDrawable

@@ -1,6 +1,10 @@
 package com.example.stepupandroid.model.response
 
 data class ServiceResponse(
+    val result : ServiceWrapper
+)
+
+data class ServiceWrapper(
     val current_page: Int,
     val data: List<ServiceItem>,
     val first_page_url: String,

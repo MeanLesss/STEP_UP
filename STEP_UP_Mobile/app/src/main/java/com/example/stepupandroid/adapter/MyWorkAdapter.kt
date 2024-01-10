@@ -41,28 +41,60 @@ class MyWorkAdapter(private val context: Context, private val itemList: List<MyW
         if (backgroundDrawable is GradientDrawable) {
             // Set the stroke color
             when(currentItem.status){
-                "completed" -> {
-                    backgroundDrawable.setStroke(5, ContextCompat.getColor(context, R.color.status_completed))
-                    holder.statusText.setTextColor(ContextCompat.getColor(context, R.color.status_completed))
-                    holder.statusIcon.setImageResource(R.drawable.icon_success)
-                    holder.statusIcon.imageTintList = ColorStateList.valueOf(
-                        ContextCompat.getColor(context, R.color.status_completed)
-                    )
-                }
-                "canceled" -> {
-                    backgroundDrawable.setStroke(5, ContextCompat.getColor(context, R.color.status_canceled))
-                    holder.statusText.setTextColor(ContextCompat.getColor(context, R.color.status_canceled))
+                "Declined" -> {
+                    backgroundDrawable.setStroke(5, ContextCompat.getColor(context, R.color.status_declined))
+                    holder.statusText.setTextColor(ContextCompat.getColor(context, R.color.status_declined))
                     holder.statusIcon.setImageResource(R.drawable.icon_failed)
                     holder.statusIcon.imageTintList = ColorStateList.valueOf(
-                        ContextCompat.getColor(context, R.color.status_canceled)
+                        ContextCompat.getColor(context, R.color.status_declined)
                     )
                 }
-                "in progress" -> {
+                "Pending" -> {
+                    backgroundDrawable.setStroke(5, ContextCompat.getColor(context, R.color.status_pending))
+                    holder.statusText.setTextColor(ContextCompat.getColor(context, R.color.status_pending))
+                    holder.statusIcon.setImageResource(R.drawable.icon_in_progress)
+                    holder.statusIcon.imageTintList = ColorStateList.valueOf(
+                        ContextCompat.getColor(context, R.color.status_pending)
+                    )
+                }
+                "In Progress" -> {
                     backgroundDrawable.setStroke(5, ContextCompat.getColor(context, R.color.status_in_progress))
                     holder.statusText.setTextColor(ContextCompat.getColor(context, R.color.status_in_progress))
                     holder.statusIcon.setImageResource(R.drawable.icon_in_progress)
                     holder.statusIcon.imageTintList = ColorStateList.valueOf(
                         ContextCompat.getColor(context, R.color.status_in_progress)
+                    )
+                }
+                "In Review" -> {
+                    backgroundDrawable.setStroke(5, ContextCompat.getColor(context, R.color.status_in_review))
+                    holder.statusText.setTextColor(ContextCompat.getColor(context, R.color.status_in_review))
+                    holder.statusIcon.setImageResource(R.drawable.icon_in_progress)
+                    holder.statusIcon.imageTintList = ColorStateList.valueOf(
+                        ContextCompat.getColor(context, R.color.status_in_review)
+                    )
+                }
+                "Success" -> {
+                    backgroundDrawable.setStroke(5, ContextCompat.getColor(context, R.color.status_success))
+                    holder.statusText.setTextColor(ContextCompat.getColor(context, R.color.status_success))
+                    holder.statusIcon.setImageResource(R.drawable.icon_success)
+                    holder.statusIcon.imageTintList = ColorStateList.valueOf(
+                        ContextCompat.getColor(context, R.color.status_success)
+                    )
+                }
+                "Fail" -> {
+                    backgroundDrawable.setStroke(5, ContextCompat.getColor(context, R.color.status_declined))
+                    holder.statusText.setTextColor(ContextCompat.getColor(context, R.color.status_declined))
+                    holder.statusIcon.setImageResource(R.drawable.icon_failed)
+                    holder.statusIcon.imageTintList = ColorStateList.valueOf(
+                        ContextCompat.getColor(context, R.color.status_declined)
+                    )
+                }
+                else -> {
+                    backgroundDrawable.setStroke(5, ContextCompat.getColor(context, R.color.status_unknown))
+                    holder.statusText.setTextColor(ContextCompat.getColor(context, R.color.status_unknown))
+                    holder.statusIcon.setImageResource(R.drawable.icon_unknown)
+                    holder.statusIcon.imageTintList = ColorStateList.valueOf(
+                        ContextCompat.getColor(context, R.color.status_unknown)
                     )
                 }
             }
