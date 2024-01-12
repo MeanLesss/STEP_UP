@@ -3,7 +3,6 @@ package com.example.stepupandroid.adapter
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.drawable.GradientDrawable
-import android.media.Image
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -21,7 +20,7 @@ class MyWorkAdapter(private val context: Context, private val itemList: List<MyW
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.my_work_item, parent, false)
+            .inflate(R.layout.item_my_work, parent, false)
         return ItemViewHolder(itemView)
     }
 

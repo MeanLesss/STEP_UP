@@ -1,5 +1,6 @@
 package com.example.stepupandroid.ui.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import com.example.stepupandroid.adapter.MyServiceAdapter
 import com.example.stepupandroid.databinding.FragmentMyServiceBinding
 import com.example.stepupandroid.helper.Constants
 import com.example.stepupandroid.helper.CustomDialog
+import com.example.stepupandroid.ui.my_service.CreateServiceActivity
 import com.example.stepupandroid.viewmodel.MyServiceViewModel
 
 class MyServiceFragment : Fragment() {
@@ -28,7 +30,7 @@ class MyServiceFragment : Fragment() {
         viewModel.getMyService()
 
         binding.addBtn.setOnClickListener{
-
+            requireActivity().startActivity(Intent(requireActivity(), CreateServiceActivity::class.java))
         }
 
 
@@ -46,6 +48,7 @@ class MyServiceFragment : Fragment() {
 
         viewModel.errorResultState.observe(requireActivity()) {
             val customDialog = CustomDialog("", it, Constants.WARNING)
+
             customDialog.show(childFragmentManager, "CustomDialog")
         }
 

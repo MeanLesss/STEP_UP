@@ -51,7 +51,7 @@
                 android:id="@+id/signInWithGoogle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/edit_text_background"
+                android:background="@drawable/primary_color_border_drawable"
                 android:paddingVertical="8dp"
                 android:paddingHorizontal="25dp">
                 
@@ -80,7 +80,7 @@
                 android:id="@+id/signInWithEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/edit_text_background"
+                android:background="@drawable/primary_color_border_drawable"
                 android:paddingVertical="8dp"
                 android:layout_marginTop="15dp"
                 android:paddingHorizontal="25dp">
@@ -142,7 +142,7 @@
                 android:id="@+id/singUpWithGoogle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/edit_text_background"
+                android:background="@drawable/primary_color_border_drawable"
                 android:paddingVertical="8dp"
                 android:paddingHorizontal="25dp">
 
@@ -171,7 +171,7 @@
                 android:id="@+id/continueAsGuest"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/edit_text_background"
+                android:background="@drawable/primary_color_border_drawable"
                 android:paddingVertical="8dp"
                 android:layout_marginTop="15dp"
                 android:paddingHorizontal="25dp">

@@ -7,11 +7,18 @@ import com.example.stepupandroid.model.response.LoginResponse
 import com.example.stepupandroid.model.response.MyServiceResponse
 import com.example.stepupandroid.model.response.OrderSummaryResponse
 import com.example.stepupandroid.model.response.ServiceResponse
+import com.google.gson.JsonElement
 import retrofit2.http.Body
 import retrofit2.http.HeaderMap
 import retrofit2.http.POST
 import io.reactivex.Observable
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.http.GET
+import retrofit2.http.Multipart
+import retrofit2.http.Part
+import retrofit2.http.PartMap
+import retrofit2.http.Query
 
 interface ServiceAPI {
     @POST("api/login")
@@ -37,5 +44,12 @@ interface ServiceAPI {
         @Body body: OrderParam
     ): Observable<ApiResWrapper<OrderSummaryResponse>>
 
+    @Multipart
+    @POST("api/service/create")
+    fun createService(
+        @HeaderMap headers: Map<String, String>,
+        @PartMap partMap: Map<String, @JvmSuppressWildcards RequestBody>,
+        @Part attachments: List<MultipartBody.Part>
+    ): Observable<ApiResWrapper<JsonElement>>
 
 }
