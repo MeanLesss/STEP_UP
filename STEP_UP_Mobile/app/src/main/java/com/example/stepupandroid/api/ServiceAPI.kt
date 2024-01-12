@@ -48,8 +48,7 @@ interface ServiceAPI {
     @POST("api/service/create")
     fun createService(
         @HeaderMap headers: Map<String, String>,
-        @PartMap partMap: Map<String, @JvmSuppressWildcards RequestBody>,
-        @Part attachments: List<MultipartBody.Part>
+        @Part parts: List<MultipartBody.Part>
     ): Observable<ApiResWrapper<JsonElement>>
 
 }

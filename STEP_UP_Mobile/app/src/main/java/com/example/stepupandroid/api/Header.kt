@@ -19,5 +19,11 @@ class Header {
                 ApiKey.ApiKey.Auth to ApiKey.ApiKey.Bearer + " " + SharedPreferenceUtil().getFromSp(ApiKey.SharedPreferenceKey.token)
             )
         }
+
+        fun getHeaderAuthOnly(): Map<String, String> {
+            return mapOf(
+                ApiKey.ApiKey.Auth to ApiKey.ApiKey.Bearer + " " + SharedPreferenceUtil().getFromSp(ApiKey.SharedPreferenceKey.token)
+            )
+        }
     }
 }

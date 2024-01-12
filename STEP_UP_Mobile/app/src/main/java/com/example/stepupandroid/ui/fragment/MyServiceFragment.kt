@@ -47,7 +47,7 @@ class MyServiceFragment : Fragment() {
         }
 
         viewModel.errorResultState.observe(requireActivity()) {
-            val customDialog = CustomDialog("", it, Constants.WARNING)
+            val customDialog = CustomDialog("", it, Constants.Warning)
 
             customDialog.show(childFragmentManager, "CustomDialog")
         }

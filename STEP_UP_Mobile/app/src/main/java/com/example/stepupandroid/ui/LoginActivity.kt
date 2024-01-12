@@ -1,6 +1,5 @@
 package com.example.stepupandroid.ui
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -47,7 +46,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         viewModel.errorResultState.observe(this) {
-            CustomDialog("", it, Constants.ERROR).show(supportFragmentManager, "CustomDialog")
+            CustomDialog("", it, Constants.Error).show(supportFragmentManager, "CustomDialog")
         }
 
     }

@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
 import androidx.fragment.app.DialogFragment
 import com.example.stepupandroid.R
 import com.example.stepupandroid.databinding.FragmentCustomDialogBinding
@@ -40,13 +39,13 @@ class CustomDialog(private val title: String, private val description : String, 
         }
 
         when (type) {
-            Constants.WARNING -> {
+            Constants.Warning -> {
                 binding.dialogIcon.setImageResource(R.drawable.icon_warning)
             }
-            Constants.ERROR -> {
+            Constants.Error -> {
                 binding.dialogIcon.setImageResource(R.drawable.icon_error)
             }
-            Constants.SUCCESS -> {
+            Constants.Success -> {
                 binding.dialogIcon.setImageResource(R.drawable.icon_success1)
             }
             else -> {

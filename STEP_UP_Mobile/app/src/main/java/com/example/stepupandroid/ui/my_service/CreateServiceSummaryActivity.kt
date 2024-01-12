@@ -40,7 +40,7 @@ class CreateServiceSummaryActivity : AppCompatActivity() {
         }
 
         viewModel.errorResultState.observe(this) {
-            CustomDialog("", it, Constants.ERROR).show(supportFragmentManager, "CustomDialog")
+            CustomDialog("", it, Constants.Error).show(supportFragmentManager, "CustomDialog")
         }
 
     }

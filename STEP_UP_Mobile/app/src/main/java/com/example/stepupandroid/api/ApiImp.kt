@@ -50,7 +50,14 @@ class ApiImp : ApiManager() {
         val partMap = prepareRequest(createServiceParam)
         val fileParts = prepareFileParts(createServiceParam.attachments)
 
-        return mAllService.createService(Header.getHeader(), partMap, fileParts)
+        // Combine text parts and file parts
+        val allParts = mutableListOf<MultipartBody.Part>()
+        for ((key, value) in partMap) {
+            allParts.add(MultipartBody.Part.createFormData(key, null, value))
+        }
+        allParts.addAll(fileParts)
+
+        return mAllService.createService(Header.getHeaderAuthOnly(), allParts)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }

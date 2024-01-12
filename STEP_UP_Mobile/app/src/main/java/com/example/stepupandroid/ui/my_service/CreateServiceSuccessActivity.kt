@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.stepupandroid.databinding.ActivityCreateServiceSuccessBinding
+import com.example.stepupandroid.helper.Constants
 import com.example.stepupandroid.ui.HomeActivity
 
 class CreateServiceSuccessActivity : AppCompatActivity() {
@@ -16,7 +17,7 @@ class CreateServiceSuccessActivity : AppCompatActivity() {
 
         binding.okayBtn.setOnClickListener {
             val intent = Intent(this, HomeActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP )
+            intent.putExtra("from", Constants.MyService)
             startActivity(intent)
         }
     }

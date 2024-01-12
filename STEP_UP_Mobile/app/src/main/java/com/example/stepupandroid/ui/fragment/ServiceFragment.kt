@@ -97,7 +97,7 @@ class ServiceFragment : Fragment() {
 
         viewModel.errorResultState.observe(requireActivity()) {
             isLoading = false // Reset loading flag
-            val customDialog = CustomDialog("", it, Constants.WARNING)
+            val customDialog = CustomDialog("", it, Constants.Warning)
             customDialog.show(childFragmentManager, "CustomDialog")
         }
 

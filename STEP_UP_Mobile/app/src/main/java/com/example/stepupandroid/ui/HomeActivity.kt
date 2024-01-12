@@ -41,10 +41,10 @@ class HomeActivity : AppCompatActivity() {
         // Set default selected item
         if (from.isNotEmpty()) {
             when (from) {
-                "MyWork" -> binding.navigation.selectedItemId = R.id.navigation_my_work
-                "MyService" -> binding.navigation.selectedItemId = R.id.navigation_my_service
-                "MyOrder" -> binding.navigation.selectedItemId = R.id.navigation_my_order
-                "Profile" -> binding.navigation.selectedItemId = R.id.navigation_profile
+                Constants.MyWork -> binding.navigation.selectedItemId = R.id.navigation_my_work
+                Constants.MyService -> binding.navigation.selectedItemId = R.id.navigation_my_service
+                Constants.MyOrder -> binding.navigation.selectedItemId = R.id.navigation_my_order
+                Constants.Profile -> binding.navigation.selectedItemId = R.id.navigation_profile
             }
         } else {
             binding.navigation.selectedItemId = R.id.navigation_service
@@ -85,10 +85,10 @@ class HomeActivity : AppCompatActivity() {
 
     private fun getFragmentName(fragment: Fragment): String {
         return when (fragment) {
-            is MyWorkFragment -> "MyWork"
-            is MyServiceFragment -> "MyService"
-            is MyOrderFragment -> "MyOrder"
-            is ProfileFragment -> "Profile"
+            is MyWorkFragment -> Constants.MyWork
+            is MyServiceFragment -> Constants.MyService
+            is MyOrderFragment -> Constants.MyOrder
+            is ProfileFragment -> Constants.Profile
             else -> ""
         }
     }
