@@ -200,12 +200,12 @@ class CreateServiceActivity : AppCompatActivity() {
         val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
                 addCategory(Intent.CATEGORY_OPENABLE)
-                type = "*image/*"
+                type = "image/*"  // Restrict to image files only
                 putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
             }
         } else {
             Intent(Intent.ACTION_GET_CONTENT).apply {
-                type = "*image/*"
+                type = "image/*"  // Restrict to image files only
                 putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
             }
         }

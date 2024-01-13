@@ -34,7 +34,7 @@ class SignUpChooseJobActivity : AppCompatActivity() {
             textView.setOnClickListener { updateSelection(it as TextView) }
         }
 
-        binding.backBtn.setOnClickListener {
+        binding.cancelBtn.setOnClickListener {
             finish()
         }
 
