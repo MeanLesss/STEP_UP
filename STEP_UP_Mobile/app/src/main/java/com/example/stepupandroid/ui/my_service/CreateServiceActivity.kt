@@ -9,10 +9,17 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.OpenableColumns
+import android.view.View
+import android.view.animation.AnimationUtils
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.stepupandroid.R
 import com.example.stepupandroid.adapter.AttachmentAdapter
 import com.example.stepupandroid.databinding.ActivityCreateServiceBinding
 import com.example.stepupandroid.model.Attachment
@@ -24,10 +31,12 @@ class CreateServiceActivity : AppCompatActivity() {
 
     private lateinit var adapter: AttachmentAdapter
     private val attachments = mutableListOf<Attachment>()
+
     companion object {
         private const val STORAGE_PERMISSION_CODE = 100
         private const val PICK_FILES_REQUEST_CODE = 101
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCreateServiceBinding.inflate(layoutInflater)
@@ -36,6 +45,11 @@ class CreateServiceActivity : AppCompatActivity() {
         adapter = AttachmentAdapter(attachments)
         binding.attachmentRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.attachmentRecyclerView.adapter = adapter
+
+        val spinnerAdapter = ArrayAdapter(
+            this, R.layout.item_spinner, resources.getStringArray(R.array.service_type_spinner)
+        )
+        binding.serviceType.adapter = spinnerAdapter
 
         binding.addMoreBtn.setOnClickListener {
             requestStoragePermission()
@@ -46,19 +60,95 @@ class CreateServiceActivity : AppCompatActivity() {
         }
 
         binding.summaryBtn.setOnClickListener {
-            val body = CreateServiceParam(
+            var validated = true
+            if (binding.title.text.isNullOrEmpty()) {
+                binding.title.background =
+                    ResourcesCompat.getDrawable(resources, R.drawable.error_color_border_drawable, null)
+                binding.title.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake))
+                validated = false
+            }
+            if (binding.description.text.isNullOrEmpty()) {
+                binding.description.background =
+                    ResourcesCompat.getDrawable(resources, R.drawable.error_color_border_drawable, null)
+                binding.description.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake))
+                validated = false
+            }
+//            if (attachments.isEmpty()) {
+//                binding.attachmentLayout.background =
+//                    ResourcesCompat.getDrawable(resources, R.drawable.error_color_border_drawable, null)
+//                binding.attachmentLayout.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake))
+//                validated = false
+//            }
+            if (binding.price.text.isNullOrEmpty()) {
+                binding.price.background =
+                    ResourcesCompat.getDrawable(resources, R.drawable.error_color_border_drawable, null)
+                binding.price.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake))
+                validated = false
+            }
+            if (binding.serviceType.selectedItem.toString().isEmpty() || binding.serviceType.selectedItem.toString() == "Select A Service Type") {
+                binding.serviceType.background =
+                    ResourcesCompat.getDrawable(resources, R.drawable.error_color_border_drawable, null)
+                binding.serviceType.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake))
+                validated = false
+            }
+            if (binding.startDate.text.isNullOrEmpty()) {
+                binding.startDate.background =
+                    ResourcesCompat.getDrawable(resources, R.drawable.error_color_border_drawable, null)
+                binding.startDate.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake))
+                validated = false
+            }
+            if (binding.endDate.text.isNullOrEmpty()) {
+                binding.endDate.background =
+                    ResourcesCompat.getDrawable(resources, R.drawable.error_color_border_drawable, null)
+                binding.endDate.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake))
+                validated = false
+            }
+            if(!validated){
+                return@setOnClickListener
+            }
+                val body = CreateServiceParam(
                 title = binding.title.text.toString(),
                 description = binding.description.text.toString(),
-                status = "0",
                 attachments = attachments,
                 price = binding.price.text.toString(),
-                service_type = "Software Development",
+                service_type = binding.serviceType.selectedItem.toString(),
                 start_date = binding.startDate.text.toString(),
                 end_date = binding.endDate.text.toString()
             )
             val intent = Intent(this, CreateServiceSummaryActivity::class.java)
             intent.putExtra("body", body)
             startActivity(intent)
+        }
+
+        binding.title.addTextChangedListener {
+            binding.title.background =
+                ResourcesCompat.getDrawable(resources, R.drawable.logo_color_border_drawable, null)
+        }
+        binding.description.addTextChangedListener {
+            binding.description.background =
+                ResourcesCompat.getDrawable(resources, R.drawable.logo_color_border_drawable, null)
+        }
+        binding.price.addTextChangedListener {
+            binding.price.background =
+                ResourcesCompat.getDrawable(resources, R.drawable.logo_color_border_drawable, null)
+        }
+        binding.serviceType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                binding.serviceType.background =
+                    ResourcesCompat.getDrawable(resources, R.drawable.logo_color_border_drawable, null)
+            }
+
+        }
+        binding.startDate.addTextChangedListener {
+            binding.startDate.background =
+                ResourcesCompat.getDrawable(resources, R.drawable.logo_color_border_drawable, null)
+        }
+        binding.endDate.addTextChangedListener {
+            binding.endDate.background =
+                ResourcesCompat.getDrawable(resources, R.drawable.logo_color_border_drawable, null)
         }
     }
 
@@ -132,24 +222,40 @@ class CreateServiceActivity : AppCompatActivity() {
         val permissionsToRequest = mutableListOf<String>()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.READ_MEDIA_IMAGES
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
                 permissionsToRequest.add(Manifest.permission.READ_MEDIA_IMAGES)
             }
         } else {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
                 permissionsToRequest.add(Manifest.permission.READ_EXTERNAL_STORAGE)
             }
         }
 
         if (permissionsToRequest.isNotEmpty()) {
-            ActivityCompat.requestPermissions(this, permissionsToRequest.toTypedArray(), STORAGE_PERMISSION_CODE)
+            ActivityCompat.requestPermissions(
+                this,
+                permissionsToRequest.toTypedArray(),
+                STORAGE_PERMISSION_CODE
+            )
         } else {
             openFilePicker()
         }
     }
 
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == STORAGE_PERMISSION_CODE) {
             if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {

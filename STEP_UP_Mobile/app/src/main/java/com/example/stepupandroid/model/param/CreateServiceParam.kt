@@ -8,7 +8,6 @@ import kotlinx.parcelize.Parcelize
 class CreateServiceParam(
     val title: String,
     val description: String,
-    val status: String,
     val attachments: List<Attachment>,
     val price: String,
     val service_type: String,

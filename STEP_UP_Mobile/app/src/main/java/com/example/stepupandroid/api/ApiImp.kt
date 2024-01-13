@@ -67,7 +67,6 @@ class ApiImp : ApiManager() {
         // Convert each field to RequestBody
         partMap["title"] = createServiceParam.title.toRequestBody("text/plain".toMediaTypeOrNull())
         partMap["description"] = createServiceParam.description.toRequestBody("text/plain".toMediaTypeOrNull())
-        partMap["status"] = createServiceParam.status.toRequestBody("text/plain".toMediaTypeOrNull())
         partMap["price"] = createServiceParam.price.toRequestBody("text/plain".toMediaTypeOrNull())
         partMap["service_type"] = createServiceParam.service_type.toRequestBody("text/plain".toMediaTypeOrNull())
         partMap["start_date"] = createServiceParam.start_date.toRequestBody("text/plain".toMediaTypeOrNull())

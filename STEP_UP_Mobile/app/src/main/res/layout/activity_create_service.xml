@@ -15,10 +15,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="30dp"
             android:layout_marginTop="20dp"
-            android:paddingBottom="40dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="40dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -26,16 +25,17 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginStart="10dp"
                 android:ellipsize="end"
-                android:maxLines="1"
                 android:fontFamily="@font/museomoderno_bold"
+                android:maxLines="1"
                 android:text="@string/create_service"
                 android:textColor="@color/primary_color"
-                android:textSize="35sp"/>
+                android:textSize="35sp" />
 
             <EditText
                 android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
                 android:layout_marginTop="30dp"
                 android:background="@drawable/logo_color_border_drawable"
                 android:hint="@string/title"
@@ -51,6 +51,7 @@
                 android:id="@+id/description"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
+                android:layout_marginHorizontal="30dp"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/logo_color_border_drawable"
                 android:gravity="start"
@@ -64,8 +65,10 @@
                 android:textColorHint="@color/white" />
 
             <LinearLayout
+                android:id="@+id/attachmentLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/logo_color_border_drawable"
                 android:orientation="vertical"
@@ -95,6 +98,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_gravity="end"
+                android:layout_marginHorizontal="30dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/logo_color_border_drawable"
                 android:paddingHorizontal="20dp"
@@ -106,6 +110,7 @@
                 android:id="@+id/price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/logo_color_border_drawable"
                 android:hint="@string/price"
@@ -118,25 +123,23 @@
                 android:textColor="@color/white"
                 android:textColorHint="@color/white" />
 
-            <EditText
+            <Spinner
                 android:id="@+id/serviceType"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginHorizontal="30dp"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/logo_color_border_drawable"
-                android:hint="@string/service_type"
-                android:nextFocusDown="@+id/description"
-                android:paddingVertical="10dp"
-                android:paddingStart="30dp"
+                android:paddingStart="10dp"
+                android:popupBackground="@color/selected_color"
                 android:paddingEnd="10dp"
-                android:singleLine="true"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white" />
+                android:singleLine="true" />
 
             <EditText
                 android:id="@+id/startDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/logo_color_border_drawable"
                 android:hint="@string/start_date"
@@ -152,6 +155,7 @@
                 android:id="@+id/endDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/logo_color_border_drawable"
                 android:hint="@string/end_date"
@@ -166,6 +170,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
                 android:layout_marginTop="30dp"
                 android:gravity="center_horizontal"
                 android:orientation="horizontal">
@@ -177,11 +182,11 @@
                     android:layout_marginEnd="20dp"
                     android:layout_weight="1"
                     android:background="@drawable/primary_color_border_drawable"
+                    android:letterSpacing="0"
                     android:text="@string/cancel"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     app:backgroundTint="@null"
-                    android:letterSpacing="0"
                     app:icon="@drawable/icon_back"
                     app:iconGravity="textStart"
                     app:iconTint="@color/white" />
@@ -194,8 +199,8 @@
                     android:layout_weight="1"
                     android:backgroundTint="@color/logo_color"
                     android:insetTop="0dp"
-                    android:letterSpacing="0"
                     android:insetBottom="0dp"
+                    android:letterSpacing="0"
                     android:text="@string/summary"
                     android:textAllCaps="false"
                     android:textColor="@color/selected_color"
