@@ -2,7 +2,6 @@ package com.example.stepupandroid.ui.my_service
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.icu.text.SimpleDateFormat
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,7 +13,6 @@ import com.example.stepupandroid.helper.CustomDialog
 import com.example.stepupandroid.helper.Util
 import com.example.stepupandroid.model.param.CreateServiceParam
 import com.example.stepupandroid.viewmodel.CreateServiceViewModel
-import java.util.Locale
 
 class CreateServiceSummaryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCreateServiceSummaryBinding

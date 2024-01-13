@@ -139,7 +139,7 @@
             android:background="@drawable/logo_color_border_drawable">
 
             <LinearLayout
-                android:id="@+id/singUpWithGoogle"
+                android:id="@+id/singUpWithEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/primary_color_border_drawable"

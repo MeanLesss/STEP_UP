@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/selected_color"
+    tools:context=".ui.login_sign_up.SignUpChooseJobActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="10dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/museomoderno_bold"
+            android:maxLines="1"
+            android:text="@string/sign_up"
+            android:textColor="@color/primary_color"
+            android:textSize="35sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:text="@string/what_is_your_job_status"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/student"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/primary_color_border_drawable"
+            android:paddingVertical="10dp"
+            android:paddingStart="30dp"
+            android:paddingEnd="10dp"
+            android:text="@string/student"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/selfEmployment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/primary_color_border_drawable"
+            android:paddingVertical="10dp"
+            android:paddingStart="30dp"
+            android:paddingEnd="10dp"
+            android:text="@string/self_employment"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/employee"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/primary_color_border_drawable"
+            android:paddingVertical="10dp"
+            android:paddingStart="30dp"
+            android:paddingEnd="10dp"
+            android:text="@string/employee"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/manager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/primary_color_border_drawable"
+            android:paddingVertical="10dp"
+            android:paddingStart="30dp"
+            android:paddingEnd="10dp"
+            android:text="@string/manager"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/passionateWorker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/primary_color_border_drawable"
+            android:paddingVertical="10dp"
+            android:paddingStart="30dp"
+            android:paddingEnd="10dp"
+            android:text="@string/passionate_worker"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/other"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/primary_color_border_drawable"
+            android:paddingVertical="10dp"
+            android:paddingStart="30dp"
+            android:paddingEnd="10dp"
+            android:text="@string/other"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:text="@string/just_a_little_more"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:gravity="center_horizontal"
+            android:layout_marginHorizontal="50dp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/backBtn"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="20dp"
+                android:layout_weight="1"
+                android:background="@drawable/primary_color_border_drawable"
+                android:letterSpacing="0"
+                android:text="@string/back"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                app:backgroundTint="@null"
+                app:icon="@drawable/icon_back"
+                app:iconGravity="textStart"
+                app:iconTint="@color/white" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/nextBtn"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="20dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/logo_color"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:letterSpacing="0"
+                android:text="@string/next"
+                android:textAllCaps="false"
+                android:textColor="@color/selected_color"
+                app:cornerRadius="10dp"
+                app:icon="@drawable/icon_next"
+                app:iconGravity="textEnd"
+                app:iconTint="@color/selected_color" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

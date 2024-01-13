@@ -5,6 +5,9 @@
     <string name="back">Back</string>
     <string name="cancel">Cancel</string>
     <string name="okay">Okay</string>
+    <string name="skip">Skip</string>
+    <string name="next">Next</string>
+    <string name="create">Create</string>
 
     //Home screen
     <string name="my_work">My Works</string>
@@ -21,11 +24,20 @@
     <string name="connect_with_us">Connect with us</string>
     <string name="sign_in_with_email">Sign in with Email</string>
     <string name="sign_in_with_google">Sign in with Google</string>
+    <string name="just_a_little_more">Just a little more to go!!🎉🎊</string>
 
-    //Login screen
+    //Login sign up screen
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="what_is_your_job_status">What is your job status?</string>
+    <string name="student">Student</string>
+    <string name="self_employment">Self Employment</string>
+    <string name="employee">Employee</string>
+    <string name="manager">Manager</string>
+    <string name="passionate_worker">Passionate Worker</string>
+    <string name="other">Other</string>
 
     //my service
     <string name="create_service">Create Service</string>
@@ -45,11 +57,12 @@
     <string name="start_date_text">Start Date :</string>
     <string name="end_date_text">End Date :</string>
     <string name="attachment_text">Attachment :</string>
-    <string name="create">Create</string>
+
 
     <string-array name="service_type_spinner">
         <item>Select A Service Type</item>
         <item>Software Development</item>
         <item>Graphic Design</item>
     </string-array>
+
 </resources>

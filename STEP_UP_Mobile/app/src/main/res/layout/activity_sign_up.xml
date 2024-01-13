@@ -5,94 +5,90 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/selected_color"
-    tools:context=".ui.login_sign_up.LoginActivity">
+    tools:context=".ui.login_sign_up.SignUpActivity">
 
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_centerHorizontal="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/step_up_logo"
-        android:layout_marginTop="150dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/email"
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="50dp"
-            android:layout_marginTop="80dp"
-            android:background="@drawable/logo_color_border_drawable"
-            android:hint="@string/email"
-            android:nextFocusDown="@+id/password"
-            android:paddingVertical="10dp"
-            android:paddingStart="30dp"
-            android:paddingEnd="10dp"
-            android:singleLine="true"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white" />
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="10dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/museomoderno_bold"
+            android:maxLines="1"
+            android:text="@string/sign_up"
+            android:textColor="@color/primary_color"
+            android:textSize="35sp" />
 
-        <EditText
-            android:id="@+id/password"
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="50dp"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="30dp"
-            android:background="@drawable/logo_color_border_drawable"
-            android:hint="@string/password"
-            android:inputType="textPassword"
-            android:paddingVertical="10dp"
-            android:paddingStart="30dp"
-            android:paddingEnd="10dp"
+            android:text="In Progress"
             android:textColor="@color/white"
-            android:textColorHint="@color/white" />
+            android:textSize="15sp" />
+
+
+        <TextView
+            android:id="@+id/job"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="50dp"
             android:layout_marginTop="30dp"
-            android:layout_marginBottom="50dp"
             android:gravity="center_horizontal"
+            android:layout_marginHorizontal="50dp"
             android:orientation="horizontal">
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/cancelBtn"
+                android:id="@+id/backBtn"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginEnd="20dp"
                 android:layout_weight="1"
                 android:background="@drawable/primary_color_border_drawable"
-                android:text="@string/cancel"
                 android:letterSpacing="0"
+                android:text="@string/back"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                app:backgroundTint="@null" />
+                app:backgroundTint="@null"
+                app:icon="@drawable/icon_back"
+                app:iconGravity="textStart"
+                app:iconTint="@color/white" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/loginBtn"
+                android:id="@+id/nextBtn"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="20dp"
                 android:layout_weight="1"
                 android:backgroundTint="@color/logo_color"
                 android:insetTop="0dp"
-                android:letterSpacing="0"
                 android:insetBottom="0dp"
-                android:text="@string/login"
+                android:letterSpacing="0"
+                android:text="@string/sign_up"
                 android:textAllCaps="false"
                 android:textColor="@color/selected_color"
-                app:cornerRadius="10dp" />
+                app:cornerRadius="10dp"
+                app:icon="@drawable/icon_next"
+                app:iconGravity="textEnd"
+                app:iconTint="@color/selected_color" />
 
         </LinearLayout>
 
-
     </LinearLayout>
-
 
 </RelativeLayout>

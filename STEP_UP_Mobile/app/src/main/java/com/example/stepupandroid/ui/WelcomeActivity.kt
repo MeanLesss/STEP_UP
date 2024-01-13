@@ -7,8 +7,9 @@ import android.os.Bundle
 import android.view.View
 import com.example.stepupandroid.databinding.ActivityWelcomeBinding
 import com.example.stepupandroid.helper.ApiKey
-import com.example.stepupandroid.helper.Constants
 import com.example.stepupandroid.helper.SharedPreferenceUtil
+import com.example.stepupandroid.ui.login_sign_up.LoginActivity
+import com.example.stepupandroid.ui.login_sign_up.SignUpChooseJobActivity
 
 class WelcomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityWelcomeBinding
@@ -48,6 +49,14 @@ class WelcomeActivity : AppCompatActivity() {
 
         binding.signInWithEmail.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
+            if (from.isNotEmpty()) {
+                intent.putExtra("from", from)
+            }
+            startActivity(intent)
+        }
+
+        binding.singUpWithEmail.setOnClickListener {
+            val intent = Intent(this, SignUpChooseJobActivity::class.java)
             if (from.isNotEmpty()) {
                 intent.putExtra("from", from)
             }
