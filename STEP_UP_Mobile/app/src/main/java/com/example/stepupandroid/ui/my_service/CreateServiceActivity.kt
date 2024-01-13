@@ -2,8 +2,10 @@ package com.example.stepupandroid.ui.my_service
 
 import android.Manifest
 import android.app.Activity
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.icu.text.DateFormat
 import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +15,7 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.EditText
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -25,12 +28,16 @@ import com.example.stepupandroid.databinding.ActivityCreateServiceBinding
 import com.example.stepupandroid.model.Attachment
 import com.example.stepupandroid.model.param.CreateServiceParam
 import java.io.File
+import java.util.Calendar
 
 class CreateServiceActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCreateServiceBinding
 
     private lateinit var adapter: AttachmentAdapter
     private val attachments = mutableListOf<Attachment>()
+
+    private var startDate: Calendar? = null
+    private var endDate: Calendar? = null
 
     companion object {
         private const val STORAGE_PERMISSION_CODE = 100
@@ -41,6 +48,13 @@ class CreateServiceActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCreateServiceBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.startDate.setOnClickListener { showDatePickerDialog(isStartDate = true) }
+        binding.endDate.setOnClickListener { showDatePickerDialog(isStartDate = false) }
+        binding.startDate.isFocusable = false
+        binding.endDate.isFocusable = false
+        binding.startDate.isLongClickable = false
+        binding.endDate.isLongClickable = false
 
         adapter = AttachmentAdapter(attachments)
         binding.attachmentRecyclerView.layoutManager = LinearLayoutManager(this)
@@ -152,6 +166,33 @@ class CreateServiceActivity : AppCompatActivity() {
         }
     }
 
+    private fun showDatePickerDialog(isStartDate: Boolean) {
+        val calendar = Calendar.getInstance()
+        val datePickerDialog = DatePickerDialog(this, { _, year, month, dayOfMonth ->
+            val selectedDate = Calendar.getInstance().apply {
+                set(year, month, dayOfMonth)
+            }
+
+            if (isStartDate) {
+                startDate = selectedDate
+                binding.startDate.setText(DateFormat.getDateInstance().format(selectedDate.time))
+            } else {
+                endDate = selectedDate
+                binding.endDate.setText(DateFormat.getDateInstance().format(selectedDate.time))
+            }
+        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
+
+        // Setting min date
+        datePickerDialog.datePicker.minDate = System.currentTimeMillis() - 1000
+        if (isStartDate && endDate != null) {
+            datePickerDialog.datePicker.maxDate = endDate!!.timeInMillis
+        } else if (!isStartDate && startDate != null) {
+            datePickerDialog.datePicker.minDate = startDate!!.timeInMillis
+        }
+
+        datePickerDialog.show()
+    }
+
     private fun addAttachment(attachment: Attachment) {
         adapter.addAttachment(attachment)
     }
@@ -160,12 +201,12 @@ class CreateServiceActivity : AppCompatActivity() {
         val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
                 addCategory(Intent.CATEGORY_OPENABLE)
-                type = "*/*"
+                type = "*image/*"
                 putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
             }
         } else {
             Intent(Intent.ACTION_GET_CONTENT).apply {
-                type = "*/*"
+                type = "*image/*"
                 putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
             }
         }

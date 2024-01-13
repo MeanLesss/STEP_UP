@@ -11,6 +11,6 @@ class CreateServiceParam(
     val attachments: List<Attachment>,
     val price: String,
     val service_type: String,
-    val start_date: String,
-    val end_date: String
+    var start_date: String,
+    var end_date: String
 ) : Parcelable

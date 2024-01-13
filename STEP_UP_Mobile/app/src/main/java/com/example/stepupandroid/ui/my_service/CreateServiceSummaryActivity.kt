@@ -2,6 +2,7 @@ package com.example.stepupandroid.ui.my_service
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.icu.text.SimpleDateFormat
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,8 +11,10 @@ import com.example.stepupandroid.adapter.AttachmentAdapter
 import com.example.stepupandroid.databinding.ActivityCreateServiceSummaryBinding
 import com.example.stepupandroid.helper.Constants
 import com.example.stepupandroid.helper.CustomDialog
+import com.example.stepupandroid.helper.Util
 import com.example.stepupandroid.model.param.CreateServiceParam
 import com.example.stepupandroid.viewmodel.CreateServiceViewModel
+import java.util.Locale
 
 class CreateServiceSummaryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCreateServiceSummaryBinding
@@ -32,6 +35,8 @@ class CreateServiceSummaryActivity : AppCompatActivity() {
         }
 
         binding.createServiceBtn.setOnClickListener {
+            body.start_date = Util.convertDate("MMM dd, yyyy", body.start_date)
+            body.end_date = Util.convertDate("MMM dd, yyyy", body.end_date)
             viewModel.createService(body)
         }
 
@@ -56,4 +61,5 @@ class CreateServiceSummaryActivity : AppCompatActivity() {
         binding.attachmentRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.attachmentRecyclerView.adapter = AttachmentAdapter(body.attachments.toMutableList())
     }
+
 }

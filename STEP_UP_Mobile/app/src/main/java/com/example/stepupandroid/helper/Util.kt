@@ -14,4 +14,16 @@ object Util {
         val date = inputFormat.parse(dateStr)
         return outputFormat.format(date ?: return "")
     }
+
+    fun convertDate(inputPattern: String, inputDate: String): String {
+        // Define the input and output date formats
+        val inputFormat = android.icu.text.SimpleDateFormat(inputPattern, Locale.ENGLISH)
+        val outputFormat = android.icu.text.SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+
+        // Parse the input date string
+        val parsedDate = inputFormat.parse(inputDate)
+
+        // Format the date into the new format
+        return outputFormat.format(parsedDate)
+    }
 }
