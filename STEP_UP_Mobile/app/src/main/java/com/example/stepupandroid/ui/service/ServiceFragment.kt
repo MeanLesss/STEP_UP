@@ -1,5 +1,6 @@
 package com.example.stepupandroid.ui.service
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,7 +15,7 @@ import com.example.stepupandroid.helper.CustomDialog
 import com.example.stepupandroid.model.param.GetServiceParam
 import com.example.stepupandroid.viewmodel.ServiceViewModel
 
-class ServiceFragment : Fragment() {
+class ServiceFragment : Fragment(), ServiceAdapter.OnServiceSelected {
     private lateinit var binding: FragmentServiceBinding
     private lateinit var viewModel: ServiceViewModel
 
@@ -24,6 +25,12 @@ class ServiceFragment : Fragment() {
     private var isLoading = false // Flag to track loading state
     private var isLastPage = false // Flag to track if it's the last page
     private var isShown = false // Flag to track custom dialog
+
+    override fun onServiceSelected(serviceId: Int) {
+        val intent = Intent(requireActivity(), ServiceDetailActivity::class.java)
+        intent.putExtra("serviceId", serviceId)
+        startActivity(intent)
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -75,7 +82,7 @@ class ServiceFragment : Fragment() {
 
     private fun initRecyclerView() {
         adapter =
-            ServiceAdapter(requireActivity(), mutableListOf()) // Initialize with an empty list
+            ServiceAdapter(requireActivity(), mutableListOf(), this) // Initialize with an empty list
         binding.serviceRecyclerView.layoutManager = LinearLayoutManager(requireActivity())
         binding.serviceRecyclerView.adapter = adapter
     }

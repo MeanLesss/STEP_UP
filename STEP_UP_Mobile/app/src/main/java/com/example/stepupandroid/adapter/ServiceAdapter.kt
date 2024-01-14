@@ -16,9 +16,12 @@ import com.bumptech.glide.Glide
 import com.example.stepupandroid.R
 import com.example.stepupandroid.model.response.ServiceItem
 
-class ServiceAdapter(private val context: Context, private val itemList: MutableList<ServiceItem>) :
+class ServiceAdapter(private val context: Context, private val itemList: MutableList<ServiceItem>, private val listener: OnServiceSelected) :
     RecyclerView.Adapter<ServiceAdapter.ItemViewHolder>() {
 
+    interface OnServiceSelected {
+        fun onServiceSelected(serviceId: Int)
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_service, parent, false)
@@ -45,10 +48,8 @@ class ServiceAdapter(private val context: Context, private val itemList: Mutable
         holder.serviceType.text = currentItem.service_type
         holder.price.text = "$" + currentItem.price
 
-        // Handle the click event for the "View" button here if needed
         holder.priceButton.setOnClickListener {
-            // Handle the click event for the "View" button
-            // You can perform any action here
+            listener.onServiceSelected(currentItem.id)
         }
         val backgroundDrawable = ContextCompat.getDrawable(holder.itemView.context, R.drawable.border_drawable)
         if (backgroundDrawable is GradientDrawable) {

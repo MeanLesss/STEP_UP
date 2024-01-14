@@ -14,6 +14,7 @@ import com.example.stepupandroid.model.response.LoginResponse
 import com.example.stepupandroid.model.response.MyServiceResponse
 import com.example.stepupandroid.model.response.MyWorkResponse
 import com.example.stepupandroid.model.response.OrderSummaryResponse
+import com.example.stepupandroid.model.response.ServiceDetailResponse
 import com.example.stepupandroid.model.response.ServiceResponse
 import com.google.gson.JsonElement
 import io.reactivex.Observable
@@ -105,6 +106,11 @@ class ApiImp : ApiManager() {
 
     fun getMyWork(): Observable<ApiResWrapper<MyWorkResponse>> =
         mAllService.getMyWork(Header.getHeaderWithAuth())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    fun getServiceDetails(serviceId: Int): Observable<ApiResWrapper<ServiceDetailResponse>> =
+        mAllService.getServiceDetail(serviceId, Header.getHeaderWithAuth())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 }
