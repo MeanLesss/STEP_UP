@@ -12,9 +12,9 @@ import com.example.stepupandroid.helper.ApiKey
 import com.example.stepupandroid.helper.Constants
 import com.example.stepupandroid.helper.SharedPreferenceUtil
 import com.example.stepupandroid.ui.fragment.MyOrderFragment
-import com.example.stepupandroid.ui.fragment.MyServiceFragment
+import com.example.stepupandroid.ui.my_service.MyServiceFragment
 import com.example.stepupandroid.ui.fragment.MyWorkFragment
-import com.example.stepupandroid.ui.fragment.ProfileFragment
+import com.example.stepupandroid.ui.profile.ProfileFragment
 import com.example.stepupandroid.ui.fragment.ServiceFragment
 
 class HomeActivity : AppCompatActivity() {

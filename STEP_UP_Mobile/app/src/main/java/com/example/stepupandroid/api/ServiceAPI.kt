@@ -4,6 +4,7 @@ import com.example.stepupandroid.model.ApiResWrapper
 import com.example.stepupandroid.model.param.GetServiceParam
 import com.example.stepupandroid.model.param.OrderParam
 import com.example.stepupandroid.model.param.SignUpParam
+import com.example.stepupandroid.model.response.GetUserResponse
 import com.example.stepupandroid.model.response.LoginResponse
 import com.example.stepupandroid.model.response.MyServiceResponse
 import com.example.stepupandroid.model.response.OrderSummaryResponse
@@ -57,4 +58,9 @@ interface ServiceAPI {
         @HeaderMap headers: Map<String, String>,
         @Body body: SignUpParam
     ): Observable<ApiResWrapper<LoginResponse>>
+
+    @GET("api/user")
+    fun getUser(
+        @HeaderMap headers: Map<String, String>,
+    ): Observable<ApiResWrapper<GetUserResponse>>
 }

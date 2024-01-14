@@ -1,4 +1,4 @@
-package com.example.stepupandroid.ui.fragment
+package com.example.stepupandroid.ui.my_service
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,7 +11,6 @@ import com.example.stepupandroid.adapter.MyServiceAdapter
 import com.example.stepupandroid.databinding.FragmentMyServiceBinding
 import com.example.stepupandroid.helper.Constants
 import com.example.stepupandroid.helper.CustomDialog
-import com.example.stepupandroid.ui.my_service.CreateServiceActivity
 import com.example.stepupandroid.viewmodel.MyServiceViewModel
 
 class MyServiceFragment : Fragment() {

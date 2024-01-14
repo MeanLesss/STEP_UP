@@ -32,10 +32,10 @@ class ServiceAdapter(private val context: Context, private val itemList: Mutable
             val firstImageUrl = currentItem.attachments.values.firstOrNull() // Get the value of the first map entry
             Glide.with(context)
                 .load(firstImageUrl)
-                .error(R.drawable.no_image)
+                .error(R.drawable.step_up_logo)
                 .into(holder.image)
         } else {
-            holder.image.setImageResource(R.drawable.no_image)
+            holder.image.setImageResource(R.drawable.step_up_logo)
         }
 
         holder.titleTextView.text = currentItem.title

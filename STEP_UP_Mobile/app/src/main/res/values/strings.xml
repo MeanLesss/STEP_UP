@@ -31,7 +31,7 @@
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="phone_number">Phone Number</string>
-    <string name="id_number_passport_optional">ID number/passport (optional)</string>
+    <string name="id_number_passport_optional">ID/Passport number (optional)</string>
     <string name="login">Login</string>
     <string name="sign_up">Sign Up</string>
     <string name="we_would_like_to_know_a_little_about_you">We would like to know a little about you.</string>
@@ -46,7 +46,7 @@
     <string name="all_set_let_s_go">All set let’s go !!🎉🎊</string>
     <string name="account_has_been_created">Account has been Created</string>
 
-    //my service
+    //My service screen
     <string name="create_service">Create Service</string>
     <string name="title">Title</string>
     <string name="description">Description</string>
@@ -66,11 +66,16 @@
     <string name="attachment_text">Attachment :</string>
     <string name="service_has_been_created">Service has been Created</string>
 
-
     <string-array name="service_type_spinner">
         <item>Select A Service Type</item>
         <item>Software Development</item>
         <item>Graphic Design</item>
     </string-array>
+
+    //Profile screen
+    <string name="logout">Logout</string>
+    <string name="id_number">ID/Passport number</string>
+    <string name="job">Job</string>
+
 
 </resources>
