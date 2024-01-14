@@ -24,13 +24,17 @@
     <string name="connect_with_us">Connect with us</string>
     <string name="sign_in_with_email">Sign in with Email</string>
     <string name="sign_in_with_google">Sign in with Google</string>
-    <string name="just_a_little_more">Just a little more to go!!🎉🎊</string>
 
     //Login sign up screen
+    <string name="username">Username</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="id_number_passport_optional">ID number/passport (optional)</string>
     <string name="login">Login</string>
     <string name="sign_up">Sign Up</string>
+    <string name="we_would_like_to_know_a_little_about_you">We would like to know a little about you.</string>
     <string name="what_is_your_job_status">What is your job status?</string>
     <string name="student">Student</string>
     <string name="self_employment">Self Employment</string>
@@ -38,6 +42,9 @@
     <string name="manager">Manager</string>
     <string name="passionate_worker">Passionate Worker</string>
     <string name="other">Other</string>
+    <string name="just_a_little_more">Just a little more to go!!🎉🎊</string>
+    <string name="all_set_let_s_go">All set let’s go !!🎉🎊</string>
+    <string name="account_has_been_created">Account has been Created</string>
 
     //my service
     <string name="create_service">Create Service</string>
@@ -57,6 +64,7 @@
     <string name="start_date_text">Start Date :</string>
     <string name="end_date_text">End Date :</string>
     <string name="attachment_text">Attachment :</string>
+    <string name="service_has_been_created">Service has been Created</string>
 
 
     <string-array name="service_type_spinner">

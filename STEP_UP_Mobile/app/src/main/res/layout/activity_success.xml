@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/selected_color"
-    tools:context=".ui.my_service.CreateServiceSuccessActivity">
+    tools:context=".ui.SuccessActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,9 +20,10 @@
             android:src="@drawable/icon_success2"/>
 
         <TextView
+            android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Service has been Created"
+            android:text="@string/service_has_been_created"
             android:fontFamily="@font/museomoderno_bold"
             android:textColor="@color/logo_color"
             android:layout_marginVertical="40dp"

@@ -76,13 +76,21 @@ class CreateServiceActivity : AppCompatActivity() {
             var validated = true
             if (binding.title.text.isNullOrEmpty()) {
                 binding.title.background =
-                    ResourcesCompat.getDrawable(resources, R.drawable.error_color_border_drawable, null)
+                    ResourcesCompat.getDrawable(
+                        resources,
+                        R.drawable.error_color_border_drawable,
+                        null
+                    )
                 binding.title.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake))
                 validated = false
             }
             if (binding.description.text.isNullOrEmpty()) {
                 binding.description.background =
-                    ResourcesCompat.getDrawable(resources, R.drawable.error_color_border_drawable, null)
+                    ResourcesCompat.getDrawable(
+                        resources,
+                        R.drawable.error_color_border_drawable,
+                        null
+                    )
                 binding.description.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake))
                 validated = false
             }
@@ -94,32 +102,50 @@ class CreateServiceActivity : AppCompatActivity() {
 //            }
             if (binding.price.text.isNullOrEmpty()) {
                 binding.price.background =
-                    ResourcesCompat.getDrawable(resources, R.drawable.error_color_border_drawable, null)
+                    ResourcesCompat.getDrawable(
+                        resources,
+                        R.drawable.error_color_border_drawable,
+                        null
+                    )
                 binding.price.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake))
                 validated = false
             }
-            if (binding.serviceType.selectedItem.toString().isEmpty() || binding.serviceType.selectedItem.toString() == "Select A Service Type") {
+            if (binding.serviceType.selectedItem.toString()
+                    .isEmpty() || binding.serviceType.selectedItem.toString() == "Select A Service Type"
+            ) {
                 binding.serviceType.background =
-                    ResourcesCompat.getDrawable(resources, R.drawable.error_color_border_drawable, null)
+                    ResourcesCompat.getDrawable(
+                        resources,
+                        R.drawable.error_color_border_drawable,
+                        null
+                    )
                 binding.serviceType.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake))
                 validated = false
             }
             if (binding.startDate.text.isNullOrEmpty()) {
                 binding.startDate.background =
-                    ResourcesCompat.getDrawable(resources, R.drawable.error_color_border_drawable, null)
+                    ResourcesCompat.getDrawable(
+                        resources,
+                        R.drawable.error_color_border_drawable,
+                        null
+                    )
                 binding.startDate.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake))
                 validated = false
             }
             if (binding.endDate.text.isNullOrEmpty()) {
                 binding.endDate.background =
-                    ResourcesCompat.getDrawable(resources, R.drawable.error_color_border_drawable, null)
+                    ResourcesCompat.getDrawable(
+                        resources,
+                        R.drawable.error_color_border_drawable,
+                        null
+                    )
                 binding.endDate.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake))
                 validated = false
             }
-            if(!validated){
+            if (!validated) {
                 return@setOnClickListener
             }
-                val body = CreateServiceParam(
+            val body = CreateServiceParam(
                 title = binding.title.text.toString(),
                 description = binding.description.text.toString(),
                 attachments = attachments,
@@ -145,13 +171,22 @@ class CreateServiceActivity : AppCompatActivity() {
             binding.price.background =
                 ResourcesCompat.getDrawable(resources, R.drawable.logo_color_border_drawable, null)
         }
-        binding.serviceType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        binding.serviceType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
 
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 binding.serviceType.background =
-                    ResourcesCompat.getDrawable(resources, R.drawable.logo_color_border_drawable, null)
+                    ResourcesCompat.getDrawable(
+                        resources,
+                        R.drawable.logo_color_border_drawable,
+                        null
+                    )
             }
 
         }
@@ -167,19 +202,27 @@ class CreateServiceActivity : AppCompatActivity() {
 
     private fun showDatePickerDialog(isStartDate: Boolean) {
         val calendar = Calendar.getInstance()
-        val datePickerDialog = DatePickerDialog(this, { _, year, month, dayOfMonth ->
-            val selectedDate = Calendar.getInstance().apply {
-                set(year, month, dayOfMonth)
-            }
+        val datePickerDialog = DatePickerDialog(
+            this,
+            { _, year, month, dayOfMonth ->
+                val selectedDate = Calendar.getInstance().apply {
+                    set(year, month, dayOfMonth)
+                }
 
-            if (isStartDate) {
-                startDate = selectedDate
-                binding.startDate.setText(DateFormat.getDateInstance().format(selectedDate.time))
-            } else {
-                endDate = selectedDate
-                binding.endDate.setText(DateFormat.getDateInstance().format(selectedDate.time))
-            }
-        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
+                if (isStartDate) {
+                    startDate = selectedDate
+                    binding.startDate.setText(
+                        DateFormat.getDateInstance().format(selectedDate.time)
+                    )
+                } else {
+                    endDate = selectedDate
+                    binding.endDate.setText(DateFormat.getDateInstance().format(selectedDate.time))
+                }
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
 
         // Setting min date
         datePickerDialog.datePicker.minDate = System.currentTimeMillis() - 1000

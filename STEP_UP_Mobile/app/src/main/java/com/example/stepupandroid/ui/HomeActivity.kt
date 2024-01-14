@@ -29,9 +29,7 @@ class HomeActivity : AppCompatActivity() {
 
         fragmentManager = supportFragmentManager
 
-        if (intent.hasExtra("from")) {
-            from = intent.getStringExtra("from").toString()
-        }
+        from = intent.getStringExtra("from").orEmpty()
 
         binding.navigation.setOnItemSelectedListener { item ->
             handleNavigation(item.itemId)

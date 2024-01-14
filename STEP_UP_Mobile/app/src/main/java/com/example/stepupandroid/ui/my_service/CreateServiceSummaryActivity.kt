@@ -12,6 +12,7 @@ import com.example.stepupandroid.helper.Constants
 import com.example.stepupandroid.helper.CustomDialog
 import com.example.stepupandroid.helper.Util
 import com.example.stepupandroid.model.param.CreateServiceParam
+import com.example.stepupandroid.ui.SuccessActivity
 import com.example.stepupandroid.viewmodel.CreateServiceViewModel
 
 class CreateServiceSummaryActivity : AppCompatActivity() {
@@ -39,7 +40,10 @@ class CreateServiceSummaryActivity : AppCompatActivity() {
         }
 
         viewModel.createServiceResultState.observe(this) {
-            startActivity(Intent(this, CreateServiceSuccessActivity::class.java))
+            val intent = Intent(this, SuccessActivity::class.java)
+            intent.putExtra("from", Constants.MyService)
+            intent.putExtra("title", resources.getString(R.string.service_has_been_created))
+            startActivity(intent)
         }
 
         viewModel.errorResultState.observe(this) {
