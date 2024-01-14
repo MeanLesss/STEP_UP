@@ -29,6 +29,6 @@ data class MyWork(
     val start_at: String,
     val service_order: String,
     val freelancer_id: Int,
-    val completed_attachments: String, //Map<String, String>?,
+//    val completed_attachments: String, //Map<String, String>?,
     val status: String
 )
