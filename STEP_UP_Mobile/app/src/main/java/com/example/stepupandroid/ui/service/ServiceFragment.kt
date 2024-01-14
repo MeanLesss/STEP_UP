@@ -1,4 +1,4 @@
-package com.example.stepupandroid.ui.fragment
+package com.example.stepupandroid.ui.service
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

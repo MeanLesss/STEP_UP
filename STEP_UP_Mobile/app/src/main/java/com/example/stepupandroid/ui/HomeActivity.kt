@@ -15,7 +15,7 @@ import com.example.stepupandroid.ui.fragment.MyOrderFragment
 import com.example.stepupandroid.ui.my_service.MyServiceFragment
 import com.example.stepupandroid.ui.fragment.MyWorkFragment
 import com.example.stepupandroid.ui.profile.ProfileFragment
-import com.example.stepupandroid.ui.fragment.ServiceFragment
+import com.example.stepupandroid.ui.service.ServiceFragment
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding

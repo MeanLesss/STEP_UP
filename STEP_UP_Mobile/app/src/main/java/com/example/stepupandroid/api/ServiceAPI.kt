@@ -7,6 +7,7 @@ import com.example.stepupandroid.model.param.SignUpParam
 import com.example.stepupandroid.model.response.GetUserResponse
 import com.example.stepupandroid.model.response.LoginResponse
 import com.example.stepupandroid.model.response.MyServiceResponse
+import com.example.stepupandroid.model.response.MyWorkResponse
 import com.example.stepupandroid.model.response.OrderSummaryResponse
 import com.example.stepupandroid.model.response.ServiceResponse
 import com.google.gson.JsonElement
@@ -63,4 +64,9 @@ interface ServiceAPI {
     fun getUser(
         @HeaderMap headers: Map<String, String>,
     ): Observable<ApiResWrapper<GetUserResponse>>
+
+    @GET("api/service/ordered/freelancer")
+    fun getMyWork(
+        @HeaderMap headers: Map<String, String>,
+    ): Observable<ApiResWrapper<MyWorkResponse>>
 }

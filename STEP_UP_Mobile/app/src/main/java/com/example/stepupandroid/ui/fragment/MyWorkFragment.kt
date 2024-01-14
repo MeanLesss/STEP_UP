@@ -8,47 +8,44 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.stepupandroid.adapter.MyWorkAdapter
 import com.example.stepupandroid.databinding.FragmentMyWorkBinding
-import com.example.stepupandroid.model.MyWork
-import java.util.Random
+import com.example.stepupandroid.helper.Constants
+import com.example.stepupandroid.helper.CustomDialog
+import com.example.stepupandroid.viewmodel.MyWorkViewModel
 
 
 class MyWorkFragment : Fragment() {
     private lateinit var binding: FragmentMyWorkBinding
+    private lateinit var viewModel: MyWorkViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentMyWorkBinding.inflate(layoutInflater)
 
-        binding.myWorkRecyclerView.layoutManager = LinearLayoutManager(requireActivity())
+        viewModel = MyWorkViewModel(requireActivity())
 
-        // Sample data for testing
-        val itemList = mutableListOf<MyWork>()
-        for (i in 1..50) {
-            val item = MyWork(
-                "Title $i",
-                "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.  ........ $i",
-                "Name $i",
-                "Start Date $i",
-                "End Date $i",
-                getRandomStatus()
-            )
-            itemList.add(item)
-        }
+        initViewModel()
 
-        // Set the adapter
-        val adapter = MyWorkAdapter(requireActivity(), itemList)
-        binding.myWorkRecyclerView.adapter = adapter
-
+        viewModel.getMyWork()
 
         return binding.root
     }
 
-    private val statusOptions = listOf("completed", "canceled", "in progress")
-    fun getRandomStatus(): String {
-        val random = Random()
-        val randomIndex = random.nextInt(statusOptions.size)
-        return statusOptions[randomIndex]
+    private fun initViewModel() {
+        viewModel.getMyWorkResultState.observe(requireActivity()) { result ->
+            if (result.result.isNotEmpty()) {
+                val adapter =  MyWorkAdapter(requireActivity(), result.result)
+                binding.myWorkRecyclerView.layoutManager = LinearLayoutManager(requireActivity())
+                binding.myWorkRecyclerView.adapter = adapter
+            }
+        }
+
+        viewModel.errorResultState.observe(requireActivity()) {
+            val customDialog = CustomDialog("", it, Constants.Warning)
+
+            customDialog.show(childFragmentManager, "CustomDialog")
+        }
+
     }
 
 }

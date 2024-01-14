@@ -12,6 +12,7 @@ import com.example.stepupandroid.model.param.SignUpParam
 import com.example.stepupandroid.model.response.GetUserResponse
 import com.example.stepupandroid.model.response.LoginResponse
 import com.example.stepupandroid.model.response.MyServiceResponse
+import com.example.stepupandroid.model.response.MyWorkResponse
 import com.example.stepupandroid.model.response.OrderSummaryResponse
 import com.example.stepupandroid.model.response.ServiceResponse
 import com.google.gson.JsonElement
@@ -99,6 +100,11 @@ class ApiImp : ApiManager() {
 
     fun getUser(): Observable<ApiResWrapper<GetUserResponse>> =
         mAllService.getUser(Header.getHeaderWithAuth())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    fun getMyWork(): Observable<ApiResWrapper<MyWorkResponse>> =
+        mAllService.getMyWork(Header.getHeaderWithAuth())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 }

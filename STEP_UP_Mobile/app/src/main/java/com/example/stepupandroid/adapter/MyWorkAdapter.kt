@@ -13,7 +13,8 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.stepupandroid.R
-import com.example.stepupandroid.model.MyWork
+import com.example.stepupandroid.helper.Util
+import com.example.stepupandroid.model.response.MyWork
 
 class MyWorkAdapter(private val context: Context, private val itemList: List<MyWork>) :
     RecyclerView.Adapter<MyWorkAdapter.ItemViewHolder>() {
@@ -27,11 +28,11 @@ class MyWorkAdapter(private val context: Context, private val itemList: List<MyW
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val currentItem = itemList[position]
 
-        holder.titleTextView.text = currentItem.title
-        holder.descriptionTextView.text = currentItem.description
-        holder.nameTextView.text = currentItem.name
-        holder.startDateTextView.text = currentItem.startDate
-        holder.endDateTextView.text = currentItem.endDate
+        holder.titleTextView.text = currentItem.order_title
+        holder.descriptionTextView.text = currentItem.order_description
+        holder.nameTextView.text = currentItem.freelancer_id.toString()
+        holder.startDateTextView.text = Util.convertDateFormat(currentItem.expected_start_date)
+        holder.endDateTextView.text = Util.convertDateFormat(currentItem.expected_end_date)
 
         // Set the background drawable with the border color
         val backgroundDrawable = ContextCompat.getDrawable(holder.itemView.context, R.drawable.border_drawable)
@@ -105,7 +106,7 @@ class MyWorkAdapter(private val context: Context, private val itemList: List<MyW
         // Handle the click event for the "View" button here if needed
         holder.viewButton.setOnClickListener {
             // Handle the click event for the "View" button
-            Log.d("bug test", currentItem.title + " clicked")
+            Log.d("bug test", currentItem.order_title + " clicked")
         }
     }
 
