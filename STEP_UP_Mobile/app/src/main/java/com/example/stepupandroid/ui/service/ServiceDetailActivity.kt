@@ -38,6 +38,8 @@ class ServiceDetailActivity : AppCompatActivity() {
         binding.backBtn.setOnClickListener {
             finish()
         }
+
+
     }
 
     @SuppressLint("SetTextI18n")
