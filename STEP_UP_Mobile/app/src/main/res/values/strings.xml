@@ -77,5 +77,8 @@
     <string name="id_number">ID/Passport number</string>
     <string name="job">Job</string>
 
+    //service screen
+    <string name="buy">Buy</string>
+
 
 </resources>

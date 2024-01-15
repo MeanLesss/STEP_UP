@@ -8,7 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.stepupandroid.R
 
-class ViewPagerAdapter(private val images: List<String>) : RecyclerView.Adapter<ViewPagerAdapter.ViewHolder>() {
+class ViewPagerAdapter(
+    private val images: MutableList<String>,
+    private val onImageClick: (Int) -> Unit
+) : RecyclerView.Adapter<ViewPagerAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val imageView: ImageView = view.findViewById(R.id.imageView)
@@ -27,6 +30,11 @@ class ViewPagerAdapter(private val images: List<String>) : RecyclerView.Adapter<
             .load(imageUrl)
             .error(R.drawable.step_up_logo)
             .into(holder.imageView)
+
+        holder.imageView.setOnClickListener {
+            onImageClick(position)
+
+        }
     }
 
     override fun getItemCount(): Int = images.size

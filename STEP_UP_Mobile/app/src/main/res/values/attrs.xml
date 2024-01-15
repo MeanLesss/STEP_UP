@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    //change themes
-    <attr name="primary_color" format="color"/>
-    <attr name="logo_color" format="color"/>
-
-
-</resources>

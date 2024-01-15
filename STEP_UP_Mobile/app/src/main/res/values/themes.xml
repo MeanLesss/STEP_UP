@@ -1,9 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.Light" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="primary_color">@color/primary_color</item>
-        <item name="logo_color">@color/logo_color</item>
-
+        <item name="colorPrimary">@color/selected_color</item>
+        <item name="colorPrimaryDark">@color/selected_color</item>
 
     </style>
 
