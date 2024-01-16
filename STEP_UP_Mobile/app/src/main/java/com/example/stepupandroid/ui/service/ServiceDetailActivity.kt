@@ -1,6 +1,7 @@
 package com.example.stepupandroid.ui.service
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -39,6 +40,11 @@ class ServiceDetailActivity : AppCompatActivity() {
             finish()
         }
 
+        binding.buyBtn.setOnClickListener {
+            val intent = Intent(this, TermAndAgreementActivity::class.java)
+            intent.putExtra("serviceId", serviceId)
+            startActivity(intent)
+        }
 
     }
 

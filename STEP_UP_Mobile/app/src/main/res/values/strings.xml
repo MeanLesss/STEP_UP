@@ -79,6 +79,9 @@
 
     //service screen
     <string name="buy">Buy</string>
+    <string name="order_service">Order Service</string>
+    <string name="terms_and_agreement">Terms and Agreement</string>
+    <string name="i_have_read_and_agreed">I have read and agreed to Terms and Agreement</string>
 
 
 </resources>
