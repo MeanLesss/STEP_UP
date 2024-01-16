@@ -1,9 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.Light" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="primary_color">@color/primary_color</item>
-        <item name="logo_color">@color/logo_color</item>
-
+        <item name="colorPrimary">@color/selected_color</item>
+        <item name="colorPrimaryDark">@color/selected_color</item>
 
     </style>
 
@@ -14,5 +13,11 @@
     <style name="RatingBar" parent="Theme.AppCompat">
         <item name="colorControlNormal">@color/grey</item>
         <item name="colorControlActivated">@color/logo_color</item>
+    </style>
+
+
+    <style name="SpinnerStyle" parent="@style/Widget.AppCompat.DropDownItem.Spinner">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 </resources>

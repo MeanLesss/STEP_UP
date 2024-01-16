@@ -4,6 +4,10 @@
     //General
     <string name="back">Back</string>
     <string name="cancel">Cancel</string>
+    <string name="okay">Okay</string>
+    <string name="skip">Skip</string>
+    <string name="next">Next</string>
+    <string name="create">Create</string>
 
     //Home screen
     <string name="my_work">My Works</string>
@@ -21,8 +25,63 @@
     <string name="sign_in_with_email">Sign in with Email</string>
     <string name="sign_in_with_google">Sign in with Google</string>
 
-    //Login screen
+    //Login sign up screen
+    <string name="username">Username</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="id_number_passport_optional">ID/Passport number (optional)</string>
     <string name="login">Login</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="we_would_like_to_know_a_little_about_you">We would like to know a little about you.</string>
+    <string name="what_is_your_job_status">What is your job status?</string>
+    <string name="student">Student</string>
+    <string name="self_employment">Self Employment</string>
+    <string name="employee">Employee</string>
+    <string name="manager">Manager</string>
+    <string name="passionate_worker">Passionate Worker</string>
+    <string name="other">Other</string>
+    <string name="just_a_little_more">Just a little more to go!!🎉🎊</string>
+    <string name="all_set_let_s_go">All set let’s go !!🎉🎊</string>
+    <string name="account_has_been_created">Account has been Created</string>
+
+    //My service screen
+    <string name="create_service">Create Service</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="attachment">Attachment (Optional)</string>
+    <string name="add_more">Add More</string>
+    <string name="price">Price</string>
+    <string name="service_type">Service Type</string>
+    <string name="start_date">Start Date</string>
+    <string name="end_date">End Date</string>
+    <string name="summary">Summary</string>
+    <string name="title_text">Title :</string>
+    <string name="description_text">Description :</string>
+    <string name="price_text">Price :</string>
+    <string name="service_type_text">Service Type :</string>
+    <string name="start_date_text">Start Date :</string>
+    <string name="end_date_text">End Date :</string>
+    <string name="attachment_text">Attachment :</string>
+    <string name="service_has_been_created">Service has been Created</string>
+
+    <string-array name="service_type_spinner">
+        <item>Select A Service Type</item>
+        <item>Software Development</item>
+        <item>Graphic Design</item>
+    </string-array>
+
+    //Profile screen
+    <string name="logout">Logout</string>
+    <string name="id_number">ID/Passport number</string>
+    <string name="job">Job</string>
+
+    //service screen
+    <string name="buy">Buy</string>
+    <string name="order_service">Order Service</string>
+    <string name="terms_and_agreement">Terms and Agreement</string>
+    <string name="i_have_read_and_agreed">I have read and agreed to Terms and Agreement</string>
+
+
 </resources>

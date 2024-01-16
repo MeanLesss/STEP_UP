@@ -1,0 +1,9 @@
+        - Should you cancel the purchase of any service after the freelancer has confirmed the order, a 30% fee will be deducted from your refund to compensate our freelancer.
+
+        - If you cancel before our freelancer confirms the order, you will receive a full refund with no fees deducted.
+
+        - In the event that a freelancer fails to deliver a completed product on time, you have the option to grant them additional time or lodge a complaint with our support team for investigation. Refunds in such cases will be based on the degree of project completion.
+
+        - If a project is not completed and the freelancer is found to have attempted to defraud or deliver a faulty product or service, you will receive a full refund and the freelancer will face penalties.
+
+        - If there is no response from the freelancer within 7 days of purchasing the product, a full refund will be issued. Please confirm the agreement before proceed."

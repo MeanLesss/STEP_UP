@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Disabled State -->
+    <item android:state_enabled="false">
+        <shape>
+            <solid android:color="#D3D3D3" /> <!-- Grey color for disabled state -->
+            <corners android:radius="10dp" />
+        </shape>
+    </item>
+    <!-- Enabled State -->
+    <item android:state_enabled="true">
+        <shape>
+            <solid android:color="@color/logo_color" /> <!-- Original color for enabled state -->
+            <corners android:radius="10dp" />
+        </shape>
+    </item>
+</selector>

@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
-    id("org.jetbrains.kotlin.android")
+    kotlin("android")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -68,4 +69,10 @@ dependencies {
     implementation("androidx.multidex:multidex:2.0.1")
     implementation("com.github.bumptech.glide:glide:4.16.0")
 
+    //full screen image view
+    implementation("com.facebook.fresco:fresco:2.5.0")
+    implementation("com.github.stfalcon-studio:StfalconImageViewer:v1.0.1")
+
+
+    implementation("me.relex:circleindicator:2.1.6")
 }

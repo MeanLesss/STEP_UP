@@ -7,24 +7,22 @@ import androidx.lifecycle.MutableLiveData
 import com.example.stepupandroid.api.ApiImp
 import com.example.stepupandroid.api.ApiManager
 import com.example.stepupandroid.base.BaseViewModel
-import com.example.stepupandroid.model.param.GetServiceParam
-import com.example.stepupandroid.model.response.ServiceResponse
+import com.example.stepupandroid.model.response.MyWorkResponse
 import io.reactivex.disposables.Disposable
 
+class MyWorkViewModel(context: Context) : BaseViewModel(context) {
+    private var dataSubscription: Disposable? = null
 
-class GetServiceViewModel(context: Context) : BaseViewModel(context) {
-    private var loginDataSubscription: Disposable? = null
-
-    private val getServiceLiveData: MutableLiveData<ServiceResponse> = MutableLiveData()
-    val getServiceResultState: LiveData<ServiceResponse> get() = getServiceLiveData
+    private val getMyWorkLiveData: MutableLiveData<MyWorkResponse> = MutableLiveData()
+    val getMyWorkResultState: LiveData<MyWorkResponse> get() = getMyWorkLiveData
     private val errorLiveData: MutableLiveData<String> = MutableLiveData()
     val errorResultState: LiveData<String> get() = errorLiveData
 
-    fun getService(body: GetServiceParam) {
+    fun getMyWork() {
         loadingDialog.show()
-        loginDataSubscription = ApiImp().getService(body).subscribe({
+        dataSubscription = ApiImp().getMyWork().subscribe({
             loadingDialog.hide()
-            getServiceLiveData.value = it.data
+            getMyWorkLiveData.value = it.data
         }, { throwable ->
             object : CallBackWrapper() {
                 override fun onCallbackWrapper(
@@ -41,6 +39,6 @@ class GetServiceViewModel(context: Context) : BaseViewModel(context) {
     // Override the onCleared method to dispose of the subscription
     override fun onCleared() {
         super.onCleared()
-        loginDataSubscription?.dispose()
+        dataSubscription?.dispose()
     }
 }

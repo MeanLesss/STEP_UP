@@ -12,10 +12,10 @@ import com.example.stepupandroid.helper.ApiKey
 import com.example.stepupandroid.helper.Constants
 import com.example.stepupandroid.helper.SharedPreferenceUtil
 import com.example.stepupandroid.ui.fragment.MyOrderFragment
-import com.example.stepupandroid.ui.fragment.MyServiceFragment
+import com.example.stepupandroid.ui.my_service.MyServiceFragment
 import com.example.stepupandroid.ui.fragment.MyWorkFragment
-import com.example.stepupandroid.ui.fragment.ProfileFragment
-import com.example.stepupandroid.ui.fragment.ServiceFragment
+import com.example.stepupandroid.ui.profile.ProfileFragment
+import com.example.stepupandroid.ui.service.ServiceFragment
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
@@ -29,9 +29,7 @@ class HomeActivity : AppCompatActivity() {
 
         fragmentManager = supportFragmentManager
 
-        if (intent.hasExtra("from")) {
-            from = intent.getStringExtra("from").toString()
-        }
+        from = intent.getStringExtra("from").orEmpty()
 
         binding.navigation.setOnItemSelectedListener { item ->
             handleNavigation(item.itemId)
@@ -41,10 +39,10 @@ class HomeActivity : AppCompatActivity() {
         // Set default selected item
         if (from.isNotEmpty()) {
             when (from) {
-                "MyWork" -> binding.navigation.selectedItemId = R.id.navigation_my_work
-                "MyService" -> binding.navigation.selectedItemId = R.id.navigation_my_service
-                "MyOrder" -> binding.navigation.selectedItemId = R.id.navigation_my_order
-                "Profile" -> binding.navigation.selectedItemId = R.id.navigation_profile
+                Constants.MyWork -> binding.navigation.selectedItemId = R.id.navigation_my_work
+                Constants.MyService -> binding.navigation.selectedItemId = R.id.navigation_my_service
+                Constants.MyOrder -> binding.navigation.selectedItemId = R.id.navigation_my_order
+                Constants.Profile -> binding.navigation.selectedItemId = R.id.navigation_profile
             }
         } else {
             binding.navigation.selectedItemId = R.id.navigation_service
@@ -85,10 +83,10 @@ class HomeActivity : AppCompatActivity() {
 
     private fun getFragmentName(fragment: Fragment): String {
         return when (fragment) {
-            is MyWorkFragment -> "MyWork"
-            is MyServiceFragment -> "MyService"
-            is MyOrderFragment -> "MyOrder"
-            is ProfileFragment -> "Profile"
+            is MyWorkFragment -> Constants.MyWork
+            is MyServiceFragment -> Constants.MyService
+            is MyOrderFragment -> Constants.MyOrder
+            is ProfileFragment -> Constants.Profile
             else -> ""
         }
     }

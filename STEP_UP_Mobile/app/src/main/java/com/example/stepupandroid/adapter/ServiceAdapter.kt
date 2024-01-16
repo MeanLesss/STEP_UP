@@ -16,12 +16,15 @@ import com.bumptech.glide.Glide
 import com.example.stepupandroid.R
 import com.example.stepupandroid.model.response.ServiceItem
 
-class ServiceAdapter(private val context: Context, private val itemList: MutableList<ServiceItem>) :
+class ServiceAdapter(private val context: Context, private val itemList: MutableList<ServiceItem>, private val listener: OnServiceSelected) :
     RecyclerView.Adapter<ServiceAdapter.ItemViewHolder>() {
 
+    interface OnServiceSelected {
+        fun onServiceSelected(serviceId: Int)
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.service_item, parent, false)
+            .inflate(R.layout.item_service, parent, false)
         return ItemViewHolder(itemView)
     }
 
@@ -32,10 +35,10 @@ class ServiceAdapter(private val context: Context, private val itemList: Mutable
             val firstImageUrl = currentItem.attachments.values.firstOrNull() // Get the value of the first map entry
             Glide.with(context)
                 .load(firstImageUrl)
-                .error(R.drawable.no_image)
+                .error(R.drawable.step_up_logo)
                 .into(holder.image)
         } else {
-            holder.image.setImageResource(R.drawable.no_image)
+            holder.image.setImageResource(R.drawable.step_up_logo)
         }
 
         holder.titleTextView.text = currentItem.title
@@ -43,12 +46,10 @@ class ServiceAdapter(private val context: Context, private val itemList: Mutable
         holder.viewCount.text = currentItem.view.toString()
         holder.rating.rating = currentItem.service_rate.toFloat()
         holder.serviceType.text = currentItem.service_type
-        holder.price.text = currentItem.price
+        holder.price.text = "$" + currentItem.price
 
-        // Handle the click event for the "View" button here if needed
         holder.priceButton.setOnClickListener {
-            // Handle the click event for the "View" button
-            // You can perform any action here
+            listener.onServiceSelected(currentItem.id)
         }
         val backgroundDrawable = ContextCompat.getDrawable(holder.itemView.context, R.drawable.border_drawable)
         if (backgroundDrawable is GradientDrawable) {

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/selected_color"
-    tools:context=".ui.LoginActivity">
+    tools:context=".ui.login_sign_up.LoginActivity">
 
     <ImageView
         android:id="@+id/logo"
@@ -25,9 +25,9 @@
             android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="50dp"
+            android:layout_marginHorizontal="30dp"
             android:layout_marginTop="80dp"
-            android:background="@drawable/edit_text_background"
+            android:background="@drawable/logo_color_border_drawable"
             android:hint="@string/email"
             android:nextFocusDown="@+id/password"
             android:paddingVertical="10dp"
@@ -41,9 +41,9 @@
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="50dp"
+            android:layout_marginHorizontal="30dp"
             android:layout_marginTop="30dp"
-            android:background="@drawable/edit_text_background"
+            android:background="@drawable/logo_color_border_drawable"
             android:hint="@string/password"
             android:inputType="textPassword"
             android:paddingVertical="10dp"
@@ -55,7 +55,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="50dp"
+            android:layout_marginHorizontal="30dp"
             android:layout_marginTop="30dp"
             android:layout_marginBottom="50dp"
             android:gravity="center_horizontal"
@@ -67,11 +67,15 @@
                 android:layout_height="40dp"
                 android:layout_marginEnd="20dp"
                 android:layout_weight="1"
-                android:background="@drawable/edit_text_background"
+                android:background="@drawable/primary_color_border_drawable"
                 android:text="@string/cancel"
+                android:letterSpacing="0"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                app:backgroundTint="@null" />
+                app:backgroundTint="@null"
+                app:icon="@drawable/icon_back"
+                app:iconGravity="textStart"
+                app:iconTint="@color/white" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/loginBtn"
@@ -81,11 +85,15 @@
                 android:layout_weight="1"
                 android:backgroundTint="@color/logo_color"
                 android:insetTop="0dp"
+                android:letterSpacing="0"
                 android:insetBottom="0dp"
                 android:text="@string/login"
                 android:textAllCaps="false"
                 android:textColor="@color/selected_color"
-                app:cornerRadius="10dp" />
+                app:cornerRadius="10dp"
+                app:icon="@drawable/icon_next"
+                app:iconGravity="textEnd"
+                app:iconTint="@color/selected_color" />
 
         </LinearLayout>
 
