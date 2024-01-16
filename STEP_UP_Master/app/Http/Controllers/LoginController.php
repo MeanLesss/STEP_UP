@@ -117,8 +117,11 @@ class LoginController extends Controller
                     'service:cancel',
                     'service:read',
                     'service:view',
+                    'service:approval',
                     'service:ban',
                     'serviceOrder:view',
+                    'serviceOrder:accept',
+                    'tranc:top-up',
                     'user:status',
                     'service:purchase',
                     'self:update'])->plainTextToken;
@@ -132,6 +135,8 @@ class LoginController extends Controller
                     'service:read',
                     'service:view',
                     'serviceOrder:view',
+                    'serviceOrder:accept',
+                    'tranc:top-up',
                     'service:purchase',
                     'free:update'])->plainTextToken;
             }
@@ -141,6 +146,7 @@ class LoginController extends Controller
                     'service:view',
                     'service:cancel',
                     'service:purchase',
+                    'tranc:top-up',
                     'serviceOrder:view',
                     'client:update'])->plainTextToken;
             }
@@ -178,17 +184,29 @@ class LoginController extends Controller
      */
     public function store(Request $request)
     {
+        // $validator = Validator::make($request->all(), [
+
+        //     'guest' => 'required|boolean',
+        //     'freelancer' => 'required|boolean',
+        //     'name' => 'required_if:guest,false',
+        //     'email' => 'required_if:guest,false|email',
+        //     'password' => 'required_if:guest,false',
+        //     'confirm_password' => 'required_if:guest,false',
+        //     'phone_number' => 'required_if:guest,false',
+        //     'id_number' => 'required_if:guest,false',
+        //     'job_type' => 'required_if:guest,false'
+
+        // ]);
         $validator = Validator::make($request->all(), [
             'guest' => 'required|boolean',
             'freelancer' => 'required|boolean',
-            'name' => 'required_if:guest,false',
-            'email' => 'required_if:guest,false|email',
-            'password' => 'required_if:guest,false',
-            'confirm_password' => 'required_if:guest,false',
-            'phone_number' => 'required_if:guest,false',
-            'id_number' => 'required_if:guest,false',
-            'job_type' => 'required_if:guest,false'
-
+            'name' => 'required_if:guest,false|required_if:freelancer,true',
+            'email' => 'required_if:guest,false|required_if:freelancer,true|email',
+            'password' => 'required_if:guest,false|required_if:freelancer,true',
+            'confirm_password' => 'required_if:guest,false|required_if:freelancer,true',
+            'phone_number' => 'required_if:guest,false|required_if:freelancer,true',
+            'id_number' => 'required_if:guest,false|required_if:freelancer,true',
+            'job_type' => 'required_if:guest,false|required_if:freelancer,true'
         ]);
 
         if ($validator->fails()) {
@@ -271,12 +289,35 @@ class LoginController extends Controller
                     $userDetail->created_at = Carbon::now();
                     $userDetail->updated_at = Carbon::now();
                     $userDetail->save();
+                    $user->sendEmailVerificationNotification();
+
                     return response()->json([
                         'verified' => true,
                         'status' =>  'success',
                         'msg' => 'Sign up Successfully',
-                        'data' =>['user_token' => $user->createToken('token')->plainTextToken, ],
+                        'data' =>['user_token' => $user->createToken('token',$request->freelancer ?[
+                            'service:create',
+                            'service:update',
+                            'service:delete',
+                            'service:cancel',
+                            'service:read',
+                            'service:view',
+                            'serviceOrder:view',
+                            'serviceOrder:accept',
+                            'tranc:top-up',
+                            'service:purchase',
+                            'free:update']
+                            :
+                            [
+                            'service:read',
+                            'service:view',
+                            'service:cancel',
+                            'service:purchase',
+                            'tranc:top-up',
+                            'serviceOrder:view',
+                            'client:update'])->plainTextToken, ],
                     ]);
+
                 }else{
                     return response()->json([
                         'verified' => false,
