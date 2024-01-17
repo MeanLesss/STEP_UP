@@ -64,7 +64,7 @@
     <string name="start_date_text">Start Date :</string>
     <string name="end_date_text">End Date :</string>
     <string name="attachment_text">Attachment :</string>
-    <string name="service_has_been_created">Service has been Created</string>
+    <string name="service_has_been_created">Service has been created</string>
 
     <string-array name="service_type_spinner">
         <item>Select A Service Type</item>
@@ -84,6 +84,14 @@
     <string name="i_have_read_and_agreed">I have read and agreed to Terms and Agreement</string>
     <string name="expected_start_date">Expected Start Date</string>
     <string name="expected_end_date">Expected End Date</string>
+    <string name="expected_start_date_text">Expected Start Date :</string>
+    <string name="expected_end_date_text">Expected End Date :</string>
+    <string name="total_price_text">Total Price :</string>
+    <string name="order">Order</string>
+    <string name="order_has_been_placed">Order has been placed</string>
+    <string name="vat_text">VAT :</string>
+    <string name="total">Total</string>
+    <string name="incl_vat">(incl. VAT)</string>
 
 
 </resources>

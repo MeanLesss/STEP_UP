@@ -92,7 +92,7 @@ class ApiImp : ApiManager() {
             "order_title" to orderServiceParam.order_title,
             "order_description" to orderServiceParam.order_description,
             "expected_start_date" to orderServiceParam.expected_start_date,
-            "end_date" to orderServiceParam.expected_end_date,
+            "expected_end_date" to orderServiceParam.expected_end_date,
             "isAgreementAgreed" to orderServiceParam.isAgreementAgreed
         )
         val stringParts = Util.prepareStringParts(params)

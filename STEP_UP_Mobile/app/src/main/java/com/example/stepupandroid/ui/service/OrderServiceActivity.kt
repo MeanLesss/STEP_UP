@@ -148,6 +148,7 @@ class OrderServiceActivity : AppCompatActivity() {
 
     private fun initViewModel(){
         viewModel.getOrderSummaryResultState.observe(this){
+            val orderSummary = it.result
             val body = OrderServiceParam(
                 service_id = serviceId.toString(),
                 order_title = binding.title.text.toString(),
@@ -159,7 +160,7 @@ class OrderServiceActivity : AppCompatActivity() {
             )
             val intent = Intent(this, OrderServiceSummaryActivity::class.java)
             intent.putExtra("body", body)
-            intent.putExtra("summary", it.result)
+            intent.putExtra("summary", orderSummary)
             startActivity(intent)
         }
         viewModel.errorResultState.observe(this){

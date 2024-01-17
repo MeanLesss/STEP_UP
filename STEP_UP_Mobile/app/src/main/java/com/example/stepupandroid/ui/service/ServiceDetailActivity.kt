@@ -65,6 +65,10 @@ class ServiceDetailActivity : AppCompatActivity() {
             binding.serviceType.text = result.result.service_type
             binding.description.text = result.result.description
             binding.price.text = "$" + result.result.price
+
+            if(result.result.isReadOnly){
+                binding.buyBtn.isEnabled = false
+            }
         }
 
         viewModel.errorResultState.observe(this) {

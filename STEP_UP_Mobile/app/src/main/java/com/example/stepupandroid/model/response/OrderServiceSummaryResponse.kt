@@ -14,5 +14,6 @@ data class OrderSummary(
     val isAgreementAgreed: String,
     val tax: String,
     val price: String,
+    val taxAmount: String,
     val totalPrice: String
 ): Parcelable
