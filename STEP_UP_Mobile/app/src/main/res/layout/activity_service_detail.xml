@@ -25,7 +25,6 @@
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Title"
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:textColor="@color/white"
@@ -89,7 +88,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="5dp"
-                    android:text="Software Development"
                     android:textColor="@color/white"
                     android:textSize="15sp" />
 
@@ -103,7 +101,6 @@
                 android:ellipsize="end"
                 android:maxLines="3"
                 android:minLines="3"
-                android:text="Description"
                 android:textColor="@color/white"
                 android:textSize="15sp" />
 
@@ -127,7 +124,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="5dp"
-                    android:text="$500"
                     android:textColor="@color/white"
                     android:textSize="15sp" />
 
