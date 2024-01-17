@@ -2,13 +2,13 @@ package com.example.stepupandroid.api
 
 import com.example.stepupandroid.model.ApiResWrapper
 import com.example.stepupandroid.model.param.GetServiceParam
-import com.example.stepupandroid.model.param.OrderParam
+import com.example.stepupandroid.model.param.OrderServiceSummaryParam
 import com.example.stepupandroid.model.param.SignUpParam
 import com.example.stepupandroid.model.response.GetUserResponse
 import com.example.stepupandroid.model.response.LoginResponse
 import com.example.stepupandroid.model.response.MyServiceResponse
 import com.example.stepupandroid.model.response.MyWorkResponse
-import com.example.stepupandroid.model.response.OrderSummaryResponse
+import com.example.stepupandroid.model.response.OrderServiceSummaryResponse
 import com.example.stepupandroid.model.response.ServiceDetailResponse
 import com.example.stepupandroid.model.response.ServiceResponse
 import com.google.gson.JsonElement
@@ -40,12 +40,6 @@ interface ServiceAPI {
         @HeaderMap headers: Map<String, String>,
     ): Observable<ApiResWrapper<MyServiceResponse>>
 
-    @POST("api/service/purchase-summary/")
-    fun getOrderSummary(
-        @HeaderMap headers: Map<String, String>,
-        @Body body: OrderParam
-    ): Observable<ApiResWrapper<OrderSummaryResponse>>
-
     @Multipart
     @POST("api/service/create")
     fun createService(
@@ -74,5 +68,18 @@ interface ServiceAPI {
         @Path("serviceId") serviceId: Int,
         @HeaderMap headers: Map<String, String>
     ): Observable<ApiResWrapper<ServiceDetailResponse>>
+
+    @POST("api/service/purchase-summary")
+    fun getOrderSummary(
+        @HeaderMap headers: Map<String, String>,
+        @Body body: OrderServiceSummaryParam
+    ): Observable<ApiResWrapper<OrderServiceSummaryResponse>>
+
+    @Multipart
+    @POST("api/service/confirm-purchase")
+    fun orderService(
+        @HeaderMap headers: Map<String, String>,
+        @Part parts: List<MultipartBody.Part>
+    ): Observable<ApiResWrapper<JsonElement>>
 
 }

@@ -1,5 +1,11 @@
 package com.example.stepupandroid.helper
 
+import android.content.Context
+import com.example.stepupandroid.model.Attachment
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
@@ -26,4 +32,27 @@ object Util {
         // Format the date into the new format
         return outputFormat.format(parsedDate)
     }
+
+    fun prepareStringParts(params: Map<String, Any>): Map<String, RequestBody> {
+        val partMap = mutableMapOf<String, RequestBody>()
+
+        params.forEach { (key, value) ->
+            when (value) {
+                is String -> partMap[key] = value.toRequestBody("text/plain".toMediaTypeOrNull())
+            }
+        }
+
+        return partMap
+    }
+
+    fun prepareFileParts(context: Context, attachments: List<Attachment>): List<MultipartBody.Part> {
+        return attachments.mapNotNull { attachment ->
+            context.contentResolver.openInputStream(attachment.fileUri)?.use { inputStream ->
+                val requestFile = inputStream.readBytes().toRequestBody("multipart/form-data".toMediaTypeOrNull())
+                val fileName = attachment.fileName
+                MultipartBody.Part.createFormData("attachment_files[]", fileName, requestFile)
+            }
+        }
+    }
+
 }

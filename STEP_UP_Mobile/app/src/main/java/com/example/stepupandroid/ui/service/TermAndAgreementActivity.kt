@@ -1,8 +1,8 @@
 package com.example.stepupandroid.ui.service
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import com.example.stepupandroid.R
 import com.example.stepupandroid.databinding.ActivityTermAndAgreementBinding
 
@@ -30,7 +30,9 @@ class TermAndAgreementActivity : AppCompatActivity() {
         }
 
         binding.nextBtn.setOnClickListener {
-            Toast.makeText(this, "click", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, OrderServiceActivity::class.java)
+            intent.putExtra("serviceId", serviceId)
+            startActivity(intent)
         }
 
         val inputStream = resources.openRawResource(R.raw.agreement)

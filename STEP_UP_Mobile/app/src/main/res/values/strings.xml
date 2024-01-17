@@ -82,6 +82,8 @@
     <string name="order_service">Order Service</string>
     <string name="terms_and_agreement">Terms and Agreement</string>
     <string name="i_have_read_and_agreed">I have read and agreed to Terms and Agreement</string>
+    <string name="expected_start_date">Expected Start Date</string>
+    <string name="expected_end_date">Expected End Date</string>
 
 
 </resources>
