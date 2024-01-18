@@ -37,8 +37,8 @@ class OrderServiceSummaryActivity : AppCompatActivity() {
         }
 
         binding.orderServiceBtn.setOnClickListener {
-            body.expected_start_date = Util.convertDate("MMM dd, yyyy", body.expected_start_date)
-            body.expected_end_date = Util.convertDate("MMM dd, yyyy", body.expected_end_date)
+            body.expected_start_date = Util.convertDate("MMM dd, yyyy", "yyyy-MM-dd", body.expected_start_date)
+            body.expected_end_date = Util.convertDate("MMM dd, yyyy", "yyyy-MM-dd", body.expected_end_date)
             viewModel.orderService(body)
         }
     }

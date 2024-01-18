@@ -27,26 +27,16 @@ object Util {
         return "$%.2f".format(number) // Format to 2 decimal places
     }
 
-    fun convertDateFormat(dateStr: String): String {
-        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-        val outputFormat = SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault())
-
-        inputFormat.timeZone = TimeZone.getTimeZone("UTC") // Assuming the original date string is in UTC
-
-        val date = inputFormat.parse(dateStr)
-        return outputFormat.format(date ?: return "")
-    }
-
-    fun convertDate(inputPattern: String, inputDate: String): String {
+    fun convertDate(inputPattern: String, outputPattern: String, inputDate: String): String {
         // Define the input and output date formats
-        val inputFormat = android.icu.text.SimpleDateFormat(inputPattern, Locale.ENGLISH)
-        val outputFormat = android.icu.text.SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+        val inputFormat = SimpleDateFormat(inputPattern, Locale.getDefault())
+        val outputFormat = SimpleDateFormat(outputPattern, Locale.getDefault())
 
         // Parse the input date string
         val parsedDate = inputFormat.parse(inputDate)
 
         // Format the date into the new format
-        return outputFormat.format(parsedDate)
+        return outputFormat.format(parsedDate?: return "")
     }
 
     fun prepareStringParts(params: Map<String, Any>): Map<String, RequestBody> {

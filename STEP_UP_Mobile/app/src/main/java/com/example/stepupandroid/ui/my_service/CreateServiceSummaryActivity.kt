@@ -34,8 +34,8 @@ class CreateServiceSummaryActivity : AppCompatActivity() {
         }
 
         binding.createServiceBtn.setOnClickListener {
-            body.start_date = Util.convertDate("MMM dd, yyyy", body.start_date)
-            body.end_date = Util.convertDate("MMM dd, yyyy", body.end_date)
+            body.start_date = Util.convertDate("MMM dd, yyyy", "yyyy-MM-dd", body.start_date)
+            body.end_date = Util.convertDate("MMM dd, yyyy", "yyyy-MM-dd", body.end_date)
             viewModel.createService(body)
         }
 
@@ -51,13 +51,17 @@ class CreateServiceSummaryActivity : AppCompatActivity() {
         }
 
     }
+
     @SuppressLint("SetTextI18n")
     private fun initData(body: CreateServiceParam) {
         binding.title.text = resources.getString(R.string.title_text) + " " + body.title
-        binding.description.text = resources.getString(R.string.description_text) + " " + body.description
+        binding.description.text =
+            resources.getString(R.string.description_text) + " " + body.description
         binding.price.text = resources.getString(R.string.price_text) + " " + body.price
-        binding.serviceType.text = resources.getString(R.string.service_type_text) + " " + body.service_type
-        binding.startDate.text = resources.getString(R.string.start_date_text) + " " + body.start_date
+        binding.serviceType.text =
+            resources.getString(R.string.service_type_text) + " " + body.service_type
+        binding.startDate.text =
+            resources.getString(R.string.start_date_text) + " " + body.start_date
         binding.endDate.text = resources.getString(R.string.end_date_text) + " " + body.end_date
 
         binding.attachmentRecyclerView.layoutManager = LinearLayoutManager(this)
