@@ -11,6 +11,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.OpenableColumns
+import android.text.InputType
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -65,6 +66,8 @@ class OrderServiceActivity : AppCompatActivity() {
         binding.endDate.isFocusable = false
         binding.startDate.isLongClickable = false
         binding.endDate.isLongClickable = false
+
+        binding.description.setRawInputType(InputType.TYPE_CLASS_TEXT)
 
         adapter = AttachmentAdapter(attachments)
         binding.attachmentRecyclerView.layoutManager = LinearLayoutManager(this)

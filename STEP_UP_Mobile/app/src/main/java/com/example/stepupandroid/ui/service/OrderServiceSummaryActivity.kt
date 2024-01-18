@@ -50,9 +50,10 @@ class OrderServiceSummaryActivity : AppCompatActivity() {
         binding.startDate.text = resources.getString(R.string.start_date_text) + " " + body.expected_start_date
         binding.endDate.text = resources.getString(R.string.end_date_text) + " " + body.expected_end_date
 
-        binding.price.text = summary.price
-        binding.tax.text = summary.taxAmount
-        binding.totalPrice.text = summary.totalPrice
+        binding.taxNote.text = resources.getString(R.string.note_text) + " " + summary.tax
+        binding.price.text = Util.formatCurrency(summary.price)
+        binding.tax.text = Util.formatCurrency(summary.taxAmount)
+        binding.totalPrice.text = Util.formatCurrency(summary.totalPrice)
 
         binding.attachmentRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.attachmentRecyclerView.adapter = AttachmentAdapter(body.attachments.toMutableList())

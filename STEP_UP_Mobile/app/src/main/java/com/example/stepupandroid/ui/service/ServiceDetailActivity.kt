@@ -12,6 +12,7 @@ import com.example.stepupandroid.R
 import com.example.stepupandroid.adapter.ViewPagerAdapter
 import com.example.stepupandroid.databinding.ActivityServiceDetailBinding
 import com.example.stepupandroid.helper.Constants
+import com.example.stepupandroid.helper.Util
 import com.example.stepupandroid.ui.dialog.CustomDialog
 import com.example.stepupandroid.ui.HomeActivity
 import com.example.stepupandroid.viewmodel.ServiceDetailViewModel
@@ -66,7 +67,7 @@ class ServiceDetailActivity : AppCompatActivity() {
             binding.rating.rating = result.result.service_rate.toFloat()
             binding.serviceType.text = result.result.service_type
             binding.description.text = result.result.description
-            binding.price.text = "$" + result.result.price
+            binding.price.text = "$" + Util.formatStringToDecimal(result.result.price.toString())
 
             if(result.result.isReadOnly){
                 binding.buyBtn.isEnabled = false

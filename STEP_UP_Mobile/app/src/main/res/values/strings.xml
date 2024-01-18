@@ -46,6 +46,8 @@
     <string name="just_a_little_more">Just a little more to go!!🎉🎊</string>
     <string name="all_set_let_s_go">All set let’s go !!🎉🎊</string>
     <string name="account_has_been_created">Account has been Created</string>
+    <string name="may_we_know_your_name">May we know your name?</string>
+    <string name="your_name_optional">Your name (optional)</string>
 
     //My service screen
     <string name="create_service">Create Service</string>
@@ -66,6 +68,7 @@
     <string name="end_date_text">End Date :</string>
     <string name="attachment_text">Attachment :</string>
     <string name="service_has_been_created">Service has been created</string>
+    <string name="register_as_freelancer">Register as freelancer to use this feature.</string>
 
     <string-array name="service_type_spinner">
         <item>Select A Service Type</item>
@@ -94,8 +97,7 @@
     <string name="order_has_been_placed">Order has been placed</string>
     <string name="vat_text">VAT :</string>
     <string name="total_text">Total :</string>
-    <string name="register_as_freelancer">Register as freelancer to use this feature.</string>
-    <string name="may_we_know_your_name">May we know your name?</string>
-    <string name="your_name_optional">Your name (optional)</string>
+    <string name="note_text">Note :</string>
+
 
 </resources>

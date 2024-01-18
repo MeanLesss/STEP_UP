@@ -11,6 +11,22 @@ import java.util.Locale
 import java.util.TimeZone
 
 object Util {
+
+    fun formatStringToDecimal(inputString: String): String {
+        return try {
+            val number = inputString.toDouble()
+            String.format("%.2f", number)
+        } catch (e: NumberFormatException) {
+            "Invalid Input" // Return this or handle the exception as needed
+        }
+    }
+
+    fun formatCurrency(input: String): String {
+        val numberString = input.removePrefix("$") // Remove the dollar sign
+        val number = numberString.toDoubleOrNull() ?: return input // Return original if not a number
+        return "$%.2f".format(number) // Format to 2 decimal places
+    }
+
     fun convertDateFormat(dateStr: String): String {
         val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
         val outputFormat = SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault())
