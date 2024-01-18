@@ -15,6 +15,7 @@ import com.example.stepupandroid.helper.Constants
 import com.example.stepupandroid.helper.Util
 import com.example.stepupandroid.ui.dialog.CustomDialog
 import com.example.stepupandroid.ui.HomeActivity
+import com.example.stepupandroid.ui.WelcomeActivity
 import com.example.stepupandroid.viewmodel.ServiceDetailViewModel
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.stfalcon.imageviewer.StfalconImageViewer
@@ -45,9 +46,15 @@ class ServiceDetailActivity : AppCompatActivity() {
         }
 
         binding.buyBtn.setOnClickListener {
-            val intent = Intent(this, TermAndAgreementActivity::class.java)
-            intent.putExtra("serviceId", serviceId)
-            startActivity(intent)
+            if (Constants.UserRole == Constants.Guest) {
+                val intent = Intent(this, WelcomeActivity::class.java)
+                intent.putExtra("from", "ServiceDetail")
+                startActivity(intent)
+            } else {
+                val intent = Intent(this, TermAndAgreementActivity::class.java)
+                intent.putExtra("serviceId", serviceId)
+                startActivity(intent)
+            }
         }
     }
 
@@ -69,14 +76,13 @@ class ServiceDetailActivity : AppCompatActivity() {
             binding.description.text = result.result.description
             binding.price.text = "$" + Util.formatStringToDecimal(result.result.price.toString())
 
-            if(result.result.isReadOnly){
+            if (result.result.isReadOnly) {
                 binding.buyBtn.isEnabled = false
             }
         }
 
         viewModel.errorResultState.observe(this) {
             val customDialog = CustomDialog("", it, Constants.Warning)
-
             customDialog.show(supportFragmentManager, "CustomDialog")
         }
 

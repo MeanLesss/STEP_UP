@@ -75,10 +75,14 @@ class WelcomeActivity : AppCompatActivity() {
         }
 
         binding.backBtn.setOnClickListener {
-            val intent = Intent(this, HomeActivity::class.java)
-            intent.putExtra("from", "welcome")
-            setResult(RESULT_OK, intent)
-            finish()
+            if (from == "ServiceDetail") {
+                finish()
+            } else {
+                val intent = Intent(this, HomeActivity::class.java)
+                intent.putExtra("from", "welcome")
+                setResult(RESULT_OK, intent)
+                finish()
+            }
         }
     }
 
