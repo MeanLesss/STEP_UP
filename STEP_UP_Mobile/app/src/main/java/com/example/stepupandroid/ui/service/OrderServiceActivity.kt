@@ -22,7 +22,7 @@ import com.example.stepupandroid.R
 import com.example.stepupandroid.adapter.AttachmentAdapter
 import com.example.stepupandroid.databinding.ActivityOrderServiceBinding
 import com.example.stepupandroid.helper.Constants
-import com.example.stepupandroid.helper.CustomDialog
+import com.example.stepupandroid.ui.dialog.CustomDialog
 import com.example.stepupandroid.model.Attachment
 import com.example.stepupandroid.model.param.OrderServiceParam
 import com.example.stepupandroid.model.param.OrderServiceSummaryParam

@@ -7,22 +7,22 @@ import androidx.lifecycle.MutableLiveData
 import com.example.stepupandroid.api.ApiImp
 import com.example.stepupandroid.api.ApiManager
 import com.example.stepupandroid.base.BaseViewModel
-import com.example.stepupandroid.model.response.ServiceDetailResponse
+import com.example.stepupandroid.model.response.OrderDetailResponse
 import io.reactivex.disposables.Disposable
 
-class ServiceDetailViewModel(context: Context) : BaseViewModel(context) {
+class OrderDetailViewModel(context: Context) : BaseViewModel(context) {
     private var dataSubscription: Disposable? = null
 
-    private val serviceDetailLiveData: MutableLiveData<ServiceDetailResponse> = MutableLiveData()
-    val serviceDetailResultState: LiveData<ServiceDetailResponse> get() = serviceDetailLiveData
+    private val orderDetailLiveData: MutableLiveData<OrderDetailResponse> = MutableLiveData()
+    val orderDetailResultState: LiveData<OrderDetailResponse> get() = orderDetailLiveData
     private val errorLiveData: MutableLiveData<String> = MutableLiveData()
     val errorResultState: LiveData<String> get() = errorLiveData
 
-    fun getServiceDetail(serviceId: Int) {
+    fun getOrderDetail(orderId: Int) {
         loadingDialog.show()
-        dataSubscription = ApiImp().getServiceDetails(serviceId).subscribe({
+        dataSubscription = ApiImp().getOrderDetail(orderId).subscribe({
             loadingDialog.hide()
-            serviceDetailLiveData.value = it.data!!
+            orderDetailLiveData.value = it.data!!
         }, { throwable ->
             object : CallBackWrapper() {
                 override fun onCallbackWrapper(

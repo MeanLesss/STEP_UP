@@ -1,4 +1,4 @@
-package com.example.stepupandroid.helper
+package com.example.stepupandroid.ui.dialog
 
 import android.app.Dialog
 import android.content.Context

@@ -12,7 +12,7 @@ import com.example.stepupandroid.R
 import com.example.stepupandroid.adapter.ViewPagerAdapter
 import com.example.stepupandroid.databinding.ActivityServiceDetailBinding
 import com.example.stepupandroid.helper.Constants
-import com.example.stepupandroid.helper.CustomDialog
+import com.example.stepupandroid.ui.dialog.CustomDialog
 import com.example.stepupandroid.ui.HomeActivity
 import com.example.stepupandroid.viewmodel.ServiceDetailViewModel
 import com.facebook.drawee.backends.pipeline.Fresco

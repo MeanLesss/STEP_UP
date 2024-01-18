@@ -1,4 +1,4 @@
-package com.example.stepupandroid.helper
+package com.example.stepupandroid.ui.dialog
 
 import android.app.Dialog
 import android.content.DialogInterface
@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.example.stepupandroid.R
 import com.example.stepupandroid.databinding.FragmentCustomDialogBinding
+import com.example.stepupandroid.helper.Constants
 
 class CustomDialog(private val title: String, private val description : String, private val type : String) : DialogFragment() {
 

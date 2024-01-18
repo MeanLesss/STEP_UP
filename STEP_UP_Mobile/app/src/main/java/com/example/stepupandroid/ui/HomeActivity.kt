@@ -13,7 +13,7 @@ import com.example.stepupandroid.helper.Constants
 import com.example.stepupandroid.helper.SharedPreferenceUtil
 import com.example.stepupandroid.ui.fragment.MyOrderFragment
 import com.example.stepupandroid.ui.my_service.MyServiceFragment
-import com.example.stepupandroid.ui.fragment.MyWorkFragment
+import com.example.stepupandroid.ui.my_work.MyWorkFragment
 import com.example.stepupandroid.ui.profile.ProfileFragment
 import com.example.stepupandroid.ui.service.ServiceFragment
 

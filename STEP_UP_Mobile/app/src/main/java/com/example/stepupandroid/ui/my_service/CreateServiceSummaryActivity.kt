@@ -9,7 +9,7 @@ import com.example.stepupandroid.R
 import com.example.stepupandroid.adapter.AttachmentAdapter
 import com.example.stepupandroid.databinding.ActivityCreateServiceSummaryBinding
 import com.example.stepupandroid.helper.Constants
-import com.example.stepupandroid.helper.CustomDialog
+import com.example.stepupandroid.ui.dialog.CustomDialog
 import com.example.stepupandroid.helper.Util
 import com.example.stepupandroid.model.param.CreateServiceParam
 import com.example.stepupandroid.ui.SuccessActivity

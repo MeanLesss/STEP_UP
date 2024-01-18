@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.stepupandroid.adapter.ServiceAdapter
 import com.example.stepupandroid.databinding.FragmentServiceBinding
 import com.example.stepupandroid.helper.Constants
-import com.example.stepupandroid.helper.CustomDialog
+import com.example.stepupandroid.ui.dialog.CustomDialog
 import com.example.stepupandroid.model.param.GetServiceParam
 import com.example.stepupandroid.viewmodel.ServiceViewModel
 

@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.stepupandroid.adapter.MyServiceAdapter
 import com.example.stepupandroid.databinding.FragmentMyServiceBinding
 import com.example.stepupandroid.helper.Constants
-import com.example.stepupandroid.helper.CustomDialog
+import com.example.stepupandroid.ui.dialog.CustomDialog
 import com.example.stepupandroid.viewmodel.MyServiceViewModel
 
 class MyServiceFragment : Fragment() {

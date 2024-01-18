@@ -8,6 +8,7 @@ import com.example.stepupandroid.model.response.GetUserResponse
 import com.example.stepupandroid.model.response.LoginResponse
 import com.example.stepupandroid.model.response.MyServiceResponse
 import com.example.stepupandroid.model.response.MyWorkResponse
+import com.example.stepupandroid.model.response.OrderDetailResponse
 import com.example.stepupandroid.model.response.OrderServiceSummaryResponse
 import com.example.stepupandroid.model.response.ServiceDetailResponse
 import com.example.stepupandroid.model.response.ServiceResponse
@@ -82,4 +83,9 @@ interface ServiceAPI {
         @Part parts: List<MultipartBody.Part>
     ): Observable<ApiResWrapper<JsonElement>>
 
+    @GET("api/order-service/{orderId}/view")
+    fun getOrderDetail(
+        @Path("orderId") orderId: Int,
+        @HeaderMap headers: Map<String, String>
+    ): Observable<ApiResWrapper<OrderDetailResponse>>
 }

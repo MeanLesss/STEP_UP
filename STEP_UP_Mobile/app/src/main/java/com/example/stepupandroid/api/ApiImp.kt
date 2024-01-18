@@ -12,6 +12,7 @@ import com.example.stepupandroid.model.response.GetUserResponse
 import com.example.stepupandroid.model.response.LoginResponse
 import com.example.stepupandroid.model.response.MyServiceResponse
 import com.example.stepupandroid.model.response.MyWorkResponse
+import com.example.stepupandroid.model.response.OrderDetailResponse
 import com.example.stepupandroid.model.response.OrderServiceSummaryResponse
 import com.example.stepupandroid.model.response.ServiceDetailResponse
 import com.example.stepupandroid.model.response.ServiceResponse
@@ -106,5 +107,9 @@ class ApiImp : ApiManager() {
             .observeOn(AndroidSchedulers.mainThread())
     }
 
+    fun getOrderDetail(orderId: Int): Observable<ApiResWrapper<OrderDetailResponse>> =
+        mAllService.getOrderDetail(orderId, Header.getHeaderWithAuth())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
 
 }

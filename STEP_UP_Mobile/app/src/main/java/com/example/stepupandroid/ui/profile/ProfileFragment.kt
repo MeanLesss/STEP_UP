@@ -10,10 +10,10 @@ import android.view.ViewGroup
 import com.example.stepupandroid.databinding.FragmentProfileBinding
 import com.example.stepupandroid.helper.ApiKey
 import com.example.stepupandroid.helper.Constants
-import com.example.stepupandroid.helper.CustomDialog
+import com.example.stepupandroid.ui.dialog.CustomDialog
 import com.example.stepupandroid.helper.SharedPreferenceUtil
-import com.example.stepupandroid.ui.HomeActivity
 import com.example.stepupandroid.ui.WelcomeActivity
+import com.example.stepupandroid.ui.dialog.LogoutDialog
 import com.example.stepupandroid.viewmodel.ProfileViewModel
 
 class ProfileFragment : Fragment() {
@@ -32,10 +32,7 @@ class ProfileFragment : Fragment() {
         viewModel.getUser()
 
         binding.logoutBtn.setOnClickListener {
-            SharedPreferenceUtil().removeFromSp(ApiKey.SharedPreferenceKey.token)
-            val intent = Intent(requireActivity(), WelcomeActivity::class.java)
-            startActivity(intent)
-            requireActivity().finishAffinity()
+            LogoutDialog().show(childFragmentManager, "LogoutDialog")
         }
 
         viewModel.getUserResultState.observe(requireActivity()) {results ->

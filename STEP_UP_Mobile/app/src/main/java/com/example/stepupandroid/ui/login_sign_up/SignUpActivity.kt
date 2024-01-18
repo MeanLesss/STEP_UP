@@ -9,7 +9,7 @@ import androidx.core.widget.addTextChangedListener
 import com.example.stepupandroid.R
 import com.example.stepupandroid.databinding.ActivitySignUpBinding
 import com.example.stepupandroid.helper.Constants
-import com.example.stepupandroid.helper.CustomDialog
+import com.example.stepupandroid.ui.dialog.CustomDialog
 import com.example.stepupandroid.model.param.SignUpParam
 import com.example.stepupandroid.ui.SuccessActivity
 import com.example.stepupandroid.viewmodel.SignUpViewModel

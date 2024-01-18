@@ -9,11 +9,9 @@ import com.example.stepupandroid.R
 import com.example.stepupandroid.adapter.AttachmentAdapter
 import com.example.stepupandroid.databinding.ActivityOrderServiceSummaryBinding
 import com.example.stepupandroid.helper.Constants
-import com.example.stepupandroid.helper.CustomDialog
+import com.example.stepupandroid.ui.dialog.CustomDialog
 import com.example.stepupandroid.helper.Util
-import com.example.stepupandroid.model.param.CreateServiceParam
 import com.example.stepupandroid.model.param.OrderServiceParam
-import com.example.stepupandroid.model.response.OrderServiceSummaryResponse
 import com.example.stepupandroid.model.response.OrderSummary
 import com.example.stepupandroid.ui.SuccessActivity
 import com.example.stepupandroid.viewmodel.OrderServiceViewModel

@@ -16,9 +16,12 @@ import com.example.stepupandroid.R
 import com.example.stepupandroid.helper.Util
 import com.example.stepupandroid.model.response.MyWork
 
-class MyWorkAdapter(private val context: Context, private val itemList: List<MyWork>) :
+class MyWorkAdapter(private val context: Context, private val itemList: List<MyWork>, private val listener: OnWorkSelected) :
     RecyclerView.Adapter<MyWorkAdapter.ItemViewHolder>() {
 
+    interface OnWorkSelected {
+        fun onWorkSelected(orderId: Int)
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_my_work, parent, false)
@@ -106,9 +109,10 @@ class MyWorkAdapter(private val context: Context, private val itemList: List<MyW
         // Handle the click event for the "View" button here if needed
         holder.viewButton.setOnClickListener {
             // Handle the click event for the "View" button
-            Log.d("bug test", currentItem.order_title + " clicked")
+            listener.onWorkSelected(currentItem.id)
         }
     }
+
 
     override fun getItemCount() = itemList.size
 
