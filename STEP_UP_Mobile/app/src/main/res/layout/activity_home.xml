@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginVertical="10dp"
-            android:text="My Title"
+            android:text="@string/service"
             android:layout_centerHorizontal="true"
             android:fontFamily="@font/museomoderno_bold"
             android:textColor="@color/logo_color"

@@ -22,16 +22,25 @@ class MyServiceFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentMyServiceBinding.inflate(layoutInflater)
-        viewModel = MyServiceViewModel(requireActivity())
 
-        initViewModel()
+        if (Constants.UserRole == Constants.Freelancer || Constants.UserRole == Constants.Admin) {
+            viewModel = MyServiceViewModel(requireActivity())
 
-        viewModel.getMyService()
+            initViewModel()
 
-        binding.addBtn.setOnClickListener{
-            requireActivity().startActivity(Intent(requireActivity(), CreateServiceActivity::class.java))
+            viewModel.getMyService()
+
+            binding.addBtn.setOnClickListener {
+                requireActivity().startActivity(
+                    Intent(
+                        requireActivity(),
+                        CreateServiceActivity::class.java
+                    )
+                )
+            }
+        } else {
+            binding.registerAsFreelancer.visibility = View.VISIBLE
         }
-
 
         return binding.root
     }
@@ -39,7 +48,7 @@ class MyServiceFragment : Fragment() {
     private fun initViewModel() {
         viewModel.getMyServiceResultState.observe(requireActivity()) { result ->
             if (result.result.isNotEmpty()) {
-                val adapter =  MyServiceAdapter(requireActivity(), result.result)
+                val adapter = MyServiceAdapter(requireActivity(), result.result)
                 binding.myServiceRecyclerView.layoutManager = LinearLayoutManager(requireActivity())
                 binding.myServiceRecyclerView.adapter = adapter
             }

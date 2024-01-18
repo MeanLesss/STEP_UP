@@ -93,5 +93,6 @@
     <string name="order_has_been_placed">Order has been placed</string>
     <string name="vat_text">VAT :</string>
     <string name="total_text">Total :</string>
+    <string name="register_as_freelancer">Register as freelancer to use this feature.</string>
 
 </resources>

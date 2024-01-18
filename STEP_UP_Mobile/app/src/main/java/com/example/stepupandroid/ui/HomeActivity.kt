@@ -11,15 +11,18 @@ import com.example.stepupandroid.databinding.ActivityHomeBinding
 import com.example.stepupandroid.helper.ApiKey
 import com.example.stepupandroid.helper.Constants
 import com.example.stepupandroid.helper.SharedPreferenceUtil
+import com.example.stepupandroid.ui.dialog.CustomDialog
 import com.example.stepupandroid.ui.fragment.MyOrderFragment
 import com.example.stepupandroid.ui.my_service.MyServiceFragment
 import com.example.stepupandroid.ui.my_work.MyWorkFragment
 import com.example.stepupandroid.ui.profile.ProfileFragment
 import com.example.stepupandroid.ui.service.ServiceFragment
+import com.example.stepupandroid.viewmodel.ProfileViewModel
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
     private lateinit var fragmentManager: FragmentManager
+    private lateinit var viewModel: ProfileViewModel
 
     private var from = ""
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,28 +30,58 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        fragmentManager = supportFragmentManager
+        binding.navigation.selectedItemId = R.id.navigation_service
 
-        from = intent.getStringExtra("from").orEmpty()
-
-        binding.navigation.setOnItemSelectedListener { item ->
-            handleNavigation(item.itemId)
-            true
-        }
-
-        // Set default selected item
-        if (from.isNotEmpty()) {
-            when (from) {
-                Constants.MyWork -> binding.navigation.selectedItemId = R.id.navigation_my_work
-                Constants.MyService -> binding.navigation.selectedItemId = R.id.navigation_my_service
-                Constants.MyOrder -> binding.navigation.selectedItemId = R.id.navigation_my_order
-                Constants.Profile -> binding.navigation.selectedItemId = R.id.navigation_profile
-            }
+        if (Constants.UserRole == 0) {
+            viewModel = ProfileViewModel(this)
+            initViewModel()
+            viewModel.getUser()
         } else {
-            binding.navigation.selectedItemId = R.id.navigation_service
+
+            fragmentManager = supportFragmentManager
+
+            from = intent.getStringExtra("from").orEmpty()
+
+            binding.navigation.setOnItemSelectedListener { item ->
+                handleNavigation(item.itemId)
+                true
+            }
+
+            // Set default selected item
+            if (from.isNotEmpty()) {
+                when (from) {
+                    Constants.MyWork -> binding.navigation.selectedItemId = R.id.navigation_my_work
+                    Constants.MyService -> binding.navigation.selectedItemId =
+                        R.id.navigation_my_service
+
+                    Constants.MyOrder -> binding.navigation.selectedItemId =
+                        R.id.navigation_my_order
+
+                    Constants.Profile -> binding.navigation.selectedItemId = R.id.navigation_profile
+                }
+            } else {
+                binding.navigation.selectedItemId = R.id.navigation_service
+            }
         }
     }
 
+    private fun initViewModel() {
+        viewModel.getUserResultState.observe(this) { results ->
+            Constants.UserRole = results.user_info.role
+            recreate()
+        }
+
+        viewModel.errorResultState.observe(this) {
+            val customDialog = CustomDialog("", it, Constants.Error)
+            customDialog.onDismissListener = {
+                SharedPreferenceUtil().removeFromSp(ApiKey.SharedPreferenceKey.token)
+                val intent = Intent(this, WelcomeActivity::class.java)
+                startActivity(intent)
+                finishAffinity()
+            }
+            customDialog.show(supportFragmentManager, "CustomDialog")
+        }
+    }
     private fun handleNavigation(itemId: Int) {
         val navigationMap = mapOf(
             R.id.navigation_my_work to Pair(MyWorkFragment(), R.string.my_work),

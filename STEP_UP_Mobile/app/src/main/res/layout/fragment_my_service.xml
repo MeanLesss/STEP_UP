@@ -30,6 +30,18 @@
             app:elevation="0dp"
             app:fabSize="normal"
             app:tint="@color/logo_color" />
+
+        <TextView
+            android:id="@+id/registerAsFreelancer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/background_color"
+            android:gravity="center"
+            android:paddingHorizontal="30dp"
+            android:text="@string/register_as_freelancer"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            android:visibility="gone" />
     </RelativeLayout>
 
 

@@ -22,7 +22,7 @@ class ProfileViewModel(context: Context) : BaseViewModel(context) {
         loadingDialog.show()
         dataSubscription = ApiImp().getUser().subscribe({
             loadingDialog.hide()
-            getUserLiveData.value = it.data
+            getUserLiveData.value = it.data!!
         }, { throwable ->
             object : CallBackWrapper() {
                 override fun onCallbackWrapper(

@@ -23,17 +23,22 @@ class MyWorkFragment : Fragment(), MyWorkAdapter.OnWorkSelected {
         intent.putExtra("orderId", orderId)
         startActivity(intent)
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentMyWorkBinding.inflate(layoutInflater)
 
-        viewModel = MyWorkViewModel(requireActivity())
+        if (Constants.UserRole == Constants.Freelancer || Constants.UserRole == Constants.Admin) {
+            viewModel = MyWorkViewModel(requireActivity())
 
-        initViewModel()
+            initViewModel()
 
-        viewModel.getMyWork()
+            viewModel.getMyWork()
+        } else {
+            binding.registerAsFreelancer.visibility = View.VISIBLE
+        }
 
         return binding.root
     }
@@ -41,7 +46,7 @@ class MyWorkFragment : Fragment(), MyWorkAdapter.OnWorkSelected {
     private fun initViewModel() {
         viewModel.getMyWorkResultState.observe(requireActivity()) { result ->
             if (result.result.isNotEmpty()) {
-                val adapter =  MyWorkAdapter(requireActivity(), result.result, this)
+                val adapter = MyWorkAdapter(requireActivity(), result.result, this)
                 binding.myWorkRecyclerView.layoutManager = LinearLayoutManager(requireActivity())
                 binding.myWorkRecyclerView.adapter = adapter
             }
