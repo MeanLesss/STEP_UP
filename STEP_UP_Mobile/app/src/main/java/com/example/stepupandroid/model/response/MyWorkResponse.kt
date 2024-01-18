@@ -18,9 +18,9 @@ data class MyWork(
     val order_status: Int,
     val order_attachments: Map<String, String>?,
     val expected_expand_date: String,
-    val expand_end_date: String,
-    val expected_start_date: String,
     val expected_end_date: String,
+    val expected_start_date: String,
+    val expand_end_date: String,
     val accepted_at: String,
     val created_by: String,
     val updated_by: String,
@@ -30,5 +30,5 @@ data class MyWork(
     val service_order: String,
     val freelancer_id: Int,
     val completed_attachments: Map<String, String>?,
-    val status: String
+    val stringStatus: String
 )

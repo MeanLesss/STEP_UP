@@ -40,7 +40,7 @@ class MyWorkAdapter(private val context: Context, private val itemList: List<MyW
         // Cast the drawable to a GradientDrawable (assuming your border drawable is a GradientDrawable)
         if (backgroundDrawable is GradientDrawable) {
             // Set the stroke color
-            when(currentItem.status){
+            when(currentItem.stringStatus){
                 "Declined" -> {
                     backgroundDrawable.setStroke(5, ContextCompat.getColor(context, R.color.status_declined))
                     holder.statusText.setTextColor(ContextCompat.getColor(context, R.color.status_declined))
@@ -98,7 +98,7 @@ class MyWorkAdapter(private val context: Context, private val itemList: List<MyW
                     )
                 }
             }
-            holder.statusText.text = currentItem.status
+            holder.statusText.text = currentItem.stringStatus
             backgroundDrawable.setColor(ContextCompat.getColor(context, R.color.selected_color))
             // Apply the modified drawable to the containerLayout's background
             holder.containerLayout.background = backgroundDrawable
