@@ -25,25 +25,32 @@ class LoginActivity : AppCompatActivity() {
 
         viewModel = LoginViewModel(this)
 
-        if (intent.hasExtra("from")) {
-            from = intent.getStringExtra("from").toString()
-        }
+        from = intent.getStringExtra("from").orEmpty()
+
 
         binding.loginBtn.setOnClickListener {
             var validated = true
-            if(binding.email.text.isNullOrEmpty()){
+            if (binding.email.text.isNullOrEmpty()) {
                 binding.email.background =
-                    ResourcesCompat.getDrawable(resources, R.drawable.error_color_border_drawable, null)
+                    ResourcesCompat.getDrawable(
+                        resources,
+                        R.drawable.error_color_border_drawable,
+                        null
+                    )
                 binding.email.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake))
                 validated = false
             }
-            if(binding.password.text.isNullOrEmpty()){
+            if (binding.password.text.isNullOrEmpty()) {
                 binding.password.background =
-                    ResourcesCompat.getDrawable(resources, R.drawable.error_color_border_drawable, null)
+                    ResourcesCompat.getDrawable(
+                        resources,
+                        R.drawable.error_color_border_drawable,
+                        null
+                    )
                 binding.password.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake))
                 validated = false
             }
-            if(!validated){
+            if (!validated) {
                 return@setOnClickListener
             }
             val body = HashMap<String, String>()

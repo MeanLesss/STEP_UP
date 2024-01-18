@@ -8,6 +8,7 @@
     <string name="skip">Skip</string>
     <string name="next">Next</string>
     <string name="create">Create</string>
+    <string name="continues">Continue</string>
 
     //Home screen
     <string name="my_work">My Works</string>
@@ -94,5 +95,7 @@
     <string name="vat_text">VAT :</string>
     <string name="total_text">Total :</string>
     <string name="register_as_freelancer">Register as freelancer to use this feature.</string>
+    <string name="may_we_know_your_name">May we know your name?</string>
+    <string name="your_name_optional">Your name (optional)</string>
 
 </resources>

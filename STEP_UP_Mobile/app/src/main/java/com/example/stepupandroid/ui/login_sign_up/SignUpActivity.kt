@@ -30,8 +30,6 @@ class SignUpActivity : AppCompatActivity() {
         from = intent.getStringExtra("from").orEmpty()
         job = intent.getStringExtra("job").orEmpty()
 
-
-
         binding.backBtn.setOnClickListener {
             finish()
         }
@@ -112,6 +110,9 @@ class SignUpActivity : AppCompatActivity() {
 
         viewModel.signUpResultState.observe(this) {
             val intent = Intent(this, SuccessActivity::class.java)
+            if (from.isNotEmpty()) {
+                intent.putExtra("from", from)
+            }
             intent.putExtra("title", resources.getString(R.string.account_has_been_created))
             startActivity(intent)
         }

@@ -9,6 +9,7 @@ import com.example.stepupandroid.databinding.ActivityWelcomeBinding
 import com.example.stepupandroid.helper.ApiKey
 import com.example.stepupandroid.helper.SharedPreferenceUtil
 import com.example.stepupandroid.ui.login_sign_up.LoginActivity
+import com.example.stepupandroid.ui.login_sign_up.SignUpAsGuestActivity
 import com.example.stepupandroid.ui.login_sign_up.SignUpChooseJobActivity
 
 class WelcomeActivity : AppCompatActivity() {
@@ -23,6 +24,7 @@ class WelcomeActivity : AppCompatActivity() {
 
         if (SharedPreferenceUtil().getFromSp(ApiKey.SharedPreferenceKey.isGuest) == "true") {
             binding.continueAsGuest.visibility = View.GONE
+            binding.loginToUseFeature.visibility = View.VISIBLE
         }
 
         if (intent.hasExtra("from")) {
@@ -64,18 +66,8 @@ class WelcomeActivity : AppCompatActivity() {
         }
 
         binding.continueAsGuest.setOnClickListener {
-            SharedPreferenceUtil().addToSp(
-                ApiKey.SharedPreferenceKey.isGuest,
-                "true"
-            )
-            //todo
-            SharedPreferenceUtil().addToSp(
-                ApiKey.SharedPreferenceKey.token,
-                "250|cLZDm3W2nR1RSCqfsoGcHwpp2uJBN88MRfE8gS0gb2314d66"
-            )
-            val intent = Intent(this, HomeActivity::class.java)
+            val intent = Intent(this, SignUpAsGuestActivity::class.java)
             startActivity(intent)
-            finishAffinity()
         }
 
         binding.signInWithGoogle.setOnClickListener {
@@ -83,8 +75,10 @@ class WelcomeActivity : AppCompatActivity() {
         }
 
         binding.backBtn.setOnClickListener {
-            startActivity(Intent(this, HomeActivity::class.java))
-            finishAffinity()
+            val intent = Intent(this, HomeActivity::class.java)
+            intent.putExtra("from", "welcome")
+            setResult(RESULT_OK, intent)
+            finish()
         }
     }
 

@@ -13,6 +13,7 @@ import androidx.fragment.app.DialogFragment
 import com.example.stepupandroid.R
 import com.example.stepupandroid.databinding.FragmentLogoutDialogBinding
 import com.example.stepupandroid.helper.ApiKey
+import com.example.stepupandroid.helper.Constants
 import com.example.stepupandroid.helper.SharedPreferenceUtil
 import com.example.stepupandroid.ui.WelcomeActivity
 
@@ -34,6 +35,7 @@ class LogoutDialog : DialogFragment() {
 
         binding.logoutBtn.setOnClickListener {
             SharedPreferenceUtil().removeFromSp(ApiKey.SharedPreferenceKey.token)
+            Constants.UserRole = 0
             val intent = Intent(requireActivity(), WelcomeActivity::class.java)
             startActivity(intent)
             requireActivity().finishAffinity()

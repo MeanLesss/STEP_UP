@@ -30,7 +30,8 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.navigation.selectedItemId = R.id.navigation_service
+        from = intent.getStringExtra("from").orEmpty()
+        selectNavItem()
 
         if (Constants.UserRole == 0) {
             viewModel = ProfileViewModel(this)
@@ -40,28 +41,27 @@ class HomeActivity : AppCompatActivity() {
 
             fragmentManager = supportFragmentManager
 
-            from = intent.getStringExtra("from").orEmpty()
-
             binding.navigation.setOnItemSelectedListener { item ->
                 handleNavigation(item.itemId)
                 true
             }
+            selectNavItem()
+        }
+    }
 
-            // Set default selected item
-            if (from.isNotEmpty()) {
-                when (from) {
-                    Constants.MyWork -> binding.navigation.selectedItemId = R.id.navigation_my_work
-                    Constants.MyService -> binding.navigation.selectedItemId =
-                        R.id.navigation_my_service
-
-                    Constants.MyOrder -> binding.navigation.selectedItemId =
-                        R.id.navigation_my_order
-
-                    Constants.Profile -> binding.navigation.selectedItemId = R.id.navigation_profile
-                }
-            } else {
-                binding.navigation.selectedItemId = R.id.navigation_service
+    private fun selectNavItem(){
+        if (from.isNotEmpty()) {
+            // Set default selected item based on 'from'
+            val selectedItemId = when (from) {
+                Constants.MyWork -> R.id.navigation_my_work
+                Constants.MyService -> R.id.navigation_my_service
+                Constants.MyOrder -> R.id.navigation_my_order
+                Constants.Profile -> R.id.navigation_profile
+                else -> R.id.navigation_service
             }
+            binding.navigation.selectedItemId = selectedItemId
+        } else {
+            binding.navigation.selectedItemId = R.id.navigation_service
         }
     }
 
@@ -82,6 +82,7 @@ class HomeActivity : AppCompatActivity() {
             customDialog.show(supportFragmentManager, "CustomDialog")
         }
     }
+
     private fun handleNavigation(itemId: Int) {
         val navigationMap = mapOf(
             R.id.navigation_my_work to Pair(MyWorkFragment(), R.string.my_work),
@@ -111,7 +112,7 @@ class HomeActivity : AppCompatActivity() {
     private fun redirectToWelcome(fromFragment: String) {
         val intent = Intent(this, WelcomeActivity::class.java)
         intent.putExtra("from", fromFragment)
-        startActivity(intent)
+        startActivityForResult(intent, 1)
     }
 
     private fun getFragmentName(fragment: Fragment): String {
@@ -129,5 +130,20 @@ class HomeActivity : AppCompatActivity() {
         transaction.replace(R.id.frame_container, fragment)
 //        transaction.addToBackStack(null) // Optional, allows going back to previous fragment
         transaction.commit()
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == RESULT_OK) {
+            if (data?.getStringExtra("from") == "welcome") {
+                binding.navigation.setOnItemSelectedListener(null)
+                binding.navigation.selectedItemId = R.id.navigation_service
+                binding.navigation.setOnItemSelectedListener { item ->
+                    handleNavigation(item.itemId)
+                    true
+                }
+            }
+        }
     }
 }
