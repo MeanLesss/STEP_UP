@@ -31,6 +31,11 @@ interface ServiceAPI {
         @Body body: HashMap<String, String>
     ): Observable<ApiResWrapper<LoginResponse>>
 
+    @GET("api/logout")
+    fun logout(
+        @HeaderMap headers: Map<String, String>,
+    ): Observable<ApiResWrapper<JsonElement>>
+
     @POST("api/service/data")
     fun getService(
         @HeaderMap headers: Map<String, String>,
@@ -65,6 +70,7 @@ interface ServiceAPI {
     fun getUser(
         @HeaderMap headers: Map<String, String>,
     ): Observable<ApiResWrapper<GetUserResponse>>
+
 
     @GET("api/service/ordered/freelancer")
     fun getMyWork(

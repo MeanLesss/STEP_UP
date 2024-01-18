@@ -31,6 +31,11 @@ class ApiImp : ApiManager() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
+    fun logout(): Observable<ApiResWrapper<JsonElement>> =
+        mAllService.logout(Header.getHeaderWithAuth())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
     fun getService(body: GetServiceParam): Observable<ApiResWrapper<ServiceResponse>> =
         mAllService.getService(Header.getHeaderWithAuth(), body)
             .subscribeOn(Schedulers.io())

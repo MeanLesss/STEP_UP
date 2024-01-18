@@ -16,9 +16,11 @@ import com.example.stepupandroid.helper.ApiKey
 import com.example.stepupandroid.helper.Constants
 import com.example.stepupandroid.helper.SharedPreferenceUtil
 import com.example.stepupandroid.ui.WelcomeActivity
+import com.example.stepupandroid.viewmodel.ProfileViewModel
 
 class LogoutDialog : DialogFragment() {
     private lateinit var binding: FragmentLogoutDialogBinding
+    private lateinit var viewModel: ProfileViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -33,12 +35,22 @@ class LogoutDialog : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.logoutBtn.setOnClickListener {
+        viewModel = ProfileViewModel(requireActivity())
+
+        viewModel.logoutResultState.observe(requireActivity()){
             SharedPreferenceUtil().removeFromSp(ApiKey.SharedPreferenceKey.token)
             Constants.UserRole = 0
             val intent = Intent(requireActivity(), WelcomeActivity::class.java)
             startActivity(intent)
             requireActivity().finishAffinity()
+        }
+
+        viewModel.errorResultState.observe(requireActivity()){
+            CustomDialog("", it, Constants.Error).show(childFragmentManager, "CustomDialog")
+        }
+
+        binding.logoutBtn.setOnClickListener {
+            viewModel.logout()
         }
 
         binding.cancelBtn.setOnClickListener {

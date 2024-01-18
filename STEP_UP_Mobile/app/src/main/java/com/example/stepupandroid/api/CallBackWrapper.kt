@@ -41,11 +41,7 @@ abstract class CallBackWrapper {
             }
 
             else -> {
-                var responseBody = e.message ?: ""
-                if (responseBody.isEmpty()) {
-                    responseBody =
-                        "We are encountering a technical issue. Please check at the counter."
-                }
+                val responseBody = e.message ?: ""
                 onCallbackWrapper(ApiManager.NetworkErrorStatus.ON_ERROR, responseBody)
             }
         }

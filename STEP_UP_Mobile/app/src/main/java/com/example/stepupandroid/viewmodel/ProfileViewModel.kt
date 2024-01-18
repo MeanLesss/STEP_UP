@@ -8,6 +8,7 @@ import com.example.stepupandroid.api.ApiImp
 import com.example.stepupandroid.api.ApiManager
 import com.example.stepupandroid.base.BaseViewModel
 import com.example.stepupandroid.model.response.GetUserResponse
+import com.google.gson.JsonElement
 import io.reactivex.disposables.Disposable
 
 class ProfileViewModel(context: Context) : BaseViewModel(context) {
@@ -23,6 +24,26 @@ class ProfileViewModel(context: Context) : BaseViewModel(context) {
         dataSubscription = ApiImp().getUser().subscribe({
             loadingDialog.hide()
             getUserLiveData.value = it.data!!
+        }, { throwable ->
+            object : CallBackWrapper() {
+                override fun onCallbackWrapper(
+                    status: ApiManager.NetworkErrorStatus,
+                    data: String
+                ) {
+                    loadingDialog.hide()
+                    errorLiveData.value = data
+                }
+            }.handleException(throwable)
+        })
+    }
+
+    private val logoutLiveData: MutableLiveData<JsonElement?> = MutableLiveData()
+    val logoutResultState: LiveData<JsonElement?> get() = logoutLiveData
+    fun logout() {
+        loadingDialog.show()
+        dataSubscription = ApiImp().logout().subscribe({
+            loadingDialog.hide()
+            logoutLiveData.value = it.data
         }, { throwable ->
             object : CallBackWrapper() {
                 override fun onCallbackWrapper(
