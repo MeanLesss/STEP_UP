@@ -13,6 +13,7 @@ import com.example.stepupandroid.adapter.ViewPagerAdapter
 import com.example.stepupandroid.databinding.ActivityServiceDetailBinding
 import com.example.stepupandroid.helper.Constants
 import com.example.stepupandroid.helper.CustomDialog
+import com.example.stepupandroid.ui.HomeActivity
 import com.example.stepupandroid.viewmodel.ServiceDetailViewModel
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.stfalcon.imageviewer.StfalconImageViewer
@@ -36,8 +37,10 @@ class ServiceDetailActivity : AppCompatActivity() {
 
         viewModel.getServiceDetail(serviceId)
 
-        binding.backBtn.setOnClickListener {
-            finish()
+        binding.cancelBtn.setOnClickListener {
+            val intent = Intent(this, HomeActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
         }
 
         binding.buyBtn.setOnClickListener {
@@ -45,7 +48,6 @@ class ServiceDetailActivity : AppCompatActivity() {
             intent.putExtra("serviceId", serviceId)
             startActivity(intent)
         }
-
     }
 
     @SuppressLint("SetTextI18n")

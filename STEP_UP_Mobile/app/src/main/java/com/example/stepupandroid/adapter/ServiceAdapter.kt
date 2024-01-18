@@ -48,7 +48,7 @@ class ServiceAdapter(private val context: Context, private val itemList: Mutable
         holder.serviceType.text = currentItem.service_type
         holder.price.text = "$" + currentItem.price
 
-        holder.priceButton.setOnClickListener {
+        holder.containerLayout.setOnClickListener {
             listener.onServiceSelected(currentItem.id)
         }
         val backgroundDrawable = ContextCompat.getDrawable(holder.itemView.context, R.drawable.border_drawable)

@@ -34,7 +34,7 @@ class OrderServiceSummaryActivity : AppCompatActivity() {
         viewModel = OrderServiceViewModel(this)
         initViewModel()
 
-        binding.cancelBtn.setOnClickListener {
+        binding.backBtn.setOnClickListener {
             finish()
         }
 
@@ -49,11 +49,12 @@ class OrderServiceSummaryActivity : AppCompatActivity() {
     private fun initData(body: OrderServiceParam, summary: OrderSummary) {
         binding.title.text = resources.getString(R.string.title_text) + " " + body.order_title
         binding.description.text = resources.getString(R.string.description_text) + " " + body.order_description
-        binding.price.text = resources.getString(R.string.price_text) + " " + summary.price
-        binding.tax.text = resources.getString(R.string.vat_text) + " " + summary.taxAmount
-        binding.totalPrice.text = summary.totalPrice
         binding.startDate.text = resources.getString(R.string.start_date_text) + " " + body.expected_start_date
         binding.endDate.text = resources.getString(R.string.end_date_text) + " " + body.expected_end_date
+
+        binding.price.text = summary.price
+        binding.tax.text = summary.taxAmount
+        binding.totalPrice.text = summary.totalPrice
 
         binding.attachmentRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.attachmentRecyclerView.adapter = AttachmentAdapter(body.attachments.toMutableList())

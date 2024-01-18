@@ -86,12 +86,10 @@
     <string name="expected_end_date">Expected End Date</string>
     <string name="expected_start_date_text">Expected Start Date :</string>
     <string name="expected_end_date_text">Expected End Date :</string>
-    <string name="total_price_text">Total Price :</string>
-    <string name="order">Order</string>
+    <string name="place_order">Place Order</string>
     <string name="order_has_been_placed">Order has been placed</string>
     <string name="vat_text">VAT :</string>
-    <string name="total">Total</string>
-    <string name="incl_vat">(incl. VAT)</string>
+    <string name="total_text">Total :</string>
 
 
 </resources>

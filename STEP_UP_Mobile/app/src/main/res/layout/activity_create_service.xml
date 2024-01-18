@@ -7,22 +7,39 @@
     android:background="@color/selected_color"
     tools:context=".ui.my_service.CreateServiceActivity">
 
-    <ScrollView
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:overScrollMode="never">
+        android:layout_above="@id/buttonLayout"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="vertical"
-            android:paddingBottom="40dp">
+            android:layout_marginStart="20dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/backBtn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:insetLeft="0dp"
+                android:insetTop="0dp"
+                android:insetRight="0dp"
+                android:insetBottom="0dp"
+                app:icon="@drawable/icon_back"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:iconSize="40dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginStart="10dp"
                 android:ellipsize="end"
                 android:fontFamily="@font/museomoderno_bold"
                 android:maxLines="1"
@@ -30,186 +47,204 @@
                 android:textColor="@color/primary_color"
                 android:textSize="35sp" />
 
-            <EditText
-                android:id="@+id/title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="30dp"
-                android:layout_marginTop="30dp"
-                android:background="@drawable/logo_color_border_drawable"
-                android:hint="@string/title"
-                android:nextFocusDown="@+id/description"
-                android:paddingVertical="10dp"
-                android:paddingStart="30dp"
-                android:paddingEnd="10dp"
-                android:singleLine="true"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white" />
+        </LinearLayout>
 
-            <EditText
-                android:id="@+id/description"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginHorizontal="30dp"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/logo_color_border_drawable"
-                android:gravity="start"
-                android:hint="@string/description"
-                android:inputType="text"
-                android:nextFocusDown="@+id/price"
-                android:paddingVertical="10dp"
-                android:paddingStart="30dp"
-                android:paddingEnd="10dp"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never">
 
             <LinearLayout
-                android:id="@+id/attachmentLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="30dp"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/logo_color_border_drawable"
                 android:orientation="vertical"
-                android:paddingVertical="10dp"
-                android:paddingStart="30dp"
-                android:paddingEnd="10dp">
+                android:paddingBottom="20dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:text="@string/attachment"
-                    android:textColor="@color/white" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/attachmentRecyclerView"
+                <EditText
+                    android:id="@+id/title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:overScrollMode="never"
-                    tools:itemCount="3"
-                    tools:listitem="@layout/item_attachment" />
-
-            </LinearLayout>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/addMoreBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_gravity="end"
-                android:layout_marginHorizontal="30dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/logo_color_border_drawable"
-                android:paddingHorizontal="20dp"
-                android:text="@string/add_more"
-                android:textAllCaps="false"
-                app:backgroundTint="@null" />
-
-            <EditText
-                android:id="@+id/price"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="30dp"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/logo_color_border_drawable"
-                android:hint="@string/price"
-                android:imeOptions="actionDone"
-                android:inputType="number"
-                android:paddingVertical="10dp"
-                android:paddingStart="30dp"
-                android:paddingEnd="10dp"
-                android:singleLine="true"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white" />
-
-            <Spinner
-                android:id="@+id/serviceType"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginHorizontal="30dp"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/logo_color_border_drawable"
-                android:paddingStart="10dp"
-                android:popupBackground="@color/selected_color"
-                android:paddingEnd="10dp"
-                android:singleLine="true" />
-
-            <EditText
-                android:id="@+id/startDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="30dp"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/logo_color_border_drawable"
-                android:hint="@string/start_date"
-                android:nextFocusDown="@+id/description"
-                android:paddingVertical="10dp"
-                android:paddingStart="30dp"
-                android:paddingEnd="10dp"
-                android:singleLine="true"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white" />
-
-            <EditText
-                android:id="@+id/endDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="30dp"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/logo_color_border_drawable"
-                android:hint="@string/end_date"
-                android:nextFocusDown="@+id/description"
-                android:paddingVertical="10dp"
-                android:paddingStart="30dp"
-                android:paddingEnd="10dp"
-                android:singleLine="true"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="30dp"
-                android:layout_marginTop="30dp"
-                android:gravity="center_horizontal"
-                android:orientation="horizontal">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/cancelBtn"
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/primary_color_border_drawable"
-                    android:letterSpacing="0"
-                    android:text="@string/cancel"
-                    android:textAllCaps="false"
+                    android:layout_marginHorizontal="30dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/logo_color_border_drawable"
+                    android:hint="@string/title"
+                    android:nextFocusDown="@+id/description"
+                    android:paddingVertical="10dp"
+                    android:paddingStart="30dp"
+                    android:paddingEnd="10dp"
+                    android:singleLine="true"
                     android:textColor="@color/white"
-                    app:backgroundTint="@null"
-                    app:icon="@drawable/icon_back"
-                    app:iconGravity="textStart"
-                    app:iconTint="@color/white" />
+                    android:textColorHint="@color/white" />
+
+                <EditText
+                    android:id="@+id/description"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_marginHorizontal="30dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/logo_color_border_drawable"
+                    android:gravity="start"
+                    android:hint="@string/description"
+                    android:inputType="text"
+                    android:nextFocusDown="@+id/price"
+                    android:paddingVertical="10dp"
+                    android:paddingStart="30dp"
+                    android:paddingEnd="10dp"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white" />
+
+                <LinearLayout
+                    android:id="@+id/attachmentLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="30dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/logo_color_border_drawable"
+                    android:orientation="vertical"
+                    android:paddingVertical="10dp"
+                    android:paddingStart="30dp"
+                    android:paddingEnd="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:text="@string/attachment"
+                        android:textColor="@color/white" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/attachmentRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:overScrollMode="never"
+                        tools:itemCount="3"
+                        tools:listitem="@layout/item_attachment" />
+
+                </LinearLayout>
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/summaryBtn"
-                    android:layout_width="0dp"
+                    android:id="@+id/addMoreBtn"
+                    android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_weight="1"
-                    android:backgroundTint="@color/logo_color"
-                    android:insetTop="0dp"
-                    android:insetBottom="0dp"
-                    android:letterSpacing="0"
-                    android:text="@string/summary"
+                    android:layout_gravity="end"
+                    android:layout_marginHorizontal="30dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/logo_color_border_drawable"
+                    android:paddingHorizontal="20dp"
+                    android:text="@string/add_more"
                     android:textAllCaps="false"
-                    android:textColor="@color/selected_color"
-                    app:cornerRadius="10dp"
-                    app:icon="@drawable/icon_next"
-                    app:iconGravity="textEnd"
-                    app:iconTint="@color/selected_color" />
+                    app:backgroundTint="@null" />
 
+                <EditText
+                    android:id="@+id/price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="30dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/logo_color_border_drawable"
+                    android:hint="@string/price"
+                    android:imeOptions="actionDone"
+                    android:inputType="number"
+                    android:paddingVertical="10dp"
+                    android:paddingStart="30dp"
+                    android:paddingEnd="10dp"
+                    android:singleLine="true"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white" />
+
+                <Spinner
+                    android:id="@+id/serviceType"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginHorizontal="30dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/logo_color_border_drawable"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:popupBackground="@color/selected_color"
+                    android:singleLine="true" />
+
+                <EditText
+                    android:id="@+id/startDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="30dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/logo_color_border_drawable"
+                    android:hint="@string/start_date"
+                    android:nextFocusDown="@+id/description"
+                    android:paddingVertical="10dp"
+                    android:paddingStart="30dp"
+                    android:paddingEnd="10dp"
+                    android:singleLine="true"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white" />
+
+                <EditText
+                    android:id="@+id/endDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="30dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/logo_color_border_drawable"
+                    android:hint="@string/end_date"
+                    android:nextFocusDown="@+id/description"
+                    android:paddingVertical="10dp"
+                    android:paddingStart="30dp"
+                    android:paddingEnd="10dp"
+                    android:singleLine="true"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white" />
             </LinearLayout>
 
-        </LinearLayout>
-    </ScrollView>
+        </ScrollView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/buttonLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/cancelBtn"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="1"
+            android:background="@drawable/primary_color_border_drawable"
+            android:letterSpacing="0"
+            android:text="@string/cancel"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:backgroundTint="@null"
+            app:icon="@drawable/icon_back"
+            app:iconGravity="textStart"
+            app:iconTint="@color/white" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/summaryBtn"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="20dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/logo_color"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:letterSpacing="0"
+            android:text="@string/summary"
+            android:textAllCaps="false"
+            android:textColor="@color/selected_color"
+            app:cornerRadius="10dp"
+            app:icon="@drawable/icon_next"
+            app:iconGravity="textEnd"
+            app:iconTint="@color/selected_color" />
+
+    </LinearLayout>
 </RelativeLayout>

@@ -26,6 +26,7 @@ import com.example.stepupandroid.helper.CustomDialog
 import com.example.stepupandroid.model.Attachment
 import com.example.stepupandroid.model.param.OrderServiceParam
 import com.example.stepupandroid.model.param.OrderServiceSummaryParam
+import com.example.stepupandroid.ui.HomeActivity
 import com.example.stepupandroid.viewmodel.OrderServiceViewModel
 import java.io.File
 import java.util.Calendar
@@ -74,6 +75,12 @@ class OrderServiceActivity : AppCompatActivity() {
         }
 
         binding.cancelBtn.setOnClickListener {
+            val intent = Intent(this, HomeActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+        }
+
+        binding.backBtn.setOnClickListener {
             finish()
         }
 

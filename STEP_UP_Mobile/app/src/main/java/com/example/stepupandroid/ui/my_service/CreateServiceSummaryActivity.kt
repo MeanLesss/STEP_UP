@@ -29,7 +29,7 @@ class CreateServiceSummaryActivity : AppCompatActivity() {
 
         viewModel = CreateServiceViewModel(this)
 
-        binding.cancelBtn.setOnClickListener {
+        binding.backBtn.setOnClickListener {
             finish()
         }
 

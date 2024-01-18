@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.stepupandroid.R
 import com.example.stepupandroid.databinding.ActivityTermAndAgreementBinding
+import com.example.stepupandroid.ui.HomeActivity
 
 class TermAndAgreementActivity : AppCompatActivity() {
     private lateinit var binding: ActivityTermAndAgreementBinding
@@ -23,6 +24,12 @@ class TermAndAgreementActivity : AppCompatActivity() {
 
         binding.checkBox.setOnCheckedChangeListener { _, isChecked ->
             binding.nextBtn.isEnabled = isChecked
+        }
+
+        binding.cancelBtn.setOnClickListener {
+            val intent = Intent(this, HomeActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
         }
 
         binding.backBtn.setOnClickListener {
