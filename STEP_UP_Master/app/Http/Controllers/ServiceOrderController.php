@@ -14,6 +14,7 @@ use Yajra\DataTables\Facades\DataTables;
 use App\Http\Controllers\EmailController;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\MasterController;
+use stdClass;
 
 class ServiceOrderController extends Controller
 {
@@ -52,7 +53,7 @@ class ServiceOrderController extends Controller
                             }
                             $item->attachments = $attachments;
                         }else{
-                            $item->attachments = [];
+                            $item->attachments = new stdClass;
                         }
                     }
                     return $item;
@@ -77,63 +78,84 @@ class ServiceOrderController extends Controller
         }
     }
 
-    public function showOrdersForFreelancer(){
-        if(Auth::user()->tokenCan( 'serviceOrder:view')){
-            $result = ServiceOrder::where('freelancer_id',Auth::user()->id)->get();
-            if($result){
-                // $order_by = User::select('name')->where('id',$result->order_by)->first();
-                // $request->merge(['order_by_name' => Carbon::now()]);
-                // foreach( $result as $data ){
-                    // }
-                $result->transform(function ($item, $key) {
-                    $masterController = new MasterController();
-                    $status = $masterController->checkServiceStatus($item->order_status);
-                    $item->stringStatus = $status;
-                    if(isset($item->order_attachments) ){
-                        $attachments = json_decode($item->order_attachments, true);
-                        if(is_array($attachments) && count($attachments) > 0){
-                            foreach($attachments as &$attachment){
-                                $attachment = asset('storage/'.$attachment);
-                            }
-                            $item->order_attachments = $attachments;
-                        }else{
-                            $item->order_attachments = [];
-                        }
+    public function showOrdersForAll($isOrder = true){ //True for my orderand false for my work
+        try{
+            $isOrder = filter_var($isOrder, FILTER_VALIDATE_BOOLEAN);
+            if(Auth::user()->tokenCan( 'serviceOrder:view')){
+                if(Auth::user()->role == 100){
+                    if($isOrder){ //True for my work and false for my order
+                        $result = ServiceOrder::where('order_by',Auth::user()->id)->order('created_at','desc')->get();
+                    }else{
+                        $result = ServiceOrder::where('freelancer_id',Auth::user()->id)->get();
                     }
-                    if(isset($item->completed_attachments) ){
-                        $attachments = json_decode($item->completed_attachments, true);
-                        if(is_array($attachments) && count($attachments) > 0){
-                            foreach($attachments as &$attachment){
-                                $attachment = asset('storage/'.$attachment);
+                }else if(Auth::user()->role == 101){
+                    $result = ServiceOrder::where('order_by',Auth::user()->id)->get();
+                }else if(Auth::user()->role == 1000){
+                    $result = ServiceOrder::where('freelancer_id',Auth::user()->id)->get();
+                }
+                if($result){
+                    // $order_by = User::select('name')->where('id',$result->order_by)->first();
+                    // $request->merge(['order_by_name' => Carbon::now()]);
+                    // foreach( $result as $data ){
+                        // }
+                    $result->transform(function ($item, $key) {
+                        $masterController = new MasterController();
+                        $status = $masterController->checkServiceStatus($item->order_status);
+                        $item->stringStatus = $status;
+                        if(isset($item->order_attachments) ){
+                            if(is_string($item->order_attachments)){
+                                $attachments = json_decode($item->order_attachments, true);
+                                if(is_array($attachments) && count($attachments) > 0){
+                                    foreach($attachments as &$attachment){
+                                        $attachment = asset('storage/'.$attachment);
+                                    }
+                                    $item->order_attachments = $attachments;
+                                }else{
+                                    $item->order_attachments= new stdClass;
+                                }
                             }
-                            $item->completed_attachments = $attachments;
-                        }else{
-                            $item->completed_attachments = [];
                         }
-                    }
-                    return $item;
-                });
-                return response()->json([
-                    'verified' => true,
-                    'status' =>  'success',
-                    'msg' => 'Success',
-                    'data'=>['result'=>$result],
-                ],200);
+                        if(isset($item->completed_attachments) ){
+                            $attachments = json_decode($item->completed_attachments, true);
+                            if(is_array($attachments) && count($attachments) > 0){
+                                foreach($attachments as &$attachment){
+                                    $attachment = asset('storage/'.$attachment);
+                                }
+                                $item->completed_attachments = $attachments;
+                            }else{
+                                $item->completed_attachments= new stdClass;
+                            }
+                        }
+                        return $item;
+                    });
+                    return response()->json([
+                        'verified' => true,
+                        'status' =>  'success',
+                        'msg' => 'Success',
+                        'data'=>['result'=>$result],
+                    ],200);
+                }else{
+                    return response()->json([
+                        'verified' => false,
+                        'status' =>  'error',
+                        'msg' => 'Retrive failed! Nothing found!',
+                        // 'data'=>['result'=>$result],
+                    ],401);
+                }
             }else{
                 return response()->json([
                     'verified' => false,
                     'status' =>  'error',
-                    'msg' => 'Retrive failed! Nothing found!',
-                    // 'data'=>['result'=>$result],
+                    'msg' => 'Please Login to view purchase!',
                 ],401);
+
             }
-        }else{
+        }catch(Exception $ex){
             return response()->json([
                 'verified' => false,
                 'status' =>  'error',
-                'msg' => 'Please Login to view purchase!',
-            ],401);
-
+                'msg' =>  Str::limit($ex->getMessage(), 150, '...'),
+            ],500);
         }
     }
 
@@ -202,11 +224,27 @@ class ServiceOrderController extends Controller
         }
     }
     public function ShowSummary(Request $request){
+        $validator = Validator::make($request->all(), [
+            'service_id' => 'required',
+            'isAgreementAgreed' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'verified' => false,
+                'status' =>  'error',
+                'msg' =>  'Something wrong with the field!',
+                // 'error_msg' => $validator->errors(),
+            ],401);
+        }
         if(Auth::user()->tokenCan('service:purchase')){
             if($request->isAgreementAgreed == 1){
                 // return $this->store($request);
                 $service = Service::where('id',$request->service_id)->first();
                 $serviceOrder = new ServiceOrder($request->all());
+
+                if($service && $serviceOrder){
+
 
                 if($request->hasFile('attachment_files')) {
                     $fileNames = array();
@@ -226,13 +264,22 @@ class ServiceOrderController extends Controller
                 $serviceOrder->tax = '10% Tax will be included.';
                 $serviceOrder->price = '$'.$service->price;
                 $serviceOrder->totalPrice = '$'.$priceWithTax;
+                $serviceOrder->taxAmount = '$'.$priceWithTax-$service->price;
 
                 return response()->json([
                     'verified' => true,
                     'status' =>  'success',
                     'msg' => 'Summary',
-                    'data'=> ['resuilt'=>$serviceOrder]
+                    'data'=> ['result'=>$serviceOrder]
                 ],200);
+            }else{
+                return response()->json([
+                    'verified' => false,
+                    'status' =>  'error',
+                    'msg' =>  'Service not found!',
+                    // 'error_msg' => $validator->errors(),
+                ],401);
+            }
             }else{
                 return response()->json([
                     'verified' => true,
@@ -249,8 +296,6 @@ class ServiceOrderController extends Controller
 
         }
     }
-
-
 
     /**
      * Store a newly created resource in storage.
@@ -280,6 +325,22 @@ class ServiceOrderController extends Controller
 
             if(Auth::user()->tokenCan('service:purchase')){
                 try{
+                    $service = Service::where('id',$request->service_id)->first();
+                    if(!isset($service)){
+                        return response()->json([
+                            'verified' => false,
+                            'status' =>  'error',
+                            'msg' => 'Service not found! Invalid Service! You can contact our support if it still occur.',
+                        ],401);
+                    }
+                    if($service->created_by == Auth::user()->id){
+                        return response()->json([
+                            'verified' => false,
+                            'status' =>  'error',
+                            'msg' => 'Sorry you can not order your own service.',
+                        ],401);
+                    }
+
                     //check user balance
                     $userDetail = UserDetail::where('user_id',Auth::user()->id)->first();
                     if(isset($userDetail) && $userDetail->balance <= 0 ){
@@ -290,14 +351,6 @@ class ServiceOrderController extends Controller
                         ],401);
                     }
 
-                    $service = Service::where('id',$request->service_id)->first();
-                    if(!isset($service)){
-                        return response()->json([
-                            'verified' => false,
-                            'status' =>  'error',
-                            'msg' => 'Service not found! Invalid Service! You can contact our support if it still occur.',
-                        ],401);
-                    }
 
                     $taxRate = 0.10; // 10% tax
                     $priceWithTax = $service->price * (1 + $taxRate);
@@ -323,7 +376,7 @@ class ServiceOrderController extends Controller
                             'status' =>  'warning',
                             'msg' => "You're already bought the service and still in progress !",
                             'data'=>['result'=>$orderCheck],
-                        ],200);
+                        ],401);
                     }
 
                     $userDetail->balance -= $priceWithTax;
@@ -354,7 +407,11 @@ class ServiceOrderController extends Controller
                         // $array = json_decode($json, true);
                         // return var_dump($array);
                         $serviceOrder->order_attachments = json_encode($filePaths,JSON_UNESCAPED_SLASHES);
+                        $serviceOrder->completed_attachments = json_encode(new stdClass);
                         // $serviceOrder->order_attachments = json_encode($filePaths);
+                    }else{
+                        $serviceOrder->order_attachments = json_encode(new stdClass);
+                        $serviceOrder->completed_attachments = json_encode(new stdClass);
                     }
 
                 }catch(Exception $e){
@@ -375,7 +432,7 @@ class ServiceOrderController extends Controller
                 $serviceOrder->save();
                 $service->increment('service_ordered_count');
                 $emailController = new EmailController();
-                // Send alert email (Turn back on when linode approve)
+                // Send alert email to client
                 $subject = 'Order Success';
                 $content = 'Dear '.Auth::user()->name.',' . "\n\n" .
                 'Your order has been successfully placed and is currently awaiting acceptance from the freelancer.' . "\n\n" .
@@ -389,6 +446,27 @@ class ServiceOrderController extends Controller
                 'Thank you for choosing our services.';
 
                 $emailController->sendTextEmail(Auth::user()->email, $subject, $content);
+
+
+                //Send email to freelancer
+
+                $emailController = new EmailController();
+                $freelancer = User::where('id',$service->created_by)->first();
+                $subject2 = 'New Order';
+                $content2 = 'Dear '. $freelancer->name.',' . "\n\n" .
+                Auth::user()->name .' has place an order on your service.'. $service->title . "\n\n" .
+                'Order Details:' . "\n" .
+                'Order ID: ' . $serviceOrder->id . "\n" .
+                'Service ID: ' . $service->id . "\n" .
+                'Service Title: ' . $service->title . "\n" .
+                'Price: $' . $service->price . "\n\n" .
+                'A full refund will be made within 7days if you did not accept the order.' . "\n\n" .
+                'Thank you for choosing our services.';
+
+                $emailController->sendTextEmail($freelancer->email, $subject2, $content2);
+
+
+
 
                 return response()->json([
                     'verified' => true,
@@ -417,24 +495,20 @@ class ServiceOrderController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id) //$id is serviceOrder id
+    public function show(string $id, $isClient = false) //$id is serviceOrder id , true for client false for freelancer
     {
+        $isClient = filter_var($isClient, FILTER_VALIDATE_BOOLEAN);
         //View specific ordered service
         if(Auth::user()->tokenCan('serviceOrder:view')){
-            if(Auth::user()->role == 100){
-
+            if(!$isClient){
                 $orderCheck = ServiceOrder::where('id',$id)
                 ->where('freelancer_id',Auth::user()->id)
                 // ->whereIn('order_status', [0, 1, 2])
                 ->first();
-            }else if(Auth::user()->role == 101){
+                // return var_dump([$id,Auth::user()->id,Auth::user()->name]);
+            }else {
                 $orderCheck = ServiceOrder::where('id',$id)
                 ->where('order_by',Auth::user()->id)
-                // ->whereIn('order_status', [0, 1, 2])
-                ->first();
-            }else if(Auth::user()->role == 1000){
-                $orderCheck = ServiceOrder::where('id',$id)
-                ->where('freelancer_id',Auth::user()->id)
                 // ->whereIn('order_status', [0, 1, 2])
                 ->first();
             }
@@ -444,20 +518,30 @@ class ServiceOrderController extends Controller
                 $stringStatus = $masterController->checkServiceStatus($orderCheck->order_status);
                 $orderCheck->stringStatus = $stringStatus;
 
-                $attachments = json_decode($orderCheck->order_attachments,true);
+                // $attachmentsString = json_encode($orderCheck->order_attachments);
+                $attachmentsString = $orderCheck->order_attachments;
+                $attachments = json_decode($attachmentsString,true);
                 foreach($attachments as &$attachment){
                     // $attachment = env('APP_URL').$attachment;
                     $attachment = asset('storage/'.$attachment);
                 }
-                $orderCheck->order_attachments = $attachments;
+                $orderCheck->order_attachments = count($attachments) <= 0 ? new stdClass() : $attachments;
                 //Get current service detail
                 $orderCheck->service = Service::select('title','description','price','requirement','discount')
                 ->where('id',$orderCheck->service_id)
                 ->first();
-                //Get client detail
-                $orderCheck->client = User::select('name','email')
-                ->where('id',$orderCheck->order_by)
-                ->first();
+
+                //Get contact detail
+                if(!$isClient){
+                    $orderCheck->contact = User::select('name','email')
+                    ->where('id',$orderCheck->order_by)
+                    ->first();
+
+                }else{
+                    $orderCheck->contact = User::select('name','email')
+                    ->where('id',$orderCheck->freelancer_id)
+                    ->first();
+                }
                 // $orderCheck->isReadOnly  = true;
                 return response()->json([
                     'verified' => true,
@@ -505,10 +589,40 @@ class ServiceOrderController extends Controller
             ->first();
             if(isset($orderCheck)){
 
+                if($orderCheck->status != 0){
+                    return response()->json([
+                        'verified' => false,
+                        'status' =>  'error',
+                        'msg' => "Sorry you can not accept the order other than pending order!",
+                    ],401);
+                }
+
                 $status = $request->isAccept ? 1 : -1;
                 $message = $request->isAccept ? 'The order has been accepted ! You can start now.': 'The order has been cancel!';
-                $orderCheck->update(['order_status'=>$status]);
+                $orderCheck->update([
+                    'order_status'=>$status,
+                    'accepted_at' => Carbon::now(),
+                    'start_at' => Carbon::now()
+                ]);
                 // $orderCheck->isReadOnly  = true;
+
+                $emailController = new EmailController();
+                // Send alert email to client
+                $client = User::where('id',$orderCheck->order_by)->first();
+                $emailStatus = $request->isAccept ? ' accepted ': 'cancelled' ;
+                $subject = 'Order Confrimation';
+                $content = 'Dear '.$client->name.',' . "\n\n" .
+                'Your order has been'. $emailStatus .' by the freelancer.' . "\n\n" .
+                'Order Details:' . "\n" .
+                'Order ID: ' . $orderCheck->id . "\n" .
+                'Service ID: ' . $orderCheck->service_id . "\n" .
+                'Order Title: ' . $orderCheck->order_title . "\n" .
+                'Order Description: ' . $orderCheck->order_description . "\n" .
+
+                'Thank you for choosing our services.';
+
+                $emailController->sendTextEmail($client->email, $subject, $content);
+
                 return response()->json([
                     'verified' => true,
                     'status' =>  'success',

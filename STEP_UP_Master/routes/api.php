@@ -69,14 +69,17 @@ Route::get('/service/agreement',[ServiceOrderController::class,'showAgreement'])
 Route::post('/service/purchase-summary/',[ServiceOrderController::class,'ShowSummary'])->middleware('auth:sanctum');
 Route::post('/service/confirm-purchase/',[ServiceOrderController::class,'confirmPurchase'])->middleware('auth:sanctum');
 Route::post('/service/purchase',[ServiceOrderController::class,'store'])->middleware('auth:sanctum');
-Route::get('/service/ordered/freelancer',[ServiceOrderController::class,'showOrdersForFreelancer'])->middleware('auth:sanctum');
+Route::get('/service/ordered/freelancer/{isOrder}',[ServiceOrderController::class,'showOrdersForAll'])->middleware('auth:sanctum');
 
 Route::get('/my-service/view',[ServiceController::class ,'showAllMyService'])->middleware('auth:sanctum') ;
 
-Route::get('/order-service/{id}/view',[ServiceOrderController::class ,'show'])->middleware('auth:sanctum') ;
+Route::get('/order-service/{id}/view/{isClient}',[ServiceOrderController::class ,'show'])->middleware('auth:sanctum') ;
 Route::post('/order-service/{id}/accept',[ServiceOrderController::class ,'accept'])->middleware('auth:sanctum') ;
 
 
 //Transaction part
 Route::post('/balance/top-up',[TrancsactionController::class ,'topUpBalance'])->middleware('auth:sanctum') ;
+Route::post('/client/cancellationBeforeDueDate',[TrancsactionController::class ,'clientCancelBeforeDueDate'])->middleware('auth:sanctum') ;
+Route::post('/client/cancellationAfterDueDate',[TrancsactionController::class ,'ClientCancelAfterDueDate'])->middleware('auth:sanctum') ;
+Route::post('/freelancer/cancellationBeforeDueDate',[TrancsactionController::class ,'freelancerCancelBeforeDueDate'])->middleware('auth:sanctum') ;
 
