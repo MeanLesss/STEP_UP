@@ -19,19 +19,20 @@ import Popup from "./components/PopUp.js";
 import LoginForm from "./LoginForm.js";
 import { warning, red } from '@mui/material/colors';
 
-export default function Login() {
+export default function Login(props) {
   const theme = useTheme();
   const [openPopup, setOpenPopup] = useState(false)
+  const [openLogin, setOpenLogin] = useState(false)
+  const [signIn, setSignIn] = useState(false); 
   const back = () => {
-    setOpenPopup(false);
-};
+    setOpenPopup(false);   
+  };
+
   const closePopup = (event, reason) => {
     if (reason === 'backdropClick') {
-        setOpenPopup(false);
+        setOpenPopup(false);      
     }
-    
-    
-};
+  };
   return (
     <>
 
@@ -46,17 +47,27 @@ export default function Login() {
                         border: 1,borderColor: '#FAFF00',borderLeft: 0, background:'#0D0C22' }}>
                 <CardContent sx={{ flex: '1 0 auto' }}>
                 <Typography component="div" variant="h5" sx={{color:'white',paddingTop:'20px',textAlign:'center'}} >
-                    Create a new account
+                {props.isSignIn ? "Sign in to your account" : "Create a new account"}
                 </Typography>
                 <Typography variant="subtitle1" sx={{color:'white',textAlign:'center'}} component="div">
-                    Already have account?<span style={{color:'#FAFF00'}}>sign in here!</span> 
+                    
+                {props.isSignIn ? "Don't have an account?" : "Already have account?"}
+
+                <span style={{color:'#FAFF00',cursor:"pointer"}} onClick={() => {setSignIn(true);}}> 
+                    {props.isSignIn ? " sign up here! " : ""}
+                    </span> 
+                    <span style={{color:'#FAFF00',cursor:"pointer"}} onClick={() => {setSignIn(false);}}> 
+                    {!props.isSignIn ? " sign in here!" : ""}
+                    </span> 
+                    
                 </Typography>
                 </CardContent>
                 <Box sx={{ alignItems: 'center', px: 6, pt: 2 }}>
                     <Button variant="outlined" sx={{my:1,width:'250px',borderRadius:'12px'}} startIcon={<GoogleIcon />} color='warning' >
                         Continue with Google
                     </Button> 
-                    <Button variant="outlined" startIcon={<MailIcon />} sx={{my:1,width:'250px',borderRadius:'12px'}} onClick={()=>{setOpenPopup(true);}}>
+                    <Button variant="outlined" startIcon={<MailIcon />} sx={{my:1,width:'250px',borderRadius:'12px'}} 
+                    onClick={()=>{setOpenPopup(true);}}>
                         Continue with Email
                     </Button> 
                     <Button variant="outlined" sx={{my:1,width:'250px',borderRadius:'12px'}} style={{color:"#FAFF00"}} startIcon={<PersonIcon />}>
@@ -66,14 +77,22 @@ export default function Login() {
             </Box>
         
         </Card>
-
+        
         <Popup
-                title="Employee Form"
+             
                 openPopup={openPopup}
                 setOpenPopup={setOpenPopup}
             >
                 <LoginForm closePopup={back} />
             </Popup>
+
+            <Popup
+             
+             openPopup={signIn}
+             setOpenPopup={setSignIn}
+         >
+             <Login/>
+         </Popup>
     </>
   );
 };
