@@ -18,9 +18,9 @@ class MyWorkFragment : Fragment(), MyWorkAdapter.OnWorkSelected {
     private lateinit var binding: FragmentMyWorkBinding
     private lateinit var viewModel: MyWorkViewModel
 
-    override fun onWorkSelected(orderId: Int) {
+    override fun onWorkSelected(workId: Int) {
         val intent = Intent(requireActivity(), MyWorkDetailActivity::class.java)
-        intent.putExtra("orderId", orderId)
+        intent.putExtra("workId", workId)
         startActivity(intent)
     }
 

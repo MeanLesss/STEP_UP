@@ -30,8 +30,13 @@ class SignUpChooseJobActivity : AppCompatActivity() {
 
         from = intent.getStringExtra("from").orEmpty()
 
+        binding.nextBtn.isEnabled = false
+
         jobOptions.forEach { textView ->
-            textView.setOnClickListener { updateSelection(it as TextView) }
+            textView.setOnClickListener {
+                updateSelection(it as TextView)
+                binding.nextBtn.isEnabled = true
+            }
         }
 
         binding.cancelBtn.setOnClickListener {

@@ -12,7 +12,7 @@ import com.example.stepupandroid.helper.ApiKey
 import com.example.stepupandroid.helper.Constants
 import com.example.stepupandroid.helper.SharedPreferenceUtil
 import com.example.stepupandroid.ui.dialog.CustomDialog
-import com.example.stepupandroid.ui.fragment.MyOrderFragment
+import com.example.stepupandroid.ui.my_order.MyOrderFragment
 import com.example.stepupandroid.ui.my_service.MyServiceFragment
 import com.example.stepupandroid.ui.my_work.MyWorkFragment
 import com.example.stepupandroid.ui.profile.ProfileFragment

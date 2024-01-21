@@ -11,6 +11,7 @@ import com.example.stepupandroid.model.param.SignUpAsGuestParam
 import com.example.stepupandroid.model.param.SignUpParam
 import com.example.stepupandroid.model.response.GetUserResponse
 import com.example.stepupandroid.model.response.LoginResponse
+import com.example.stepupandroid.model.response.MyOrderResponse
 import com.example.stepupandroid.model.response.MyServiceResponse
 import com.example.stepupandroid.model.response.MyWorkResponse
 import com.example.stepupandroid.model.response.OrderDetailResponse
@@ -87,6 +88,11 @@ class ApiImp : ApiManager() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
+    fun getMyOrder(): Observable<ApiResWrapper<MyOrderResponse>> =
+        mAllService.getMyOrder(Header.getHeaderWithAuth())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
     fun getServiceDetails(serviceId: Int): Observable<ApiResWrapper<ServiceDetailResponse>> =
         mAllService.getServiceDetail(serviceId, Header.getHeaderWithAuth())
             .subscribeOn(Schedulers.io())
@@ -119,8 +125,17 @@ class ApiImp : ApiManager() {
     }
 
     fun getOrderDetail(orderId: Int): Observable<ApiResWrapper<OrderDetailResponse>> =
-        mAllService.getOrderDetail(orderId, Header.getHeaderWithAuth())
+        mAllService.getOrderDetail(Header.getHeaderWithAuth(), orderId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
+    fun acceptOrder(body: HashMap<String, Boolean>, orderId: Int): Observable<ApiResWrapper<JsonElement>> =
+        mAllService.acceptOrder(Header.getHeaderWithAuth(), body, orderId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    fun freelancerCancel(body: HashMap<String, String>): Observable<ApiResWrapper<JsonElement>> =
+        mAllService.freelancerCancel(Header.getHeader(), body)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
 }

@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.stepupandroid.R
+import com.example.stepupandroid.helper.Constants
 import com.example.stepupandroid.helper.Util
 import com.example.stepupandroid.model.response.MyWork
 
@@ -24,7 +25,7 @@ class MyWorkAdapter(
     RecyclerView.Adapter<MyWorkAdapter.ItemViewHolder>() {
 
     interface OnWorkSelected {
-        fun onWorkSelected(orderId: Int)
+        fun onWorkSelected(workId: Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -58,7 +59,7 @@ class MyWorkAdapter(
         if (backgroundDrawable is GradientDrawable) {
             // Set the stroke color
             when (currentItem.stringStatus) {
-                "Declined" -> {
+                Constants.Declined -> {
                     backgroundDrawable.setStroke(
                         5,
                         ContextCompat.getColor(context, R.color.status_declined)
@@ -75,7 +76,7 @@ class MyWorkAdapter(
                     )
                 }
 
-                "Pending" -> {
+                Constants.Pending -> {
                     backgroundDrawable.setStroke(
                         5,
                         ContextCompat.getColor(context, R.color.status_pending)
@@ -92,7 +93,7 @@ class MyWorkAdapter(
                     )
                 }
 
-                "In Progress" -> {
+                Constants.InProgress -> {
                     backgroundDrawable.setStroke(
                         5,
                         ContextCompat.getColor(context, R.color.status_in_progress)
@@ -109,7 +110,7 @@ class MyWorkAdapter(
                     )
                 }
 
-                "In Review" -> {
+                Constants.InReview -> {
                     backgroundDrawable.setStroke(
                         5,
                         ContextCompat.getColor(context, R.color.status_in_review)
@@ -126,7 +127,7 @@ class MyWorkAdapter(
                     )
                 }
 
-                "Success" -> {
+                Constants.Success -> {
                     backgroundDrawable.setStroke(
                         5,
                         ContextCompat.getColor(context, R.color.status_success)
@@ -143,7 +144,7 @@ class MyWorkAdapter(
                     )
                 }
 
-                "Fail" -> {
+                Constants.Fail -> {
                     backgroundDrawable.setStroke(
                         5,
                         ContextCompat.getColor(context, R.color.status_declined)

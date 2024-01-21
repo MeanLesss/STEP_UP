@@ -25,7 +25,9 @@
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Title"
+                android:maxLines="1"
+                android:maxEms="7"
+                android:ellipsize="end"
                 android:textColor="@color/white"
                 android:textSize="24sp" />
 
@@ -69,7 +71,7 @@
             android:layout_height="150dp"
             android:layout_marginTop="10dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/sample_image"
+            android:src="@drawable/step_up_logo"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.RoundCornerImageView" />
 
         <TextView
@@ -79,7 +81,6 @@
             android:layout_marginTop="10dp"
             android:ellipsize="end"
             android:maxLines="3"
-            android:text="Description"
             android:textColor="@color/white"
             android:textSize="13sp" />
 
@@ -94,7 +95,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="Service type:"
+                android:text="@string/service_type_text"
                 android:textColor="@color/white"
                 android:textSize="13sp" />
 
@@ -104,7 +105,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="5dp"
-                android:text="Software Development"
                 android:textColor="@color/white"
                 android:textSize="13sp" />
 
@@ -121,23 +121,22 @@
                 android:id="@+id/startDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1-Sep-2023"
                 android:textColor="@color/grey"
                 android:textSize="13sp" />
 
-            <ImageButton
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="5dp"
                 android:backgroundTint="@android:color/transparent"
+                android:contentDescription="@string/service_attachment"
                 android:src="@drawable/icon_arrow" />
 
             <TextView
                 android:id="@+id/endDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2-Sep-2023"
                 android:textColor="@color/grey"
                 android:textSize="13sp" />
 
@@ -156,7 +155,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="View"
+                        android:text="@string/view"
                         android:textColor="@color/white"
                         android:textSize="13sp" />
 

@@ -7,6 +7,7 @@ import com.example.stepupandroid.model.param.SignUpAsGuestParam
 import com.example.stepupandroid.model.param.SignUpParam
 import com.example.stepupandroid.model.response.GetUserResponse
 import com.example.stepupandroid.model.response.LoginResponse
+import com.example.stepupandroid.model.response.MyOrderResponse
 import com.example.stepupandroid.model.response.MyServiceResponse
 import com.example.stepupandroid.model.response.MyWorkResponse
 import com.example.stepupandroid.model.response.OrderDetailResponse
@@ -72,10 +73,15 @@ interface ServiceAPI {
     ): Observable<ApiResWrapper<GetUserResponse>>
 
 
-    @GET("api/service/ordered/freelancer")
+    @GET("api/service/ordered/freelancer/false")
     fun getMyWork(
         @HeaderMap headers: Map<String, String>,
     ): Observable<ApiResWrapper<MyWorkResponse>>
+
+    @GET("api/service/ordered/freelancer/true")
+    fun getMyOrder(
+        @HeaderMap headers: Map<String, String>,
+    ): Observable<ApiResWrapper<MyOrderResponse>>
 
     @GET("api/service/{serviceId}/view")
     fun getServiceDetail(
@@ -98,7 +104,20 @@ interface ServiceAPI {
 
     @GET("api/order-service/{orderId}/view")
     fun getOrderDetail(
-        @Path("orderId") orderId: Int,
-        @HeaderMap headers: Map<String, String>
+        @HeaderMap headers: Map<String, String>,
+        @Path("orderId") orderId: Int
     ): Observable<ApiResWrapper<OrderDetailResponse>>
+
+    @POST("api/order-service/{orderId}/accept")
+    fun acceptOrder(
+        @HeaderMap headers: Map<String, String>,
+        @Body body: HashMap<String, Boolean>,
+        @Path("orderId") orderId: Int,
+    ): Observable<ApiResWrapper<JsonElement>>
+
+    @POST("api/freelancer/cancellationBeforeDueDate")
+    fun freelancerCancel(
+        @HeaderMap headers: Map<String, String>,
+        @Body body: Map<String, String>
+    ): Observable<ApiResWrapper<JsonElement>>
 }

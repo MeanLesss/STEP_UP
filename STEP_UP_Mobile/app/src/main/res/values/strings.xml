@@ -9,6 +9,7 @@
     <string name="next">Next</string>
     <string name="create">Create</string>
     <string name="continues">Continue</string>
+    <string name="view">View</string>
 
     //Home screen
     <string name="my_work">My Works</string>
@@ -69,6 +70,7 @@
     <string name="attachment_text">Attachment :</string>
     <string name="service_has_been_created">Service has been created</string>
     <string name="register_as_freelancer">Register as freelancer to use this feature.</string>
+    <string name="service_attachment">Service Attachment</string>
 
     <string-array name="service_type_spinner">
         <item>Select A Service Type</item>
@@ -84,7 +86,7 @@
     <string name="yes_logout">Yes, Logout</string>
     <string name="are_you_sure_you_want_to_log_out">Are you sure you want to log out?</string>
 
-    //service screen
+    //Service screen
     <string name="buy">Buy</string>
     <string name="order_service">Order Service</string>
     <string name="terms_and_agreement">Terms and Agreement</string>
@@ -99,5 +101,9 @@
     <string name="total_text">Total :</string>
     <string name="note_text">Note :</string>
 
+    //My work screen
+    <string name="decline">Decline</string>
+    <string name="accept">Accept</string>
+    <string name="complete">Complete</string>
 
 </resources>

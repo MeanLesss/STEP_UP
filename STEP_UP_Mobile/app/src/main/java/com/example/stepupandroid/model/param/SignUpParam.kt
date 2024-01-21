@@ -8,6 +8,5 @@ class SignUpParam(
     val password: String,
     val confirm_password: String,
     val phone_number: String,
-    val id_number: String,
     val job_type: String
 )
