@@ -102,8 +102,14 @@ interface ServiceAPI {
         @Part parts: List<MultipartBody.Part>
     ): Observable<ApiResWrapper<JsonElement>>
 
-    @GET("api/order-service/{orderId}/view")
+    @GET("api/order-service/{orderId}/view/true")
     fun getOrderDetail(
+        @HeaderMap headers: Map<String, String>,
+        @Path("orderId") orderId: Int
+    ): Observable<ApiResWrapper<OrderDetailResponse>>
+
+    @GET("api/order-service/{orderId}/view/false")
+    fun getWorkDetail(
         @HeaderMap headers: Map<String, String>,
         @Path("orderId") orderId: Int
     ): Observable<ApiResWrapper<OrderDetailResponse>>

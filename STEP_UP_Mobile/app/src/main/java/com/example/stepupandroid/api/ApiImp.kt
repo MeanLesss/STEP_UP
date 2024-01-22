@@ -129,6 +129,11 @@ class ApiImp : ApiManager() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
+    fun getWorkDetail(orderId: Int): Observable<ApiResWrapper<OrderDetailResponse>> =
+        mAllService.getWorkDetail(Header.getHeaderWithAuth(), orderId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
     fun acceptOrder(body: HashMap<String, Boolean>, orderId: Int): Observable<ApiResWrapper<JsonElement>> =
         mAllService.acceptOrder(Header.getHeaderWithAuth(), body, orderId)
             .subscribeOn(Schedulers.io())
