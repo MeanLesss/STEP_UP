@@ -48,9 +48,6 @@ class ServiceAdapter(private val context: Context, private val itemList: Mutable
         holder.serviceType.text = currentItem.service_type
         holder.price.text = "$" + currentItem.price
 
-        holder.containerLayout.setOnClickListener {
-            listener.onServiceSelected(currentItem.id)
-        }
         val backgroundDrawable = ContextCompat.getDrawable(holder.itemView.context, R.drawable.border_drawable)
         if (backgroundDrawable is GradientDrawable) {
             backgroundDrawable.setStroke(5, ContextCompat.getColor(context, R.color.primary_color))
@@ -59,6 +56,9 @@ class ServiceAdapter(private val context: Context, private val itemList: Mutable
             holder.containerLayout.background = backgroundDrawable
         }
 
+        holder.containerLayout.setOnClickListener {
+            listener.onServiceSelected(currentItem.id)
+        }
     }
 
     override fun getItemCount() = itemList.size

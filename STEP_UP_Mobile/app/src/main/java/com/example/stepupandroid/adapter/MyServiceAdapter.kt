@@ -149,7 +149,6 @@ class MyServiceAdapter(private val context: Context, private val itemList: List<
             holder.containerLayout.background = backgroundDrawable
         }
 
-        // Handle the click event for the "View" button here if needed
         holder.containerLayout.setOnClickListener {
             Toast.makeText(context, "In Progress", Toast.LENGTH_SHORT).show()
         }

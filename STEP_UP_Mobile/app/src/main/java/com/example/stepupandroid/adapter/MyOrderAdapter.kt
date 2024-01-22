@@ -182,9 +182,8 @@ class MyOrderAdapter(
             // Apply the modified drawable to the containerLayout's background
             holder.containerLayout.background = backgroundDrawable
         }
-        // Handle the click event for the "View" button here if needed
-        holder.viewButton.setOnClickListener {
-            // Handle the click event for the "View" button
+
+        holder.containerLayout.setOnClickListener {
             listener.onOrderSelected(currentItem.id)
         }
     }
@@ -200,7 +199,6 @@ class MyOrderAdapter(
         val nameTextView: TextView = itemView.findViewById(R.id.name)
         val startDateTextView: TextView = itemView.findViewById(R.id.startDate)
         val endDateTextView: TextView = itemView.findViewById(R.id.endDate)
-        val viewButton: LinearLayout = itemView.findViewById(R.id.viewButton)
         val containerLayout: LinearLayout = itemView.findViewById(R.id.containerLayout)
     }
 }
