@@ -80,6 +80,27 @@ class WorkDetailViewModel(context: Context) : BaseViewModel(context) {
         })
     }
 
+    private val cancelWorkLiveData: MutableLiveData<String> = MutableLiveData()
+    val cancelWorkResultState: LiveData<String> get() = cancelWorkLiveData
+
+    fun cancelWork(body: HashMap<String, String>) {
+        loadingDialog.show()
+        dataSubscription = ApiImp().freelancerCancel(body).subscribe({
+            loadingDialog.hide()
+            cancelWorkLiveData.value = it.msg
+        }, { throwable ->
+            object : CallBackWrapper() {
+                override fun onCallbackWrapper(
+                    status: ApiManager.NetworkErrorStatus,
+                    data: String
+                ) {
+                    loadingDialog.hide()
+                    errorLiveData.value = data
+                }
+            }.handleException(throwable)
+        })
+    }
+
     // Override the onCleared method to dispose of the subscription
     override fun onCleared() {
         super.onCleared()

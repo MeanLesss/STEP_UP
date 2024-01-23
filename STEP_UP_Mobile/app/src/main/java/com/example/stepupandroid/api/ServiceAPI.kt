@@ -121,16 +121,17 @@ interface ServiceAPI {
         @Path("orderId") orderId: Int,
     ): Observable<ApiResWrapper<JsonElement>>
 
-    @POST("api/freelancer/cancellationBeforeDueDate")
-    fun freelancerCancel(
-        @HeaderMap headers: Map<String, String>,
-        @Body body: Map<String, String>
-    ): Observable<ApiResWrapper<JsonElement>>
-
     @Multipart
     @POST("api/freelancer/submit-work")
     fun submitWork(
         @HeaderMap headers: Map<String, String>,
         @Part parts: List<MultipartBody.Part>
     ): Observable<ApiResWrapper<JsonElement>>
+
+    @POST("api/freelancer/cancellationBeforeDueDate")
+    fun freelancerCancel(
+        @HeaderMap headers: Map<String, String>,
+        @Body body: Map<String, String>
+    ): Observable<ApiResWrapper<JsonElement>>
+
 }

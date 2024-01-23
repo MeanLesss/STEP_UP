@@ -140,11 +140,6 @@ class ApiImp : ApiManager() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
-    fun freelancerCancel(body: HashMap<String, String>): Observable<ApiResWrapper<JsonElement>> =
-        mAllService.freelancerCancel(Header.getHeader(), body)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-
     fun submitWork(submitWorkParam: SubmitWorkParam): Observable<ApiResWrapper<JsonElement>> {
         // Prepare params map
         val params = mapOf(
@@ -161,4 +156,9 @@ class ApiImp : ApiManager() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
+
+    fun freelancerCancel(body: HashMap<String, String>): Observable<ApiResWrapper<JsonElement>> =
+        mAllService.freelancerCancel(Header.getHeaderWithAuth(), body)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
 }

@@ -5,11 +5,13 @@
     <string name="back">Back</string>
     <string name="cancel">Cancel</string>
     <string name="okay">Okay</string>
+    <string name="ok">OK</string>
     <string name="skip">Skip</string>
     <string name="next">Next</string>
     <string name="create">Create</string>
     <string name="continues">Continue</string>
     <string name="view">View</string>
+    <string name="confirm">Confirm</string>
 
     //Home screen
     <string name="my_work">My Works</string>
@@ -111,12 +113,14 @@
     <string name="expected_date_text">Expected date :</string>
     <string name="accepted_at_text">Accepted at :</string>
     <string name="order_by_text">Order by :</string>
-
-    //My order screen
-    <string name="freelancer_text">Freelancer :</string>
     <string name="no_file_selected">No file selected</string>
     <string name="select_file">Select File</string>
     <string name="upload">Upload</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="cancel_description_text">Cancel Description :</string>
+
+    //My order screen
+    <string name="freelancer_text">Freelancer :</string>
 
 
 </resources>

@@ -18,11 +18,13 @@ import com.example.stepupandroid.helper.Util
 import com.example.stepupandroid.model.Attachment
 import com.example.stepupandroid.model.param.SubmitWorkParam
 import com.example.stepupandroid.ui.HomeActivity
+import com.example.stepupandroid.ui.dialog.CancelDialog
 import com.example.stepupandroid.ui.dialog.CustomDialog
 import com.example.stepupandroid.ui.dialog.SelectFileDialog
 import com.example.stepupandroid.viewmodel.WorkDetailViewModel
 
-class MyWorkDetailActivity : AppCompatActivity(), SelectFileDialog.OnFileSelectedListener {
+class MyWorkDetailActivity : AppCompatActivity(), SelectFileDialog.OnFileSelectedListener,
+    CancelDialog.OnCancelListener {
     private lateinit var binding: ActivityMyWorkDetailBinding
     private lateinit var viewModel: WorkDetailViewModel
 
@@ -30,7 +32,7 @@ class MyWorkDetailActivity : AppCompatActivity(), SelectFileDialog.OnFileSelecte
     private var isUpdate = false
 
     private var workId = 0
-    private var serviceId  = 0
+    private var serviceId = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,10 +90,10 @@ class MyWorkDetailActivity : AppCompatActivity(), SelectFileDialog.OnFileSelecte
         }
 
         binding.cancelBtn.setOnClickListener {
-            Toast.makeText(this, "In Progress", Toast.LENGTH_SHORT).show()
-//            val body = HashMap<String, Boolean>()
-//            body["isAccept"] = false
-//            viewModel.acceptOrder(body, orderId)
+            val dialog =
+                CancelDialog("You will get 5 credit score deducted for cancel before expected end date!")
+            dialog.setOnCancelListener(this)
+            dialog.show(supportFragmentManager, "CancelDialog")
         }
 
         binding.completeBtn.setOnClickListener {
@@ -108,6 +110,14 @@ class MyWorkDetailActivity : AppCompatActivity(), SelectFileDialog.OnFileSelecte
             attachments = listOf(attachment)
         )
         viewModel.submitWork(body)
+    }
+
+    override fun onCancel(description: String) {
+        val body = HashMap<String, String>()
+        body["order_id"] = workId.toString()
+        body["service_id"] = serviceId.toString()
+        body["cancel_desc"] = description
+        viewModel.cancelWork(body)
     }
 
     @SuppressLint("SetTextI18n")
@@ -177,6 +187,16 @@ class MyWorkDetailActivity : AppCompatActivity(), SelectFileDialog.OnFileSelecte
         }
 
         viewModel.submitWorkResultState.observe(this) {
+            isUpdate = true
+            val customDialog = CustomDialog("", it, Constants.Success)
+            customDialog.onDismissListener = {
+                viewModel.getWorkDetail(workId)
+            }
+
+            customDialog.show(supportFragmentManager, "CustomDialog")
+        }
+
+        viewModel.cancelWorkResultState.observe(this) {
             isUpdate = true
             val customDialog = CustomDialog("", it, Constants.Success)
             customDialog.onDismissListener = {
