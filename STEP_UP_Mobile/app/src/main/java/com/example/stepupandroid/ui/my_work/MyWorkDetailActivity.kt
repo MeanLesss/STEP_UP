@@ -91,7 +91,7 @@ class MyWorkDetailActivity : AppCompatActivity(), SelectFileDialog.OnFileSelecte
 
         binding.cancelBtn.setOnClickListener {
             val dialog =
-                CancelDialog("You will get 5 credit score deducted for cancel before expected end date!")
+                CancelDialog("If you cancel before the expected end date, your credit score will be reduced by 5 points.")
             dialog.setOnCancelListener(this)
             dialog.show(supportFragmentManager, "CancelDialog")
         }

@@ -37,14 +37,14 @@ class OrderDetailViewModel(context: Context) : BaseViewModel(context) {
         })
     }
 
-    private val acceptOrderLiveData: MutableLiveData<String> = MutableLiveData()
-    val acceptOrderResultState: LiveData<String> get() = acceptOrderLiveData
+    private val confirmOrderLiveData: MutableLiveData<String> = MutableLiveData()
+    val confirmOrderResultState: LiveData<String> get() = confirmOrderLiveData
 
-    fun acceptOrder(body: HashMap<String, Boolean>, orderId: Int) {
+    fun confirmOrder(body: HashMap<String, Boolean>, orderId: Int) {
         loadingDialog.show()
         dataSubscription = ApiImp().acceptOrder(body, orderId).subscribe({
             loadingDialog.hide()
-            acceptOrderLiveData.value = it.msg
+            confirmOrderLiveData.value = it.msg
         }, { throwable ->
             object : CallBackWrapper() {
                 override fun onCallbackWrapper(
@@ -58,6 +58,26 @@ class OrderDetailViewModel(context: Context) : BaseViewModel(context) {
         })
     }
 
+    private val cancelOrderLiveData: MutableLiveData<String> = MutableLiveData()
+    val cancelOrderResultState: LiveData<String> get() = cancelOrderLiveData
+
+    fun cancelOrder(body: HashMap<String, String>) {
+        loadingDialog.show()
+        dataSubscription = ApiImp().clientCancel(body).subscribe({
+            loadingDialog.hide()
+            cancelOrderLiveData.value = it.msg
+        }, { throwable ->
+            object : CallBackWrapper() {
+                override fun onCallbackWrapper(
+                    status: ApiManager.NetworkErrorStatus,
+                    data: String
+                ) {
+                    loadingDialog.hide()
+                    errorLiveData.value = data
+                }
+            }.handleException(throwable)
+        })
+    }
     // Override the onCleared method to dispose of the subscription
     override fun onCleared() {
         super.onCleared()

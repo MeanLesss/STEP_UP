@@ -15,10 +15,12 @@ import com.example.stepupandroid.databinding.ActivityMyWorkDetailBinding
 import com.example.stepupandroid.helper.Constants
 import com.example.stepupandroid.helper.Util
 import com.example.stepupandroid.ui.HomeActivity
+import com.example.stepupandroid.ui.dialog.CancelDialog
 import com.example.stepupandroid.ui.dialog.CustomDialog
 import com.example.stepupandroid.viewmodel.OrderDetailViewModel
 
-class MyOrderDetailActivity : AppCompatActivity() {
+class MyOrderDetailActivity : AppCompatActivity(),
+    CancelDialog.OnCancelListener {
     private lateinit var binding: ActivityMyOrderDetailBinding
     private lateinit var viewModel: OrderDetailViewModel
 
@@ -26,6 +28,7 @@ class MyOrderDetailActivity : AppCompatActivity() {
     private var isUpdate = false
 
     private var orderId = 0
+    private var serviceId = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMyOrderDetailBinding.inflate(layoutInflater)
@@ -34,7 +37,7 @@ class MyOrderDetailActivity : AppCompatActivity() {
         viewModel = OrderDetailViewModel(this)
         initViewModel()
 
-        val orderId = intent.getIntExtra("orderId", 0)
+        orderId = intent.getIntExtra("orderId", 0)
 
         viewModel.getOrderDetail(orderId)
 
@@ -70,13 +73,26 @@ class MyOrderDetailActivity : AppCompatActivity() {
         }
 
         binding.cancelBtn.setOnClickListener {
-            Toast.makeText(this, "In Progress", Toast.LENGTH_SHORT).show()
+            val dialog =
+                CancelDialog("If you cancel, you will only receive a refund of 50% of your payment.")
+            dialog.setOnCancelListener(this)
+            dialog.show(supportFragmentManager, "CancelDialog")
         }
+    }
+
+    override fun onCancel(description: String) {
+        val body = HashMap<String, String>()
+        body["order_id"] = orderId.toString()
+        body["service_id"] = serviceId.toString()
+        body["cancel_desc"] = description
+        viewModel.cancelOrder(body)
     }
 
     @SuppressLint("SetTextI18n")
     private fun initViewModel() {
         viewModel.orderDetailResultState.observe(this) { result ->
+            serviceId = result.result.service_id
+
             if (result.result.order_attachments.isNotEmpty()) {
                 val resourceList: MutableList<String> = mutableListOf()
                 result.result.order_attachments.keys.forEach {
@@ -122,6 +138,26 @@ class MyOrderDetailActivity : AppCompatActivity() {
                 binding.cancelBtnLayout.visibility = View.VISIBLE
             }
 
+        }
+
+        viewModel.confirmOrderResultState.observe(this) {
+            isUpdate = true
+            val customDialog = CustomDialog("", it, Constants.Success)
+            customDialog.onDismissListener = {
+                viewModel.getOrderDetail(orderId)
+            }
+
+            customDialog.show(supportFragmentManager, "CustomDialog")
+        }
+
+        viewModel.cancelOrderResultState.observe(this) {
+            isUpdate = true
+            val customDialog = CustomDialog("", it, Constants.Success)
+            customDialog.onDismissListener = {
+                viewModel.getOrderDetail(orderId)
+            }
+
+            customDialog.show(supportFragmentManager, "CustomDialog")
         }
 
         viewModel.errorResultState.observe(this) {

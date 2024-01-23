@@ -84,6 +84,7 @@
     <string name="logout">Logout</string>
     <string name="id_number">ID/Passport number</string>
     <string name="job">Job</string>
+    <string name="balance">Balance</string>
     <string name="title_activity_my_work_detail">MyWorkDetailActivity</string>
     <string name="yes_logout">Yes, Logout</string>
     <string name="are_you_sure_you_want_to_log_out">Are you sure you want to log out?</string>

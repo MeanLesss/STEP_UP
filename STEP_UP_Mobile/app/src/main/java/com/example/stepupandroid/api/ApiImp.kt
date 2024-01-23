@@ -161,4 +161,9 @@ class ApiImp : ApiManager() {
         mAllService.freelancerCancel(Header.getHeaderWithAuth(), body)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+
+    fun clientCancel(body: HashMap<String, String>): Observable<ApiResWrapper<JsonElement>> =
+        mAllService.clientCancel(Header.getHeaderWithAuth(), body)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
 }

@@ -41,6 +41,7 @@ class ProfileFragment : Fragment() {
             binding.phoneNumber.text = "0" + results.user_detail.phone
             binding.job.text = results.user_detail.job_type
             binding.idNumber.text = results.user_detail.id_card_no
+            binding.balance.text = "$" + results.user_detail.balance
         }
 
         viewModel.errorResultState.observe(requireActivity()) {
