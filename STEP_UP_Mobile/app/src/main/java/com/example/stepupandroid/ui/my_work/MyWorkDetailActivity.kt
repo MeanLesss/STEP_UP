@@ -2,6 +2,7 @@ package com.example.stepupandroid.ui.my_work
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -14,11 +15,14 @@ import com.example.stepupandroid.adapter.ResourceAdapter
 import com.example.stepupandroid.databinding.ActivityMyWorkDetailBinding
 import com.example.stepupandroid.helper.Constants
 import com.example.stepupandroid.helper.Util
+import com.example.stepupandroid.model.Attachment
+import com.example.stepupandroid.model.param.SubmitWorkParam
 import com.example.stepupandroid.ui.HomeActivity
 import com.example.stepupandroid.ui.dialog.CustomDialog
+import com.example.stepupandroid.ui.dialog.SelectFileDialog
 import com.example.stepupandroid.viewmodel.WorkDetailViewModel
 
-class MyWorkDetailActivity : AppCompatActivity() {
+class MyWorkDetailActivity : AppCompatActivity(), SelectFileDialog.OnFileSelectedListener {
     private lateinit var binding: ActivityMyWorkDetailBinding
     private lateinit var viewModel: WorkDetailViewModel
 
@@ -26,6 +30,7 @@ class MyWorkDetailActivity : AppCompatActivity() {
     private var isUpdate = false
 
     private var workId = 0
+    private var serviceId  = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,16 +95,26 @@ class MyWorkDetailActivity : AppCompatActivity() {
         }
 
         binding.completeBtn.setOnClickListener {
-            Toast.makeText(this, "In Progress", Toast.LENGTH_SHORT).show()
-//            val body = HashMap<String, Boolean>()
-//            body["isAccept"] = true
-//            viewModel.acceptOrder(body, orderId)
+            val dialog = SelectFileDialog()
+            dialog.setOnFileSelectedListener(this)
+            dialog.show(supportFragmentManager, "SelectFileDialog")
         }
+    }
+
+    override fun onFileSelected(attachment: Attachment) {
+        val body = SubmitWorkParam(
+            order_id = workId.toString(),
+            service_id = serviceId.toString(),
+            attachments = listOf(attachment)
+        )
+        viewModel.submitWork(body)
     }
 
     @SuppressLint("SetTextI18n")
     private fun initViewModel() {
         viewModel.workDetailResultState.observe(this) { result ->
+            serviceId = result.result.service_id
+
             if (result.result.order_attachments.isNotEmpty()) {
                 val resourceList: MutableList<String> = mutableListOf()
                 result.result.order_attachments.keys.forEach {
@@ -107,7 +122,7 @@ class MyWorkDetailActivity : AppCompatActivity() {
                 }
                 binding.resourceRecyclerView.layoutManager = LinearLayoutManager(this)
                 binding.resourceRecyclerView.adapter = ResourceAdapter(resourceList)
-            }else{
+            } else {
                 binding.resource.visibility = View.GONE
             }
 
@@ -153,7 +168,17 @@ class MyWorkDetailActivity : AppCompatActivity() {
 
         viewModel.acceptWorkResultState.observe(this) {
             isUpdate = true
-            val customDialog = CustomDialog("", it, Constants.Warning)
+            val customDialog = CustomDialog("", it, Constants.Success)
+            customDialog.onDismissListener = {
+                viewModel.getWorkDetail(workId)
+            }
+
+            customDialog.show(supportFragmentManager, "CustomDialog")
+        }
+
+        viewModel.submitWorkResultState.observe(this) {
+            isUpdate = true
+            val customDialog = CustomDialog("", it, Constants.Success)
             customDialog.onDismissListener = {
                 viewModel.getWorkDetail(workId)
             }

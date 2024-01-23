@@ -9,6 +9,7 @@ import com.example.stepupandroid.model.param.OrderServiceSummaryParam
 import com.example.stepupandroid.model.param.OrderServiceParam
 import com.example.stepupandroid.model.param.SignUpAsGuestParam
 import com.example.stepupandroid.model.param.SignUpParam
+import com.example.stepupandroid.model.param.SubmitWorkParam
 import com.example.stepupandroid.model.response.GetUserResponse
 import com.example.stepupandroid.model.response.LoginResponse
 import com.example.stepupandroid.model.response.MyOrderResponse
@@ -143,4 +144,21 @@ class ApiImp : ApiManager() {
         mAllService.freelancerCancel(Header.getHeader(), body)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+
+    fun submitWork(submitWorkParam: SubmitWorkParam): Observable<ApiResWrapper<JsonElement>> {
+        // Prepare params map
+        val params = mapOf(
+            "order_id" to submitWorkParam.order_id,
+            "service_id" to submitWorkParam.service_id
+        )
+        val stringParts = Util.prepareStringParts(params)
+        val fileParts = Util.prepareFileParts(context, submitWorkParam.attachments)
+
+        // Combine string parts and file parts
+        val allParts = stringParts.map { MultipartBody.Part.createFormData(it.key, null, it.value) } + fileParts
+
+        return mAllService.submitWork(Header.getHeaderAuthOnly(), allParts)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
 }

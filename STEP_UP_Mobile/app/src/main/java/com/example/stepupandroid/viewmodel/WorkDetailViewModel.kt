@@ -7,7 +7,9 @@ import androidx.lifecycle.MutableLiveData
 import com.example.stepupandroid.api.ApiImp
 import com.example.stepupandroid.api.ApiManager
 import com.example.stepupandroid.base.BaseViewModel
+import com.example.stepupandroid.model.param.SubmitWorkParam
 import com.example.stepupandroid.model.response.OrderDetailResponse
+import com.google.gson.JsonElement
 import io.reactivex.disposables.Disposable
 
 class WorkDetailViewModel(context: Context) : BaseViewModel(context) {
@@ -44,6 +46,27 @@ class WorkDetailViewModel(context: Context) : BaseViewModel(context) {
         dataSubscription = ApiImp().acceptOrder(body, workId).subscribe({
             loadingDialog.hide()
             acceptWorkLiveData.value = it.msg
+        }, { throwable ->
+            object : CallBackWrapper() {
+                override fun onCallbackWrapper(
+                    status: ApiManager.NetworkErrorStatus,
+                    data: String
+                ) {
+                    loadingDialog.hide()
+                    errorLiveData.value = data
+                }
+            }.handleException(throwable)
+        })
+    }
+
+    private val submitWorkLiveData: MutableLiveData<String> = MutableLiveData()
+    val submitWorkResultState: LiveData<String> get() = submitWorkLiveData
+
+    fun submitWork(body: SubmitWorkParam) {
+        loadingDialog.show()
+        dataSubscription = ApiImp().submitWork(body).subscribe({
+            loadingDialog.hide()
+            submitWorkLiveData.value = it.msg
         }, { throwable ->
             object : CallBackWrapper() {
                 override fun onCallbackWrapper(

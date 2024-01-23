@@ -126,4 +126,11 @@ interface ServiceAPI {
         @HeaderMap headers: Map<String, String>,
         @Body body: Map<String, String>
     ): Observable<ApiResWrapper<JsonElement>>
+
+    @Multipart
+    @POST("api/freelancer/submit-work")
+    fun submitWork(
+        @HeaderMap headers: Map<String, String>,
+        @Part parts: List<MultipartBody.Part>
+    ): Observable<ApiResWrapper<JsonElement>>
 }
