@@ -311,7 +311,6 @@ class MyWorkDetailActivity : AppCompatActivity(), SelectFileDialog.OnFileSelecte
         request.setDescription("Downloading work...")
         request.setTitle("Download")
         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
-        request.setMimeType("application/zip")
 
         val manager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
         val downloadId = manager.enqueue(request)
