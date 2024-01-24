@@ -13,9 +13,12 @@ import com.example.stepupandroid.databinding.ActivityTopUpBalanceBinding
 import com.example.stepupandroid.helper.Constants
 import com.example.stepupandroid.helper.Util
 import com.example.stepupandroid.ui.HomeActivity
+import com.example.stepupandroid.ui.dialog.CustomDialog
+import com.example.stepupandroid.viewmodel.TopUpBalanceViewModel
 
 class TopUpBalanceActivity : AppCompatActivity() {
     private lateinit var binding: ActivityTopUpBalanceBinding
+    private lateinit var viewModel: TopUpBalanceViewModel
 
     private var isUpdate = false
     private var isUserInteraction = false
@@ -37,15 +40,26 @@ class TopUpBalanceActivity : AppCompatActivity() {
         binding = ActivityTopUpBalanceBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        viewModel = TopUpBalanceViewModel(this)
+        initViewModel()
+
+        binding.topUpBtn.isEnabled = false
+
         binding.backBtn.setOnClickListener {
             if (isUpdate) {
                 val intent = Intent(this, HomeActivity::class.java)
                 intent.putExtra("from", Constants.Profile)
                 startActivity(intent)
-                finish()
+                finishAffinity()
             } else {
                 finish()
             }
+        }
+
+        binding.topUpBtn.setOnClickListener {
+            val body = HashMap<String, String>()
+            body["balance"] = amount
+            viewModel.topUp(body)
         }
 
         topUpOption.forEach { textView ->
@@ -59,20 +73,10 @@ class TopUpBalanceActivity : AppCompatActivity() {
                 if (isUserInteraction) {
                     clearSelection()
                 }
-                val rotationAngle = progress.toFloat() / binding.slider.max * 360
-                binding.slider.thumb.mutate()  // Mutate the drawable to not share its state with any other drawable
+                binding.topUpBtn.isEnabled = progress >= 5
 
-                // Manually applying the rotation
-                binding.slider.thumb.level = 10000  // Required for RotateDrawable
-                (binding.slider.thumb as? RotateDrawable)?.apply {
-                    bounds = binding.slider.thumb.bounds
-                    this.drawable?.level = 10000
-                    this.toDegrees = rotationAngle
-                }
-
-                val actualValue = progress + 5  // Adjusting the value
-                amount = actualValue.toString()
-                binding.amount.text = Util.formatCurrency(actualValue.toString())
+                amount = progress.toString()
+                binding.amount.text = Util.formatCurrency(progress.toString())
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
@@ -85,6 +89,23 @@ class TopUpBalanceActivity : AppCompatActivity() {
         })
     }
 
+    private fun initViewModel(){
+        viewModel.topUpResultState.observe(this) {
+            isUpdate = true
+            val customDialog = CustomDialog("", it, Constants.Success)
+            customDialog.onDismissListener = {
+                binding.backBtn.performClick()
+            }
+
+            customDialog.show(supportFragmentManager, "CustomDialog")
+        }
+
+        viewModel.errorResultState.observe(this) {
+            val customDialog = CustomDialog("", it, Constants.Warning)
+
+            customDialog.show(supportFragmentManager, "CustomDialog")
+        }
+    }
     private fun updateSelection(selectedOption: TextView) {
         val defaultDrawable =
             ResourcesCompat.getDrawable(resources, R.drawable.primary_color_border_drawable, null)
@@ -95,7 +116,7 @@ class TopUpBalanceActivity : AppCompatActivity() {
         selectedOption.background = selectedDrawable
 
         isUserInteraction = false
-        binding.slider.progress = selectedOption.text.toString().filter { it.isDigit() }.toInt() - 5
+        binding.slider.progress = selectedOption.text.toString().filter { it.isDigit() }.toInt()
     }
 
     private fun clearSelection(){

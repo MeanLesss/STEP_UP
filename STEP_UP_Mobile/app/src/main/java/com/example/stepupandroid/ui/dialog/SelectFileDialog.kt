@@ -104,7 +104,6 @@ class SelectFileDialog : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return Dialog(requireContext(), theme).apply {
             setCancelable(false)
-            setCanceledOnTouchOutside(false)
         }
     }
 }

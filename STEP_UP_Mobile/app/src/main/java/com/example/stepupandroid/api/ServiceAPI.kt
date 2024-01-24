@@ -134,10 +134,22 @@ interface ServiceAPI {
         @Body body: Map<String, String>
     ): Observable<ApiResWrapper<JsonElement>>
 
-    @POST("api/client/cancellationBeforeDueDate")
-    fun clientCancel(
+    @POST("api/client/cancel/pending")
+    fun clientCancelPending(
         @HeaderMap headers: Map<String, String>,
         @Body body: Map<String, String>
+    ): Observable<ApiResWrapper<JsonElement>>
+
+    @POST("api/client/cancellationBeforeDueDate")
+    fun clientCancelInProgress(
+        @HeaderMap headers: Map<String, String>,
+        @Body body: Map<String, String>
+    ): Observable<ApiResWrapper<JsonElement>>
+
+    @POST("api/balance/top-up")
+    fun topUp(
+        @HeaderMap headers: Map<String, String>,
+        @Body body: HashMap<String, String>,
     ): Observable<ApiResWrapper<JsonElement>>
 
 }

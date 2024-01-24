@@ -8,7 +8,6 @@ import com.example.stepupandroid.api.ApiImp
 import com.example.stepupandroid.api.ApiManager
 import com.example.stepupandroid.base.BaseViewModel
 import com.example.stepupandroid.model.response.OrderDetailResponse
-import com.google.gson.JsonElement
 import io.reactivex.disposables.Disposable
 
 class OrderDetailViewModel(context: Context) : BaseViewModel(context) {
@@ -61,9 +60,27 @@ class OrderDetailViewModel(context: Context) : BaseViewModel(context) {
     private val cancelOrderLiveData: MutableLiveData<String> = MutableLiveData()
     val cancelOrderResultState: LiveData<String> get() = cancelOrderLiveData
 
-    fun cancelOrder(body: HashMap<String, String>) {
+    fun cancelOrderPending(body: HashMap<String, String>) {
         loadingDialog.show()
-        dataSubscription = ApiImp().clientCancel(body).subscribe({
+        dataSubscription = ApiImp().clientCancelPending(body).subscribe({
+            loadingDialog.hide()
+            cancelOrderLiveData.value = it.msg
+        }, { throwable ->
+            object : CallBackWrapper() {
+                override fun onCallbackWrapper(
+                    status: ApiManager.NetworkErrorStatus,
+                    data: String
+                ) {
+                    loadingDialog.hide()
+                    errorLiveData.value = data
+                }
+            }.handleException(throwable)
+        })
+    }
+
+    fun cancelOrderInProgress(body: HashMap<String, String>) {
+        loadingDialog.show()
+        dataSubscription = ApiImp().clientCancelInProgress(body).subscribe({
             loadingDialog.hide()
             cancelOrderLiveData.value = it.msg
         }, { throwable ->

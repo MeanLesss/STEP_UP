@@ -162,8 +162,18 @@ class ApiImp : ApiManager() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
-    fun clientCancel(body: HashMap<String, String>): Observable<ApiResWrapper<JsonElement>> =
-        mAllService.clientCancel(Header.getHeaderWithAuth(), body)
+    fun clientCancelPending(body: HashMap<String, String>): Observable<ApiResWrapper<JsonElement>> =
+        mAllService.clientCancelPending(Header.getHeaderWithAuth(), body)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    fun clientCancelInProgress(body: HashMap<String, String>): Observable<ApiResWrapper<JsonElement>> =
+        mAllService.clientCancelInProgress(Header.getHeaderWithAuth(), body)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    fun topUp(body: HashMap<String, String>): Observable<ApiResWrapper<JsonElement>> =
+        mAllService.topUp(Header.getHeaderWithAuth(), body)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 }

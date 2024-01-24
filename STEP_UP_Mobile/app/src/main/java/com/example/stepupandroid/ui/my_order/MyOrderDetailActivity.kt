@@ -1,23 +1,38 @@
 package com.example.stepupandroid.ui.my_order
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.app.DownloadManager
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
+import android.os.Handler
+import android.os.Looper
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.Toast
+import android.widget.ProgressBar
+import android.widget.TextView
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.stepupandroid.R
 import com.example.stepupandroid.adapter.ResourceAdapter
 import com.example.stepupandroid.databinding.ActivityMyOrderDetailBinding
-import com.example.stepupandroid.databinding.ActivityMyWorkDetailBinding
 import com.example.stepupandroid.helper.Constants
 import com.example.stepupandroid.helper.Util
 import com.example.stepupandroid.ui.HomeActivity
 import com.example.stepupandroid.ui.dialog.CancelDialog
+import com.example.stepupandroid.ui.dialog.ConfirmDialog
 import com.example.stepupandroid.ui.dialog.CustomDialog
 import com.example.stepupandroid.viewmodel.OrderDetailViewModel
+import java.io.File
 
 class MyOrderDetailActivity : AppCompatActivity(),
     CancelDialog.OnCancelListener {
@@ -29,6 +44,9 @@ class MyOrderDetailActivity : AppCompatActivity(),
 
     private var orderId = 0
     private var serviceId = 0
+    private var status = ""
+    private var fileName = ""
+    private var fileUrl = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMyOrderDetailBinding.inflate(layoutInflater)
@@ -46,7 +64,7 @@ class MyOrderDetailActivity : AppCompatActivity(),
                 val intent = Intent(this, HomeActivity::class.java)
                 intent.putExtra("from", Constants.MyOrder)
                 startActivity(intent)
-                finish()
+                finishAffinity()
             } else {
                 finish()
             }
@@ -73,10 +91,25 @@ class MyOrderDetailActivity : AppCompatActivity(),
         }
 
         binding.cancelBtn.setOnClickListener {
-            val dialog =
-                CancelDialog("If you cancel, you will only receive a refund of 50% of your payment.")
-            dialog.setOnCancelListener(this)
-            dialog.show(supportFragmentManager, "CancelDialog")
+            if (status == Constants.Pending) {
+                val dialog =
+                    ConfirmDialog("Are you sure you want to cancel?") {
+                        val body = HashMap<String, String>()
+                        body["order_id"] = orderId.toString()
+                        body["service_id"] = serviceId.toString()
+                        viewModel.cancelOrderPending(body)
+                    }
+                dialog.show(supportFragmentManager, "ConfirmDialog")
+            } else if (status == Constants.InProgress) {
+                val dialog =
+                    CancelDialog("If you cancel, you will only receive a refund of 50% of your payment.")
+                dialog.setOnCancelListener(this)
+                dialog.show(supportFragmentManager, "CancelDialog")
+            }
+        }
+
+        binding.downloadWork.setOnClickListener {
+            checkPermissionAndDownload()
         }
     }
 
@@ -85,13 +118,14 @@ class MyOrderDetailActivity : AppCompatActivity(),
         body["order_id"] = orderId.toString()
         body["service_id"] = serviceId.toString()
         body["cancel_desc"] = description
-        viewModel.cancelOrder(body)
+        viewModel.cancelOrderInProgress(body)
     }
 
     @SuppressLint("SetTextI18n")
     private fun initViewModel() {
         viewModel.orderDetailResultState.observe(this) { result ->
             serviceId = result.result.service_id
+            status = result.result.stringStatus
 
             if (result.result.order_attachments.isNotEmpty()) {
                 val resourceList: MutableList<String> = mutableListOf()
@@ -102,6 +136,15 @@ class MyOrderDetailActivity : AppCompatActivity(),
                 binding.resourceRecyclerView.adapter = ResourceAdapter(resourceList)
             } else {
                 binding.resource.visibility = View.GONE
+            }
+
+            if (result.result.completed_attachments.isNotEmpty()) {
+                fileUrl = result.result.completed_attachments.values.firstOrNull().toString()
+                fileName = result.result.completed_attachments.keys.firstOrNull().toString()
+
+                binding.downloadWork.visibility = View.VISIBLE
+            } else {
+                binding.downloadWork.visibility = View.GONE
             }
 
             binding.buttonLayout.visibility = View.VISIBLE
@@ -168,6 +211,158 @@ class MyOrderDetailActivity : AppCompatActivity(),
 
     }
 
+
+    private val MY_PERMISSIONS_REQUEST_WRITE_STORAGE = 1
+
+    private fun checkPermissionAndDownload() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            // Scoped Storage is being used, no need for WRITE_EXTERNAL_STORAGE permission
+            download()
+        } else {
+            // For older versions, continue using the WRITE_EXTERNAL_STORAGE permission
+            if (ContextCompat.checkSelfPermission(
+                    this, Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    MY_PERMISSIONS_REQUEST_WRITE_STORAGE
+                )
+            } else {
+                download()
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<String>, grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            MY_PERMISSIONS_REQUEST_WRITE_STORAGE -> {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    // Permission was granted, proceed with your operation
+                    download()
+                } else {
+                    // Permission denied, handle the case
+                    val customDialog = CustomDialog(
+                        "Permission denied.",
+                        "Please allow the permission to download.",
+                        Constants.Warning
+                    )
+
+                    customDialog.show(supportFragmentManager, "CustomDialog")
+                }
+                return
+            }
+        }
+    }
+
+    private fun download() {
+        val file = File(
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileUrl
+        )
+        if (file.exists()) {
+            file.delete()
+        }
+
+        val request = DownloadManager.Request(Uri.parse(fileUrl))
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+        request.setDescription("Downloading work...")
+        request.setTitle("Download")
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
+        request.setMimeType("application/zip")
+
+        val manager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        val downloadId = manager.enqueue(request)
+
+        showDownloadProgressDialog()
+
+        val query = DownloadManager.Query().setFilterById(downloadId)
+        val handler = Handler(Looper.getMainLooper())
+        val maxIdleDuration = 30000 // Maximum idle duration in milliseconds
+        var lastProgressUpdateTime = System.currentTimeMillis()
+
+        object : Runnable {
+            override fun run() {
+                val elapsedTime = System.currentTimeMillis() - lastProgressUpdateTime
+                val cursor = manager.query(query)
+
+                if (cursor.moveToFirst()) {
+                    val statusColumnIndex = cursor.getColumnIndex(DownloadManager.COLUMN_STATUS)
+
+                    when (cursor.getInt(statusColumnIndex)) {
+                        DownloadManager.STATUS_SUCCESSFUL -> {
+                            dismissProgressDialog()
+                            val customDialog =
+                                CustomDialog("", "Download Completed.", Constants.Success)
+
+                            customDialog.show(supportFragmentManager, "CustomDialog")
+                        }
+
+                        DownloadManager.STATUS_FAILED -> {
+                            dismissProgressDialog()
+                            val customDialog =
+                                CustomDialog("", "File not found.", Constants.Warning)
+
+                            customDialog.show(supportFragmentManager, "CustomDialog")
+                        }
+
+                        else -> {
+                            if (elapsedTime > maxIdleDuration) {
+                                dismissProgressDialog()
+                                manager.remove(downloadId)
+                                // Handle download timeout/idle here
+                            } else {
+                                val downloadedColumnIndex =
+                                    cursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR)
+                                val totalSizeColumnIndex =
+                                    cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES)
+
+                                if (downloadedColumnIndex >= 0 && totalSizeColumnIndex >= 0) {
+                                    val bytesDownloaded = cursor.getInt(downloadedColumnIndex)
+                                    val bytesTotal = cursor.getInt(totalSizeColumnIndex)
+                                    val progress =
+                                        if (bytesTotal > 0) (bytesDownloaded * 100L / bytesTotal).toInt() else 0
+                                    updateProgressDialog(progress)
+                                    lastProgressUpdateTime = System.currentTimeMillis()
+                                }
+                                handler.postDelayed(this, 1000)
+                            }
+                        }
+                    }
+                }
+                cursor.close()
+            }
+        }.also { handler.post(it) }
+    }
+
+    private lateinit var progressDialog: AlertDialog
+    private lateinit var progressBar: ProgressBar
+    private lateinit var tvProgress: TextView
+
+    private fun showDownloadProgressDialog() {
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.download_dialog, null)
+        progressBar = dialogView.findViewById(R.id.progressBar)
+        tvProgress = dialogView.findViewById(R.id.tvProgress)
+
+        val dialogBuilder = AlertDialog.Builder(this)
+        dialogBuilder.setView(dialogView)
+        dialogBuilder.setCancelable(false)
+
+        progressDialog = dialogBuilder.create()
+        progressDialog.show()
+    }
+
+    private fun updateProgressDialog(progress: Int) {
+        progressBar.progress = progress
+        tvProgress.text = "Downloading work... $progress%"
+    }
+
+    private fun dismissProgressDialog() {
+        progressDialog.dismiss()
+    }
     @Deprecated("Deprecated in Java")
     @SuppressLint("MissingSuperCall")
     override fun onBackPressed() {
