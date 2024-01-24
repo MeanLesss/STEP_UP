@@ -88,6 +88,7 @@
     <string name="title_activity_my_work_detail">MyWorkDetailActivity</string>
     <string name="yes_logout">Yes, Logout</string>
     <string name="are_you_sure_you_want_to_log_out">Are you sure you want to log out?</string>
+    <string name="score">Score</string>
 
     //Service screen
     <string name="buy">Buy</string>
@@ -123,5 +124,8 @@
     //My order screen
     <string name="freelancer_text">Freelancer :</string>
 
+    //Placeholder
+    <string name="_100">100</string>
+    <string name="_0">0</string>
 
 </resources>

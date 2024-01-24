@@ -12,6 +12,7 @@ import com.example.stepupandroid.helper.ApiKey
 import com.example.stepupandroid.helper.Constants
 import com.example.stepupandroid.ui.dialog.CustomDialog
 import com.example.stepupandroid.helper.SharedPreferenceUtil
+import com.example.stepupandroid.helper.Util
 import com.example.stepupandroid.ui.WelcomeActivity
 import com.example.stepupandroid.ui.dialog.LogoutDialog
 import com.example.stepupandroid.viewmodel.ProfileViewModel
@@ -35,13 +36,18 @@ class ProfileFragment : Fragment() {
             LogoutDialog().show(childFragmentManager, "LogoutDialog")
         }
 
+        binding.topUp.setOnClickListener{
+            val intent = Intent(requireActivity(), TopUpBalanceActivity::class.java)
+            startActivity(intent)
+        }
+
         viewModel.getUserResultState.observe(requireActivity()) {results ->
             binding.username.text = results.user_info.name
             binding.email.text = results.user_info.email
             binding.phoneNumber.text = "0" + results.user_detail.phone
             binding.job.text = results.user_detail.job_type
-            binding.idNumber.text = results.user_detail.id_card_no
-            binding.balance.text = "$" + results.user_detail.balance
+            binding.score.text = results.user_detail.credit_score
+            binding.balance.text = "$" + Util.formatStringToDecimal(results.user_detail.balance)
         }
 
         viewModel.errorResultState.observe(requireActivity()) {

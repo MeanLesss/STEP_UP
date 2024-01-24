@@ -6,6 +6,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
@@ -28,15 +29,18 @@ object Util {
     }
 
     fun convertDate(inputPattern: String, outputPattern: String, inputDate: String): String {
-        // Define the input and output date formats
-        val inputFormat = SimpleDateFormat(inputPattern, Locale.getDefault())
-        val outputFormat = SimpleDateFormat(outputPattern, Locale.getDefault())
+        try {
+            val inputFormat = SimpleDateFormat(inputPattern, Locale.getDefault())
+            val outputFormat = SimpleDateFormat(outputPattern, Locale.getDefault())
 
-        // Parse the input date string
-        val parsedDate = inputFormat.parse(inputDate)
+            val parsedDate = inputFormat.parse(inputDate) ?: return ""
 
-        // Format the date into the new format
-        return outputFormat.format(parsedDate?: return "")
+            return outputFormat.format(parsedDate)
+        } catch (e: ParseException) {
+            // Handle the error scenario, possibly logging the error and returning an empty string or a default value
+            // Log.e("DateConversion", "Error parsing the date: $inputDate", e)
+            return inputDate
+        }
     }
 
     fun prepareStringParts(params: Map<String, Any>): Map<String, RequestBody> {
