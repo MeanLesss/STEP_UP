@@ -117,7 +117,7 @@
                     android:layout_gravity="center_horizontal"
                     android:textColor="@color/selected_color"
                     app:cornerRadius="10dp"
-                    android:visibility="visible"/>
+                    android:visibility="gone"/>
             </LinearLayout>
 
 

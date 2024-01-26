@@ -172,6 +172,11 @@ class ApiImp : ApiManager() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
+    fun confirmOrder(body: HashMap<String, String>): Observable<ApiResWrapper<JsonElement>> =
+        mAllService.confirmOrder(Header.getHeaderWithAuth(), body)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
     fun topUp(body: HashMap<String, String>): Observable<ApiResWrapper<JsonElement>> =
         mAllService.topUp(Header.getHeaderWithAuth(), body)
             .subscribeOn(Schedulers.io())

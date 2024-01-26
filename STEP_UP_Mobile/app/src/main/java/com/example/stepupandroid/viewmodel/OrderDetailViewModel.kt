@@ -39,9 +39,9 @@ class OrderDetailViewModel(context: Context) : BaseViewModel(context) {
     private val confirmOrderLiveData: MutableLiveData<String> = MutableLiveData()
     val confirmOrderResultState: LiveData<String> get() = confirmOrderLiveData
 
-    fun confirmOrder(body: HashMap<String, Boolean>, orderId: Int) {
+    fun confirmOrder(body: HashMap<String, String>) {
         loadingDialog.show()
-        dataSubscription = ApiImp().acceptOrder(body, orderId).subscribe({
+        dataSubscription = ApiImp().confirmOrder(body).subscribe({
             loadingDialog.hide()
             confirmOrderLiveData.value = it.msg
         }, { throwable ->

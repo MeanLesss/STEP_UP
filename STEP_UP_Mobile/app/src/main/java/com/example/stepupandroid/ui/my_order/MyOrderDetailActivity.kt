@@ -31,6 +31,7 @@ import com.example.stepupandroid.ui.HomeActivity
 import com.example.stepupandroid.ui.dialog.CancelDialog
 import com.example.stepupandroid.ui.dialog.ConfirmDialog
 import com.example.stepupandroid.ui.dialog.CustomDialog
+import com.example.stepupandroid.ui.dialog.RatingDialog
 import com.example.stepupandroid.viewmodel.OrderDetailViewModel
 import java.io.File
 
@@ -108,6 +109,17 @@ class MyOrderDetailActivity : AppCompatActivity(),
             }
         }
 
+        binding.confirmButton.setOnClickListener {
+            val dialog = RatingDialog { rating ->
+                val body = HashMap<String, String>()
+                body["order_id"] = orderId.toString()
+                body["service_id"] = serviceId.toString()
+                body["rate"] = rating.toString()
+                viewModel.confirmOrder(body)
+            }
+            dialog.show(supportFragmentManager, "RatingDialog")
+        }
+
         binding.downloadWork.setOnClickListener {
             checkPermissionAndDownload()
         }
@@ -177,8 +189,11 @@ class MyOrderDetailActivity : AppCompatActivity(),
             }
 
             binding.cancelBtnLayout.visibility = View.GONE
+            binding.confirmBtnLayout.visibility = View.GONE
             if (result.result.stringStatus == Constants.Pending || result.result.stringStatus == Constants.InProgress) {
                 binding.cancelBtnLayout.visibility = View.VISIBLE
+            } else if (result.result.stringStatus == Constants.InReview) {
+                binding.confirmBtnLayout.visibility = View.VISIBLE
             }
 
         }
@@ -362,6 +377,7 @@ class MyOrderDetailActivity : AppCompatActivity(),
     private fun dismissProgressDialog() {
         progressDialog.dismiss()
     }
+
     @Deprecated("Deprecated in Java")
     @SuppressLint("MissingSuperCall")
     override fun onBackPressed() {

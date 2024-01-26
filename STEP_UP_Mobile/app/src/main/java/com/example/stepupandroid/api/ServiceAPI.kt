@@ -146,6 +146,12 @@ interface ServiceAPI {
         @Body body: Map<String, String>
     ): Observable<ApiResWrapper<JsonElement>>
 
+    @POST("api/client/accept")
+    fun confirmOrder(
+        @HeaderMap headers: Map<String, String>,
+        @Body body: HashMap<String, String>,
+    ): Observable<ApiResWrapper<JsonElement>>
+
     @POST("api/balance/top-up")
     fun topUp(
         @HeaderMap headers: Map<String, String>,

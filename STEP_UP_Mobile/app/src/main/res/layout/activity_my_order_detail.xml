@@ -72,10 +72,10 @@
                     android:id="@+id/resource"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:text="@string/resource"
                     android:textColor="@color/grey"
-                    android:layout_marginTop="10dp"
-                    android:textSize="12sp"/>
+                    android:textSize="12sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/resourceRecyclerView"
@@ -89,10 +89,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:text="@string/description"
                     android:textColor="@color/grey"
-                    android:layout_marginTop="10dp"
-                    android:textSize="12sp"/>
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/orderDescription"
@@ -106,6 +106,8 @@
                     android:id="@+id/downloadWork"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="50dp"
                     android:backgroundTint="@color/logo_color"
                     android:insetTop="0dp"
                     android:insetBottom="0dp"
@@ -113,11 +115,9 @@
                     android:paddingHorizontal="40dp"
                     android:text="Download Work"
                     android:textAllCaps="false"
-                    android:layout_marginTop="50dp"
-                    android:layout_gravity="center_horizontal"
                     android:textColor="@color/selected_color"
-                    app:cornerRadius="10dp"
-                    android:visibility="visible"/>
+                    android:visibility="gone"
+                    app:cornerRadius="10dp" />
 
             </LinearLayout>
 
@@ -352,8 +352,8 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
             android:layout_marginTop="20dp"
-            android:orientation="horizontal"
             android:gravity="center_horizontal"
+            android:orientation="horizontal"
             android:visibility="gone">
 
             <com.google.android.material.button.MaterialButton
@@ -371,6 +371,37 @@
                 app:iconGravity="textStart"
                 app:iconSize="20dp"
                 app:iconTint="@color/status_declined" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/confirmBtnLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/confirmButton"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:backgroundTint="@color/status_success"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:letterSpacing="0"
+                android:paddingHorizontal="40dp"
+                android:text="@string/confirm"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                app:backgroundTint="@null"
+                app:cornerRadius="10dp"
+                app:icon="@drawable/icon_success"
+                app:iconGravity="textStart"
+                app:iconSize="20dp"
+                app:iconTint="@color/white" />
 
         </LinearLayout>
     </LinearLayout>
