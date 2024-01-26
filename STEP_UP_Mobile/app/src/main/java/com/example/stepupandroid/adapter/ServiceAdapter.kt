@@ -70,7 +70,7 @@ class ServiceAdapter(
             holder.discountLayout.visibility = View.GONE
         } else {
             holder.discountLayout.visibility = View.VISIBLE
-            holder.discountPercentage.text = "-$currentItem.discount%"
+            holder.discountPercentage.text = "-" + String.format("%.2f", currentItem.discount) + "%"
         }
 
         holder.containerLayout.setOnClickListener {
