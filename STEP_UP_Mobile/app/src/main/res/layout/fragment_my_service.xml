@@ -31,7 +31,7 @@
             app:fabSize="normal"
             app:tint="@color/logo_color" />
 
-        <TextView
+        <RelativeLayout
             android:id="@+id/registerAsFreelancer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -39,11 +39,36 @@
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
-            android:paddingHorizontal="30dp"
-            android:text="@string/register_as_freelancer"
-            android:textColor="@color/white"
-            android:textSize="25sp"
-            android:visibility="gone" />
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/freelancerText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingHorizontal="30dp"
+                android:text="@string/register_as_freelancer"
+                android:textColor="@color/white"
+                android:textSize="25sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/registerBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_below="@id/freelancerText"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="40dp"
+                android:backgroundTint="@color/logo_color"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:letterSpacing="0"
+                android:paddingHorizontal="40dp"
+                android:text="@string/register"
+                android:textAllCaps="false"
+                android:textColor="@color/selected_color"
+                app:cornerRadius="10dp" />
+
+        </RelativeLayout>
     </RelativeLayout>
 
 

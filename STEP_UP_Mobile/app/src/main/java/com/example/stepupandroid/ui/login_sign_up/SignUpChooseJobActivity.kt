@@ -50,7 +50,6 @@ class SignUpChooseJobActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-
     }
 
     private fun updateSelection(selectedOption: TextView) {

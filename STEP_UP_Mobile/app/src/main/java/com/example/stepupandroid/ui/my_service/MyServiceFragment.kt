@@ -11,6 +11,7 @@ import com.example.stepupandroid.adapter.MyServiceAdapter
 import com.example.stepupandroid.databinding.FragmentMyServiceBinding
 import com.example.stepupandroid.helper.Constants
 import com.example.stepupandroid.ui.dialog.CustomDialog
+import com.example.stepupandroid.ui.profile.RegisterAsFreelancerActivity
 import com.example.stepupandroid.viewmodel.MyServiceViewModel
 
 class MyServiceFragment : Fragment() {
@@ -40,6 +41,15 @@ class MyServiceFragment : Fragment() {
             }
         } else {
             binding.registerAsFreelancer.visibility = View.VISIBLE
+
+            binding.registerBtn.setOnClickListener {
+                requireActivity().startActivity(
+                    Intent(
+                        requireActivity(),
+                        RegisterAsFreelancerActivity::class.java
+                    )
+                )
+            }
         }
 
         return binding.root
