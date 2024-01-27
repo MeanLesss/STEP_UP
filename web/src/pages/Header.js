@@ -6,6 +6,7 @@ import {
   AppBar,
   Button,
   Card,
+  IconButton,
   Paper,
   Tab,
   Tabs,
@@ -18,6 +19,12 @@ import Logo from "../wwwroot/images/LogoYellow.png";
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import DrawerComp from "./components/Drawer.js";
+import { AccountCircle } from "@mui/icons-material";
+import  { ColorModeContext } from "./components/Theme.js";
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
+// import IconButton from '@mui/material/IconButton';
 
 const Header = () => {
   const [value, setValue] = useState();
@@ -33,9 +40,55 @@ const Header = () => {
     }
   };
 
+///theme
+const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
+  const colorMode = React.useContext(ColorModeContext);
 
+//
+
+//
   return (
     <React.Fragment>
+    <ColorModeContext.Provider value={colorMode}>
+      <ThemeProvider theme={theme}>
+      {/* <AppBar  position="static">
+  <Toolbar >
+      {isMatch ? (
+        <>
+          <img src={Logo} sx={{ transform: "scale(2)" }} alt="logo"></img>
+          <DrawerComp />
+        </>
+      ) : (
+        <>
+        <img src={Logo} sx={{ transform: "scale(2)"}} ></img>
+       
+        
+          <div style={{marginLeft:"auto"}} >
+            
+          <IconButton
+              size="large"
+              edge="end"
+              aria-label="account of current user"
+              // aria-controls={menuId}
+              aria-haspopup="true"
+              // onClick={handleProfileMenuOpen}
+              color="inherit"
+            >
+              
+              <AccountCircle />
+            </IconButton>
+            <IconButton edge="end" color="inherit" onClick={colorMode.toggleColorMode}>
+          {colorMode.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+        </IconButton>
+            {theme.palette.mode} mode
+      <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit">
+        {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+      </IconButton>
+          </div>
+        </>
+      )}
+  </Toolbar>
+</AppBar> */}
 <AppBar sx={{ background: "#535A9D"}} position="static">
   <Toolbar >
       {isMatch ? (
@@ -74,6 +127,10 @@ const Header = () => {
       )}
   </Toolbar>
 </AppBar>
+       
+      </ThemeProvider>
+    </ColorModeContext.Provider>
+
 
 
       <Popup

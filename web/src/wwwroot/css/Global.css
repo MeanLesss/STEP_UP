@@ -1,4 +1,7 @@
 :root{
-    --step-up-purple: #7E88DE;
-    --step-up-yellow:#FAFF00;
+    --step-up-purple1: #7E88DE;
+    --step-up-progress:#FAFF00;
+    --step-up-success:#319B9B;
+    --step-up-reject:#AF2A2A;
+    
 }

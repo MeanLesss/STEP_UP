@@ -1,10 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, TextField, Grid, Paper, Card, CardMedia, Typography, Container } from '@mui/material';
 import LoingPicture from '../wwwroot/images/Mask group.png';
+import { createRef } from 'react';
 
 const LoginForm = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+ //login
+ const eref = createRef();
+ const pref = createRef();
+ useEffect(()=>{
+  localStorage.clear();
+},[])
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -14,12 +21,44 @@ const LoginForm = (props) => {
     setPassword(event.target.value);
   };
 
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (email && password) {
+    if (eref && pref) {
       alert('Logged in');
     } else {
       alert('Please enter both email and password');
+    }
+    var myHeaders = new Headers();
+myHeaders.append("Pragma", "no-cache");
+myHeaders.append("Cache-Control", "no-cache");
+myHeaders.append("Content-Type", "application/json");
+myHeaders.append("Access-Control-Allow-Origin", "*");
+
+var raw = JSON.stringify({
+  "email": eref.current.value,
+  "password": pref.current.value
+});
+
+var requestOptions = {
+  method: 'POST',
+  // mode: 'no-cors', // 'cors' by default
+  headers: myHeaders,
+  body: raw,
+  redirect: 'follow'
+};
+
+    var res =  fetch("http://step-up-kh.duckdns.org:168/api/login ", requestOptions)
+      .then(response => response.json())
+      .then(result => { return result })
+      .catch(error => console.log('error', error));
+     console.log(res);
+    if (res.status === 'SUCCESS') {
+      console.log('Go to  dashboard')
+      // console.log('/' + res.user.role.toLowerCase())
+      // localStorage.setItem('user', JSON.stringify(res.user))
+      localStorage.getItem('user_token', res.user_token)
+      // navigate('/' + res.user.role.toLowerCase(), { replace: true })
     }
   };
   const style = {
@@ -53,7 +92,8 @@ const LoginForm = (props) => {
     },
   };
   
-  
+ 
+ 
   
   return (
     <Card sx={{ display: 'flex'   }} >
@@ -74,6 +114,7 @@ const LoginForm = (props) => {
                 fullWidth
                 margin="normal"
                 value={email}
+                inputRef={eref}
                 onChange={handleEmailChange}
                 required
                 sx={styleTextField}
@@ -84,6 +125,7 @@ const LoginForm = (props) => {
                 variant="outlined"
                 fullWidth
                 margin="normal"
+                inputRef={pref}
                 type="password"
                 value={password}
                 onChange={handlePasswordChange}
