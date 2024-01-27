@@ -14,6 +14,13 @@ class MasterController extends Controller
         //
         return view('master');
     }
+    public function calculateTotalAmount($originalPrice, $discount)
+    {
+        $discountAmount = $originalPrice * $discount / 100;
+        $totalAmount = $originalPrice - $discountAmount;
+        return $totalAmount;
+    }
+
     public function checkServiceStatus(int $status){
         $stringStatus = '';
         switch ($status) {
@@ -53,7 +60,7 @@ class MasterController extends Controller
                 $stringStatus = 'Active';
                 break;
             case 2:
-                $stringStatus = 'Cancel';
+                $stringStatus = 'In active';
                 break;
             default:
                 $stringStatus = 'Unknown';

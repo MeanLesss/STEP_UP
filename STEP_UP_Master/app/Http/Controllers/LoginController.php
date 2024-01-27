@@ -139,11 +139,12 @@ class LoginController extends Controller
                     'tranc:top-up',
                     'service:purchase',
                     'free:update'])->plainTextToken;
-            }
-            if(Auth::user()->role == 101){
-                $user_token = Auth::user()->createToken('token',[
+                }
+                if(Auth::user()->role == 101){
+                    $user_token = Auth::user()->createToken('token',[
                     'service:read',
                     'service:view',
+                    'service:update',
                     'service:cancel',
                     'service:purchase',
                     'tranc:top-up',
@@ -189,11 +190,11 @@ class LoginController extends Controller
             'freelancer' => 'required|boolean',
             'name' => 'required_if:guest,false|required_if:freelancer,true',
             'email' => 'required_if:guest,false|required_if:freelancer,true|email',
-            'password' => 'required_if:guest,false|required_if:freelancer,true',
-            'confirm_password' => 'required_if:guest,false|required_if:freelancer,true',
+            'password' => 'required_unless:freelancer,true',
+            'confirm_password' => 'required_unless:freelancer,true',
             'phone_number' => 'required_if:guest,false|required_if:freelancer,true',
             'id_number' => 'required_if:freelancer,true',
-            'job_type' => 'required_if:freelancer,true'
+            'job_type' => 'required_unless:freelancer,false'
         ]);
 
         if ($validator->fails()) {
@@ -233,6 +234,14 @@ class LoginController extends Controller
                     if($request->freelancer){
                         if($userExists->role != 100){
                             $userExists->update(['role'=>100]);
+
+                            $userDetail =  UserDetail::where('user_id',$userExists->id)->first();
+                            $userDetail->phone = $request->phone_number;
+                            $userDetail->id_card_no = $request->id_number;
+                            $userDetail->job_type = $request->job_type;
+                            $userDetail->updated_by = $user->id;
+                            $userDetail->updated_at = Carbon::now();
+                            $userDetail->save();
                             return response()->json([
                                 'verified' => true,
                                 'status' =>  'success',
