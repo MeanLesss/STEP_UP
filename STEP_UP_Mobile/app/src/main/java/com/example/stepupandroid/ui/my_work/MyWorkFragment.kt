@@ -11,6 +11,7 @@ import com.example.stepupandroid.adapter.MyWorkAdapter
 import com.example.stepupandroid.databinding.FragmentMyWorkBinding
 import com.example.stepupandroid.helper.Constants
 import com.example.stepupandroid.ui.dialog.CustomDialog
+import com.example.stepupandroid.ui.profile.RegisterAsFreelancerActivity
 import com.example.stepupandroid.viewmodel.MyWorkViewModel
 
 
@@ -18,9 +19,9 @@ class MyWorkFragment : Fragment(), MyWorkAdapter.OnWorkSelected {
     private lateinit var binding: FragmentMyWorkBinding
     private lateinit var viewModel: MyWorkViewModel
 
-    override fun onWorkSelected(orderId: Int) {
+    override fun onWorkSelected(workId: Int) {
         val intent = Intent(requireActivity(), MyWorkDetailActivity::class.java)
-        intent.putExtra("orderId", orderId)
+        intent.putExtra("workId", workId)
         startActivity(intent)
     }
 
@@ -38,6 +39,15 @@ class MyWorkFragment : Fragment(), MyWorkAdapter.OnWorkSelected {
             viewModel.getMyWork()
         } else {
             binding.registerAsFreelancer.visibility = View.VISIBLE
+
+            binding.registerBtn.setOnClickListener {
+                requireActivity().startActivity(
+                    Intent(
+                        requireActivity(),
+                        RegisterAsFreelancerActivity::class.java
+                    )
+                )
+            }
         }
 
         return binding.root

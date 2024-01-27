@@ -68,6 +68,12 @@ class ServiceDetailActivity : AppCompatActivity() {
                 }
                 binding.imageViewPager.adapter = adapter
                 binding.indicator.setViewPager(binding.imageViewPager)
+            } else {
+                imageUrls.add("")
+                val adapter = ViewPagerAdapter(imageUrls) { imageUrl ->
+                    showFullscreenImage(imageUrl)
+                }
+                binding.imageViewPager.adapter = adapter
             }
 
             binding.title.text = result.result.title

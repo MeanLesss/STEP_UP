@@ -54,6 +54,7 @@ Route::post('/email/verification-notification', function (Request $request) {
 
 // Service part
 Route::post('/service/create',[ServiceController::class,'store'])->middleware('auth:sanctum');
+Route::post('/service/activation',[ServiceController::class ,'updateService'])->middleware('auth:sanctum') ;
 Route::post('/service/{id}/update',[ServiceController::class,'update'])->middleware('auth:sanctum');
 Route::post('/service/data',[ServiceController::class,'getAllServices']);
 
@@ -81,5 +82,8 @@ Route::post('/order-service/{id}/accept',[ServiceOrderController::class ,'accept
 Route::post('/balance/top-up',[TrancsactionController::class ,'topUpBalance'])->middleware('auth:sanctum') ;
 Route::post('/client/cancellationBeforeDueDate',[TrancsactionController::class ,'clientCancelBeforeDueDate'])->middleware('auth:sanctum') ;
 Route::post('/client/cancellationAfterDueDate',[TrancsactionController::class ,'ClientCancelAfterDueDate'])->middleware('auth:sanctum') ;
+Route::post('/client/cancel/pending',[TrancsactionController::class ,'clientCancelWhilePending'])->middleware('auth:sanctum') ;
+Route::post('/client/accept',[TrancsactionController::class ,'clientAcceptTheSubmitWork'])->middleware('auth:sanctum') ;
 Route::post('/freelancer/cancellationBeforeDueDate',[TrancsactionController::class ,'freelancerCancelBeforeDueDate'])->middleware('auth:sanctum') ;
+Route::post('/freelancer/submit-work',[TrancsactionController::class ,'freelancerSubmitWork'])->middleware('auth:sanctum') ;
 

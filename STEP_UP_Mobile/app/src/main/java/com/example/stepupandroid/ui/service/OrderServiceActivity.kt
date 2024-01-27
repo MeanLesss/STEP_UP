@@ -30,7 +30,9 @@ import com.example.stepupandroid.model.param.OrderServiceSummaryParam
 import com.example.stepupandroid.ui.HomeActivity
 import com.example.stepupandroid.viewmodel.OrderServiceViewModel
 import java.io.File
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Locale
 import kotlin.properties.Delegates
 
 class OrderServiceActivity : AppCompatActivity() {
@@ -179,6 +181,8 @@ class OrderServiceActivity : AppCompatActivity() {
     }
     private fun showDatePickerDialog(isStartDate: Boolean) {
         val calendar = Calendar.getInstance()
+        val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
+
         val datePickerDialog = DatePickerDialog(
             this,
             { _, year, month, dayOfMonth ->
@@ -186,14 +190,14 @@ class OrderServiceActivity : AppCompatActivity() {
                     set(year, month, dayOfMonth)
                 }
 
+                val formattedDate = dateFormat.format(selectedDate.time)
+
                 if (isStartDate) {
                     startDate = selectedDate
-                    binding.startDate.setText(
-                        DateFormat.getDateInstance().format(selectedDate.time)
-                    )
+                    binding.startDate.setText(formattedDate)
                 } else {
                     endDate = selectedDate
-                    binding.endDate.setText(DateFormat.getDateInstance().format(selectedDate.time))
+                    binding.endDate.setText(formattedDate)
                 }
             },
             calendar.get(Calendar.YEAR),
@@ -201,7 +205,7 @@ class OrderServiceActivity : AppCompatActivity() {
             calendar.get(Calendar.DAY_OF_MONTH)
         )
 
-        // Setting min date
+        // Setting min and max dates
         datePickerDialog.datePicker.minDate = System.currentTimeMillis() - 1000
         if (isStartDate && endDate != null) {
             datePickerDialog.datePicker.maxDate = endDate!!.timeInMillis

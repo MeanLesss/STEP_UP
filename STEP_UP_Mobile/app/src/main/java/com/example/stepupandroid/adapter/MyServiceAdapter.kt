@@ -10,10 +10,12 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.stepupandroid.R
+import com.example.stepupandroid.helper.Constants
 import com.example.stepupandroid.helper.Util
 import com.example.stepupandroid.model.response.MyServiceItem
 
@@ -56,7 +58,7 @@ class MyServiceAdapter(private val context: Context, private val itemList: List<
         if (backgroundDrawable is GradientDrawable) {
             // Set the stroke color
             when (currentItem.stringStatus) {
-                "Expired/Declined" -> {
+                Constants.ExpiredDeclined -> {
                     backgroundDrawable.setStroke(
                         5,
                         ContextCompat.getColor(context, R.color.status_declined)
@@ -73,7 +75,7 @@ class MyServiceAdapter(private val context: Context, private val itemList: List<
                     )
                 }
 
-                "Pending" -> {
+                Constants.Pending -> {
                     backgroundDrawable.setStroke(
                         5,
                         ContextCompat.getColor(context, R.color.status_pending)
@@ -90,7 +92,7 @@ class MyServiceAdapter(private val context: Context, private val itemList: List<
                     )
                 }
 
-                "Active" -> {
+                Constants.Active-> {
                     backgroundDrawable.setStroke(
                         5,
                         ContextCompat.getColor(context, R.color.status_active)
@@ -107,7 +109,7 @@ class MyServiceAdapter(private val context: Context, private val itemList: List<
                     )
                 }
 
-                "Cancel" -> {
+                Constants.Cancel -> {
                     backgroundDrawable.setStroke(
                         5,
                         ContextCompat.getColor(context, R.color.status_fail)
@@ -147,10 +149,8 @@ class MyServiceAdapter(private val context: Context, private val itemList: List<
             holder.containerLayout.background = backgroundDrawable
         }
 
-        // Handle the click event for the "View" button here if needed
-        holder.viewButton.setOnClickListener {
-            // Handle the click event for the "View" button
-            Log.d("bug test", currentItem.title + " clicked")
+        holder.containerLayout.setOnClickListener {
+            Toast.makeText(context, "In Progress", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -165,7 +165,6 @@ class MyServiceAdapter(private val context: Context, private val itemList: List<
         val descriptionTextView: TextView = itemView.findViewById(R.id.description)
         val startDateTextView: TextView = itemView.findViewById(R.id.startDate)
         val endDateTextView: TextView = itemView.findViewById(R.id.endDate)
-        val viewButton: LinearLayout = itemView.findViewById(R.id.viewButton)
         val containerLayout: LinearLayout = itemView.findViewById(R.id.containerLayout)
     }
 }

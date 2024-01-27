@@ -5,10 +5,14 @@
     <string name="back">Back</string>
     <string name="cancel">Cancel</string>
     <string name="okay">Okay</string>
+    <string name="ok">OK</string>
     <string name="skip">Skip</string>
     <string name="next">Next</string>
     <string name="create">Create</string>
     <string name="continues">Continue</string>
+    <string name="view">View</string>
+    <string name="confirm">Confirm</string>
+    <string name="finish">Finish</string>
 
     //Home screen
     <string name="my_work">My Works</string>
@@ -68,7 +72,7 @@
     <string name="end_date_text">End Date :</string>
     <string name="attachment_text">Attachment :</string>
     <string name="service_has_been_created">Service has been created</string>
-    <string name="register_as_freelancer">Register as freelancer to use this feature.</string>
+    <string name="service_attachment">Service Attachment</string>
 
     <string-array name="service_type_spinner">
         <item>Select A Service Type</item>
@@ -80,11 +84,23 @@
     <string name="logout">Logout</string>
     <string name="id_number">ID/Passport number</string>
     <string name="job">Job</string>
-    <string name="title_activity_my_work_detail">MyWorkDetailActivity</string>
+    <string name="balance">Balance</string>
     <string name="yes_logout">Yes, Logout</string>
     <string name="are_you_sure_you_want_to_log_out">Are you sure you want to log out?</string>
+    <string name="score">Score</string>
+    <string name="top_up">Top Up</string>
+    <string name="amount_text">Amount :</string>>
+    <string name="please_select_an_option">Please select an option</string>
+    <string name="register_as_freelancer">Register as freelancer to use this feature.</string>
+    <string name="register">Register</string>
+    <string name="we_need_addition_info">We need addition info to register you as a freelancer</string>
+    <string name="please_enter_your_info_below">Please enter your info below</string>
+    <string name="national_id">National ID</string>
+    <string name="passport">Passport</string>
+    <string name="id">ID</string>
+    <string name="registered_as_freelancer">Registered as freelancer!</string>
 
-    //service screen
+    //Service screen
     <string name="buy">Buy</string>
     <string name="order_service">Order Service</string>
     <string name="terms_and_agreement">Terms and Agreement</string>
@@ -99,5 +115,28 @@
     <string name="total_text">Total :</string>
     <string name="note_text">Note :</string>
 
+    //My work screen
+    <string name="decline">Decline</string>
+    <string name="accept">Accept</string>
+    <string name="complete">Complete</string>
+    <string name="resource">Resource</string>
+    <string name="status_text">Status :</string>
+    <string name="email_text">Email :</string>
+    <string name="expected_date_text">Expected date :</string>
+    <string name="accepted_at_text">Accepted at :</string>
+    <string name="order_by_text">Order by :</string>
+    <string name="no_file_selected">No file selected</string>
+    <string name="select_file">Select File</string>
+    <string name="upload">Upload</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="cancel_description_text">Cancel Description :</string>
+
+    //My order screen
+    <string name="freelancer_text">Freelancer :</string>
+    <string name="rate_us">Rate Us</string>
+
+    //Placeholder
+    <string name="_100">100</string>
+    <string name="_0">0</string>
 
 </resources>

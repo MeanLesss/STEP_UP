@@ -6,9 +6,11 @@ import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RatingBar
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -16,23 +18,30 @@ import com.bumptech.glide.Glide
 import com.example.stepupandroid.R
 import com.example.stepupandroid.model.response.ServiceItem
 
-class ServiceAdapter(private val context: Context, private val itemList: MutableList<ServiceItem>, private val listener: OnServiceSelected) :
+class ServiceAdapter(
+    private val context: Context,
+    private val itemList: MutableList<ServiceItem>,
+    private val listener: OnServiceSelected
+) :
     RecyclerView.Adapter<ServiceAdapter.ItemViewHolder>() {
 
     interface OnServiceSelected {
         fun onServiceSelected(serviceId: Int)
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_service, parent, false)
         return ItemViewHolder(itemView)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val currentItem = itemList[position]
 
         if (!currentItem.attachments.isNullOrEmpty()) {
-            val firstImageUrl = currentItem.attachments.values.firstOrNull() // Get the value of the first map entry
+            val firstImageUrl =
+                currentItem.attachments.values.firstOrNull() // Get the value of the first map entry
             Glide.with(context)
                 .load(firstImageUrl)
                 .error(R.drawable.step_up_logo)
@@ -48,10 +57,8 @@ class ServiceAdapter(private val context: Context, private val itemList: Mutable
         holder.serviceType.text = currentItem.service_type
         holder.price.text = "$" + currentItem.price
 
-        holder.containerLayout.setOnClickListener {
-            listener.onServiceSelected(currentItem.id)
-        }
-        val backgroundDrawable = ContextCompat.getDrawable(holder.itemView.context, R.drawable.border_drawable)
+        val backgroundDrawable =
+            ContextCompat.getDrawable(holder.itemView.context, R.drawable.border_drawable)
         if (backgroundDrawable is GradientDrawable) {
             backgroundDrawable.setStroke(5, ContextCompat.getColor(context, R.color.primary_color))
             backgroundDrawable.setColor(ContextCompat.getColor(context, R.color.selected_color))
@@ -59,6 +66,16 @@ class ServiceAdapter(private val context: Context, private val itemList: Mutable
             holder.containerLayout.background = backgroundDrawable
         }
 
+        if (currentItem.discount == 0f) {
+            holder.discountLayout.visibility = View.GONE
+        } else {
+            holder.discountLayout.visibility = View.VISIBLE
+            holder.discountPercentage.text = "-" + String.format("%.2f", currentItem.discount) + "%"
+        }
+
+        holder.containerLayout.setOnClickListener {
+            listener.onServiceSelected(currentItem.id)
+        }
     }
 
     override fun getItemCount() = itemList.size
@@ -73,6 +90,8 @@ class ServiceAdapter(private val context: Context, private val itemList: Mutable
         val priceButton: LinearLayout = itemView.findViewById(R.id.priceButton)
         val price: TextView = itemView.findViewById(R.id.price)
         val containerLayout: LinearLayout = itemView.findViewById(R.id.containerLayout)
+        val discountLayout: FrameLayout = itemView.findViewById(R.id.discountLayout)
+        val discountPercentage: TextView = itemView.findViewById(R.id.discountPercentage)
     }
 
     // Method to add new items to the existing list

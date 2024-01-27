@@ -3,7 +3,16 @@ package com.example.stepupandroid.helper
 object Constants {
     const val Warning = "warning"
     const val Error = "error"
-    const val Success = "success"
+
+    const val Declined = "Declined"
+    const val Pending = "Pending"
+    const val InProgress = "In Progress"
+    const val InReview = "In Review"
+    const val Success = "Success"
+    const val Fail = "Fail"
+    const val ExpiredDeclined = "Expired/Declined"
+    const val Active = "Active"
+    const val Cancel = "Cancel"
 
     const val MyWork = "MyWork"
     const val MyService = "MyService"

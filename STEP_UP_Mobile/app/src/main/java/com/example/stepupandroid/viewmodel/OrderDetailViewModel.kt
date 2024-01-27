@@ -36,6 +36,65 @@ class OrderDetailViewModel(context: Context) : BaseViewModel(context) {
         })
     }
 
+    private val confirmOrderLiveData: MutableLiveData<String> = MutableLiveData()
+    val confirmOrderResultState: LiveData<String> get() = confirmOrderLiveData
+
+    fun confirmOrder(body: HashMap<String, String>) {
+        loadingDialog.show()
+        dataSubscription = ApiImp().confirmOrder(body).subscribe({
+            loadingDialog.hide()
+            confirmOrderLiveData.value = it.msg
+        }, { throwable ->
+            object : CallBackWrapper() {
+                override fun onCallbackWrapper(
+                    status: ApiManager.NetworkErrorStatus,
+                    data: String
+                ) {
+                    loadingDialog.hide()
+                    errorLiveData.value = data
+                }
+            }.handleException(throwable)
+        })
+    }
+
+    private val cancelOrderLiveData: MutableLiveData<String> = MutableLiveData()
+    val cancelOrderResultState: LiveData<String> get() = cancelOrderLiveData
+
+    fun cancelOrderPending(body: HashMap<String, String>) {
+        loadingDialog.show()
+        dataSubscription = ApiImp().clientCancelPending(body).subscribe({
+            loadingDialog.hide()
+            cancelOrderLiveData.value = it.msg
+        }, { throwable ->
+            object : CallBackWrapper() {
+                override fun onCallbackWrapper(
+                    status: ApiManager.NetworkErrorStatus,
+                    data: String
+                ) {
+                    loadingDialog.hide()
+                    errorLiveData.value = data
+                }
+            }.handleException(throwable)
+        })
+    }
+
+    fun cancelOrderInProgress(body: HashMap<String, String>) {
+        loadingDialog.show()
+        dataSubscription = ApiImp().clientCancelInProgress(body).subscribe({
+            loadingDialog.hide()
+            cancelOrderLiveData.value = it.msg
+        }, { throwable ->
+            object : CallBackWrapper() {
+                override fun onCallbackWrapper(
+                    status: ApiManager.NetworkErrorStatus,
+                    data: String
+                ) {
+                    loadingDialog.hide()
+                    errorLiveData.value = data
+                }
+            }.handleException(throwable)
+        })
+    }
     // Override the onCleared method to dispose of the subscription
     override fun onCleared() {
         super.onCleared()

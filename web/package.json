@@ -1,5 +1,5 @@
 {
-  "name": "web",
+  "name": "step_up_web",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -7,7 +7,7 @@
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.14.19",
     "@mui/material": "^5.14.20",
-    "@mui/styles": "^5.15.4",
+    "@mui/styles": "^5.15.5",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -18,8 +18,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "node --max-old-space-size=4096 ./node_modules/react-scripts/bin/react-scripts.js start",
-    "build": "react-scripts build",
+    "start": "node --max-old-space-size=4096 ./node_modules/react-scripts/bin/react-scripts.js start",   
+    "build": "react-scripts build && mv build dist",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -43,6 +43,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "react-router-dom": "^6.20.1"
   }
 }

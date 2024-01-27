@@ -46,7 +46,13 @@ class LogoutDialog : DialogFragment() {
         }
 
         viewModel.errorResultState.observe(requireActivity()){
-            CustomDialog("", it, Constants.Error).show(childFragmentManager, "CustomDialog")
+            // Allow user to logout anyway even if api failed
+            // to prevent the user from getting stuck
+            SharedPreferenceUtil().removeFromSp(ApiKey.SharedPreferenceKey.token)
+            Constants.UserRole = 0
+            val intent = Intent(requireActivity(), WelcomeActivity::class.java)
+            startActivity(intent)
+            requireActivity().finishAffinity()
         }
 
         binding.logoutBtn.setOnClickListener {

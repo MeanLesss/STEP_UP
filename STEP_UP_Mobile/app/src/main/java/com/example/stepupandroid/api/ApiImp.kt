@@ -7,10 +7,13 @@ import com.example.stepupandroid.model.param.CreateServiceParam
 import com.example.stepupandroid.model.param.GetServiceParam
 import com.example.stepupandroid.model.param.OrderServiceSummaryParam
 import com.example.stepupandroid.model.param.OrderServiceParam
+import com.example.stepupandroid.model.param.SignUpAsFreelancerParam
 import com.example.stepupandroid.model.param.SignUpAsGuestParam
 import com.example.stepupandroid.model.param.SignUpParam
+import com.example.stepupandroid.model.param.SubmitWorkParam
 import com.example.stepupandroid.model.response.GetUserResponse
 import com.example.stepupandroid.model.response.LoginResponse
+import com.example.stepupandroid.model.response.MyOrderResponse
 import com.example.stepupandroid.model.response.MyServiceResponse
 import com.example.stepupandroid.model.response.MyWorkResponse
 import com.example.stepupandroid.model.response.OrderDetailResponse
@@ -72,6 +75,11 @@ class ApiImp : ApiManager() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
+    fun signUpAsFreelancer(body: SignUpAsFreelancerParam): Observable<ApiResWrapper<LoginResponse>> =
+        mAllService.signUpAsFreelancer(Header.getHeader(), body)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
     fun signUpAsGuest(body: SignUpAsGuestParam): Observable<ApiResWrapper<LoginResponse>> =
         mAllService.signUpAsGuest(Header.getHeader(), body)
             .subscribeOn(Schedulers.io())
@@ -84,6 +92,11 @@ class ApiImp : ApiManager() {
 
     fun getMyWork(): Observable<ApiResWrapper<MyWorkResponse>> =
         mAllService.getMyWork(Header.getHeaderWithAuth())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    fun getMyOrder(): Observable<ApiResWrapper<MyOrderResponse>> =
+        mAllService.getMyOrder(Header.getHeaderWithAuth())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
@@ -119,8 +132,59 @@ class ApiImp : ApiManager() {
     }
 
     fun getOrderDetail(orderId: Int): Observable<ApiResWrapper<OrderDetailResponse>> =
-        mAllService.getOrderDetail(orderId, Header.getHeaderWithAuth())
+        mAllService.getOrderDetail(Header.getHeaderWithAuth(), orderId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
+    fun getWorkDetail(orderId: Int): Observable<ApiResWrapper<OrderDetailResponse>> =
+        mAllService.getWorkDetail(Header.getHeaderWithAuth(), orderId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    fun acceptOrder(body: HashMap<String, Boolean>, orderId: Int): Observable<ApiResWrapper<JsonElement>> =
+        mAllService.acceptOrder(Header.getHeaderWithAuth(), body, orderId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    fun submitWork(submitWorkParam: SubmitWorkParam): Observable<ApiResWrapper<JsonElement>> {
+        // Prepare params map
+        val params = mapOf(
+            "order_id" to submitWorkParam.order_id,
+            "service_id" to submitWorkParam.service_id
+        )
+        val stringParts = Util.prepareStringParts(params)
+        val fileParts = Util.prepareFileParts(context, submitWorkParam.attachments)
+
+        // Combine string parts and file parts
+        val allParts = stringParts.map { MultipartBody.Part.createFormData(it.key, null, it.value) } + fileParts
+
+        return mAllService.submitWork(Header.getHeaderAuthOnly(), allParts)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun freelancerCancel(body: HashMap<String, String>): Observable<ApiResWrapper<JsonElement>> =
+        mAllService.freelancerCancel(Header.getHeaderWithAuth(), body)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    fun clientCancelPending(body: HashMap<String, String>): Observable<ApiResWrapper<JsonElement>> =
+        mAllService.clientCancelPending(Header.getHeaderWithAuth(), body)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    fun clientCancelInProgress(body: HashMap<String, String>): Observable<ApiResWrapper<JsonElement>> =
+        mAllService.clientCancelInProgress(Header.getHeaderWithAuth(), body)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    fun confirmOrder(body: HashMap<String, String>): Observable<ApiResWrapper<JsonElement>> =
+        mAllService.confirmOrder(Header.getHeaderWithAuth(), body)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    fun topUp(body: HashMap<String, String>): Observable<ApiResWrapper<JsonElement>> =
+        mAllService.topUp(Header.getHeaderWithAuth(), body)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
 }

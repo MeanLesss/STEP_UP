@@ -29,10 +29,10 @@ data class Result(
     val start_at: String?,
     val service_order: String,
     val freelancer_id: Int,
-    val completed_attachments: String, //Map<String, String>,
+    val completed_attachments: Map<String, String>,
     val stringStatus: String,
     val service: Service,
-    val client: Client
+    val contact: Contact
 )
 
 data class Service(
@@ -43,7 +43,7 @@ data class Service(
     val discount: String
 )
 
-data class Client(
+data class Contact(
     val name: String,
     val email: String
 )

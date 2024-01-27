@@ -79,7 +79,6 @@ class SignUpActivity : AppCompatActivity() {
                 password = binding.password.text.toString(),
                 confirm_password = binding.confirmPassword.text.toString(),
                 phone_number = binding.phoneNumber.text.toString(),
-                id_number = binding.idNumber.text.toString(),
                 job_type = job
             )
 
