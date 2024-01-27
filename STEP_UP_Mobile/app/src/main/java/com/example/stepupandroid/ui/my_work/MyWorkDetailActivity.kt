@@ -8,6 +8,7 @@ import android.app.DownloadManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -19,6 +20,7 @@ import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
+import android.webkit.MimeTypeMap
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -306,18 +308,26 @@ class MyWorkDetailActivity : AppCompatActivity(), SelectFileDialog.OnFileSelecte
             file.delete()
         }
 
+        val fileExtension = MimeTypeMap.getFileExtensionFromUrl(fileName)
+        val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension)
+
         val request = DownloadManager.Request(Uri.parse(fileUrl))
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
         request.setDescription("Downloading work...")
         request.setTitle("Download")
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
+        request.setTitle(fileName)
+        if (mimeType != null) {
+            request.setMimeType(mimeType)
+        }
 
         val manager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
         val downloadId = manager.enqueue(request)
 
+        val query = DownloadManager.Query().setFilterById(downloadId)
         showDownloadProgressDialog()
 
-        val query = DownloadManager.Query().setFilterById(downloadId)
+
         val handler = Handler(Looper.getMainLooper())
         val maxIdleDuration = 30000 // Maximum idle duration in milliseconds
         var lastProgressUpdateTime = System.currentTimeMillis()

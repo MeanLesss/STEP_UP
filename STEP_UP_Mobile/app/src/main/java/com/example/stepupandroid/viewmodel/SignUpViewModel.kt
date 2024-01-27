@@ -10,6 +10,7 @@ import com.example.stepupandroid.base.BaseViewModel
 import com.example.stepupandroid.helper.ApiKey
 import com.example.stepupandroid.helper.Constants
 import com.example.stepupandroid.helper.SharedPreferenceUtil
+import com.example.stepupandroid.model.param.SignUpAsFreelancerParam
 import com.example.stepupandroid.model.param.SignUpAsGuestParam
 import com.example.stepupandroid.model.param.SignUpParam
 import com.example.stepupandroid.model.response.LoginResponse
@@ -36,6 +37,26 @@ class SignUpViewModel (context: Context) : BaseViewModel(context) {
                 )
             }
             signUpLiveData.value = it.data!!
+        }, { throwable ->
+            object : CallBackWrapper() {
+                override fun onCallbackWrapper(
+                    status: ApiManager.NetworkErrorStatus,
+                    data: String
+                ) {
+                    loadingDialog.hide()
+                    errorLiveData.value = data
+                }
+            }.handleException(throwable)
+        })
+    }
+
+    private val signUpAsFreelancerLiveData: MutableLiveData<String> = MutableLiveData()
+    val signUpAsFreelancerResultState: LiveData<String> get() = signUpAsFreelancerLiveData
+    fun signUpAsFreelancer(body: SignUpAsFreelancerParam) {
+        loadingDialog.show()
+        signUpDataSubscription = ApiImp().signUpAsFreelancer(body).subscribe({
+            loadingDialog.hide()
+            signUpAsFreelancerLiveData.value = it.msg
         }, { throwable ->
             object : CallBackWrapper() {
                 override fun onCallbackWrapper(

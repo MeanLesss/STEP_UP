@@ -7,6 +7,7 @@ import com.example.stepupandroid.model.param.CreateServiceParam
 import com.example.stepupandroid.model.param.GetServiceParam
 import com.example.stepupandroid.model.param.OrderServiceSummaryParam
 import com.example.stepupandroid.model.param.OrderServiceParam
+import com.example.stepupandroid.model.param.SignUpAsFreelancerParam
 import com.example.stepupandroid.model.param.SignUpAsGuestParam
 import com.example.stepupandroid.model.param.SignUpParam
 import com.example.stepupandroid.model.param.SubmitWorkParam
@@ -71,6 +72,11 @@ class ApiImp : ApiManager() {
 
     fun signUp(body: SignUpParam): Observable<ApiResWrapper<LoginResponse>> =
         mAllService.signUp(Header.getHeader(), body)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    fun signUpAsFreelancer(body: SignUpAsFreelancerParam): Observable<ApiResWrapper<LoginResponse>> =
+        mAllService.signUpAsFreelancer(Header.getHeader(), body)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 

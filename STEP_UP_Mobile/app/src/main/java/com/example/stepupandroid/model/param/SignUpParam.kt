@@ -10,3 +10,13 @@ class SignUpParam(
     val phone_number: String,
     val job_type: String
 )
+
+class SignUpAsFreelancerParam(
+    val guest: Boolean,
+    val freelancer: Boolean,
+    val name: String,
+    val email: String,
+    val phone_number: String,
+    val job_type: String,
+    val id_number: String
+)

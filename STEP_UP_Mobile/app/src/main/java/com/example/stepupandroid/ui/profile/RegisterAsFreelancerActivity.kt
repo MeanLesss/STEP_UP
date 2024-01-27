@@ -10,8 +10,10 @@ import com.example.stepupandroid.databinding.ActivityRegisterAsFreelancerBinding
 import com.example.stepupandroid.databinding.ActivitySignUpChooseJobBinding
 import com.example.stepupandroid.helper.Constants
 import com.example.stepupandroid.helper.Util
+import com.example.stepupandroid.model.param.SignUpAsFreelancerParam
 import com.example.stepupandroid.model.param.SignUpParam
 import com.example.stepupandroid.model.response.GetUserResponse
+import com.example.stepupandroid.ui.HomeActivity
 import com.example.stepupandroid.ui.SuccessActivity
 import com.example.stepupandroid.ui.dialog.CustomDialog
 import com.example.stepupandroid.viewmodel.ProfileViewModel
@@ -60,17 +62,16 @@ class RegisterAsFreelancerActivity : AppCompatActivity() {
         }
 
         binding.signUpBtn.setOnClickListener {
-            val body = SignUpParam(
+            val body = SignUpAsFreelancerParam(
                 guest = false,
                 freelancer = true,
                 name = user.user_info.name,
                 email = user.user_info.email,
-                password = "",
-                confirm_password = "",
                 phone_number = user.user_detail.phone,
-                job_type = user.user_detail.job_type
+                job_type = user.user_detail.job_type,
+                id_number = binding.idNumber.text.toString()
             )
-            signUpViewModel.signUp(body)
+            signUpViewModel.signUpAsFreelancer(body)
         }
     }
 
@@ -83,13 +84,16 @@ class RegisterAsFreelancerActivity : AppCompatActivity() {
             CustomDialog("", it, Constants.Error).show(supportFragmentManager, "CustomDialog")
         }
 
-        signUpViewModel.signUpResultState.observe(this) {
-            val intent = Intent(this, SuccessActivity::class.java)
-            if (from.isNotEmpty()) {
-                intent.putExtra("from", from)
+        signUpViewModel.signUpAsFreelancerResultState.observe(this) {
+            Constants.UserRole = 0
+            val customDialog = CustomDialog("", it, Constants.Success)
+            customDialog.onDismissListener = {
+                val intent = Intent(this, HomeActivity::class.java)
+                startActivity(intent)
+                finishAffinity()
             }
-            intent.putExtra("title", resources.getString(R.string.registered_as_freelancer))
-            startActivity(intent)
+
+            customDialog.show(supportFragmentManager, "CustomDialog")
         }
 
         signUpViewModel.errorResultState.observe(this) {
