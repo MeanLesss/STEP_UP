@@ -16,6 +16,7 @@ import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
+import android.webkit.MimeTypeMap
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.app.ActivityCompat
@@ -282,11 +283,18 @@ class MyOrderDetailActivity : AppCompatActivity(),
             file.delete()
         }
 
+        val fileExtension = MimeTypeMap.getFileExtensionFromUrl(fileName)
+        val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension)
+
         val request = DownloadManager.Request(Uri.parse(fileUrl))
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
         request.setDescription("Downloading work...")
         request.setTitle("Download")
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
+        request.setTitle(fileName)
+        if (mimeType != null) {
+            request.setMimeType(mimeType)
+        }
 
         val manager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
         val downloadId = manager.enqueue(request)
