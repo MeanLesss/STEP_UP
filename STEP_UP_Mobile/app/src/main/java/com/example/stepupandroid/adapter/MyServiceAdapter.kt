@@ -114,7 +114,7 @@ class MyServiceAdapter(
                     )
                 }
 
-                Constants.Cancel -> {
+                Constants.Inactive -> {
                     backgroundDrawable.setStroke(
                         5,
                         ContextCompat.getColor(context, R.color.status_fail)

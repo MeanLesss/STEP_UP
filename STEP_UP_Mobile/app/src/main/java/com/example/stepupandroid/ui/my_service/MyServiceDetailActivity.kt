@@ -16,6 +16,7 @@ import com.example.stepupandroid.helper.Constants
 import com.example.stepupandroid.helper.Util
 import com.example.stepupandroid.model.param.UpdateServiceStatusParam
 import com.example.stepupandroid.ui.HomeActivity
+import com.example.stepupandroid.ui.dialog.ConfirmDialog
 import com.example.stepupandroid.ui.dialog.CustomDialog
 import com.example.stepupandroid.ui.dialog.SelectDateDialog
 import com.example.stepupandroid.viewmodel.MyServiceDetailViewModel
@@ -57,13 +58,19 @@ class MyServiceDetailActivity : AppCompatActivity() {
         }
 
         binding.deactivateBtn.setOnClickListener {
-            val body = UpdateServiceStatusParam(
-                serviceId.toString(),
-                false,
-                "",
-                ""
-            )
-            viewModel.updateServiceStatus(body)
+
+
+            val dialog =
+                ConfirmDialog("Are you sure you want to deactivate?") {
+                    val body = UpdateServiceStatusParam(
+                        serviceId.toString(),
+                        false,
+                        "",
+                        ""
+                    )
+                    viewModel.updateServiceStatus(body)
+                }
+            dialog.show(supportFragmentManager, "ConfirmDialog")
         }
 
         binding.activateBtn.setOnClickListener {
@@ -107,7 +114,9 @@ class MyServiceDetailActivity : AppCompatActivity() {
             binding.description.text = result.result.description
             binding.price.text = "$" + Util.formatStringToDecimal(result.result.price.toString())
 
-            if (result.result.stringStatus == Constants.ExpiredDeclined) {
+            binding.activateBtn.visibility = View.GONE
+            binding.deactivateBtn.visibility = View.GONE
+            if (result.result.stringStatus == Constants.Inactive) {
                 binding.activateBtn.visibility = View.VISIBLE
             } else if(result.result.stringStatus == Constants.Active){
                 binding.deactivateBtn.visibility = View.VISIBLE
