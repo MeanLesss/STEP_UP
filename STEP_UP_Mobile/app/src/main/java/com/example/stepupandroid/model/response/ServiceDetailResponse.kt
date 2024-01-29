@@ -23,5 +23,6 @@ data class ServiceDetail(
     val view: Int,
     val service_rate: Int,
     val service_ordered_count: Int,
-    val isReadOnly: Boolean
+    val isReadOnly: Boolean,
+    val stringStatus: String
 )

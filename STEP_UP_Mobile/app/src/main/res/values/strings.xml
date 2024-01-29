@@ -73,6 +73,10 @@
     <string name="attachment_text">Attachment :</string>
     <string name="service_has_been_created">Service has been created</string>
     <string name="service_attachment">Service Attachment</string>
+    <string name="activate">Activate Service</string>
+    <string name="deactivate">Deactivate Service</string>
+    <string name="reactivate_service">Reactivate Service</string>
+    <string name="please_select_start_and_end_date">Please select start and end date.</string>
 
     <string-array name="service_type_spinner">
         <item>Select A Service Type</item>

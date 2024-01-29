@@ -11,6 +11,7 @@ import com.example.stepupandroid.model.param.SignUpAsFreelancerParam
 import com.example.stepupandroid.model.param.SignUpAsGuestParam
 import com.example.stepupandroid.model.param.SignUpParam
 import com.example.stepupandroid.model.param.SubmitWorkParam
+import com.example.stepupandroid.model.param.UpdateServiceStatusParam
 import com.example.stepupandroid.model.response.GetUserResponse
 import com.example.stepupandroid.model.response.LoginResponse
 import com.example.stepupandroid.model.response.MyOrderResponse
@@ -104,6 +105,12 @@ class ApiImp : ApiManager() {
         mAllService.getServiceDetail(serviceId, Header.getHeaderWithAuth())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+
+    fun updateServiceStatus(body: UpdateServiceStatusParam): Observable<ApiResWrapper<JsonElement>> {
+        return mAllService.updateServiceStatus(Header.getHeaderWithAuth(), body)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
 
     fun getOrderSummary(body: OrderServiceSummaryParam): Observable<ApiResWrapper<OrderServiceSummaryResponse>> {
         return mAllService.getOrderSummary(Header.getHeaderWithAuth(), body)
