@@ -12,7 +12,7 @@ object Constants {
     const val Fail = "Fail"
     const val ExpiredDeclined = "Expired/Declined"
     const val Active = "Active"
-    const val Cancel = "Cancel"
+    const val Inactive = "Inactive"
 
     const val MyWork = "MyWork"
     const val MyService = "MyService"

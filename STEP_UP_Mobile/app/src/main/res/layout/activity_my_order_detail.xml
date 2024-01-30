@@ -81,7 +81,7 @@
                     android:id="@+id/resourceRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:overScrollMode="never"
                     tools:itemCount="3"
                     tools:listitem="@layout/item_resource" />
@@ -102,25 +102,56 @@
                     android:textColor="@color/white"
                     android:textSize="15sp" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/downloadWork"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center_horizontal"
+                <LinearLayout
+                    android:id="@+id/downloadLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="50dp"
-                    android:backgroundTint="@color/logo_color"
-                    android:insetTop="0dp"
-                    android:insetBottom="0dp"
-                    android:letterSpacing="0"
-                    android:paddingHorizontal="40dp"
-                    android:text="Download Work"
-                    android:textAllCaps="false"
-                    android:textColor="@color/selected_color"
                     android:visibility="gone"
-                    app:cornerRadius="10dp" />
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/freelancer_has_completed_the_work"
+                        android:textColor="@color/white"
+                        android:textSize="15sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/file"
+                            android:textColor="@color/grey"
+                            android:textSize="12sp"  />
+
+                        <TextView
+                            android:id="@+id/fileName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:textColor="@color/logo_color"
+                            android:textSize="15sp"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/downloadWork"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="20dp"
+                        android:backgroundTint="@color/logo_color"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:letterSpacing="0"
+                        android:paddingHorizontal="40dp"
+                        android:text="@string/download_work"
+                        android:textAllCaps="false"
+                        android:textColor="@color/selected_color"
+                        app:cornerRadius="10dp" />
+                </LinearLayout>
 
             </LinearLayout>
-
 
         </ScrollView>
     </LinearLayout>

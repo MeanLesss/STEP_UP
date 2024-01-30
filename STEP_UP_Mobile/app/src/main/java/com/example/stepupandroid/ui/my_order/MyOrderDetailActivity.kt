@@ -28,6 +28,7 @@ import com.example.stepupandroid.adapter.ResourceAdapter
 import com.example.stepupandroid.databinding.ActivityMyOrderDetailBinding
 import com.example.stepupandroid.helper.Constants
 import com.example.stepupandroid.helper.Util
+import com.example.stepupandroid.model.DownloadAttachment
 import com.example.stepupandroid.ui.HomeActivity
 import com.example.stepupandroid.ui.dialog.CancelDialog
 import com.example.stepupandroid.ui.dialog.ConfirmDialog
@@ -37,7 +38,7 @@ import com.example.stepupandroid.viewmodel.OrderDetailViewModel
 import java.io.File
 
 class MyOrderDetailActivity : AppCompatActivity(),
-    CancelDialog.OnCancelListener {
+    CancelDialog.OnCancelListener, ResourceAdapter.OnDownloadClick {
     private lateinit var binding: ActivityMyOrderDetailBinding
     private lateinit var viewModel: OrderDetailViewModel
 
@@ -47,8 +48,10 @@ class MyOrderDetailActivity : AppCompatActivity(),
     private var orderId = 0
     private var serviceId = 0
     private var status = ""
-    private var fileName = ""
-    private var fileUrl = ""
+    private lateinit var completedAttachment: DownloadAttachment
+    private lateinit var clientAttachment: DownloadAttachment
+    private var downloading = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMyOrderDetailBinding.inflate(layoutInflater)
@@ -122,8 +125,15 @@ class MyOrderDetailActivity : AppCompatActivity(),
         }
 
         binding.downloadWork.setOnClickListener {
+            downloading = "completedAttachment"
             checkPermissionAndDownload()
         }
+    }
+
+    override fun onDownloadClick(attachment: DownloadAttachment) {
+        clientAttachment = attachment
+        downloading = "clientAttachment"
+        checkPermissionAndDownload()
     }
 
     override fun onCancel(description: String) {
@@ -141,23 +151,29 @@ class MyOrderDetailActivity : AppCompatActivity(),
             status = result.result.stringStatus
 
             if (result.result.order_attachments.isNotEmpty()) {
-                val resourceList: MutableList<String> = mutableListOf()
-                result.result.order_attachments.keys.forEach {
-                    resourceList.add(it)
-                }
+                val resourceList: MutableList<DownloadAttachment> =
+                    result.result.order_attachments.map { (fileName, fileUrl) ->
+                        DownloadAttachment(fileName, fileUrl)
+                    }.toMutableList()
+                val adapter = ResourceAdapter(resourceList)
+                adapter.setOnDownloadClick(this)
                 binding.resourceRecyclerView.layoutManager = LinearLayoutManager(this)
-                binding.resourceRecyclerView.adapter = ResourceAdapter(resourceList)
+                binding.resourceRecyclerView.adapter = adapter
             } else {
                 binding.resource.visibility = View.GONE
             }
 
             if (result.result.completed_attachments.isNotEmpty()) {
-                fileUrl = result.result.completed_attachments.values.firstOrNull().toString()
-                fileName = result.result.completed_attachments.keys.firstOrNull().toString()
+                completedAttachment = DownloadAttachment(
+                    result.result.completed_attachments.keys.firstOrNull().toString(),
+                    result.result.completed_attachments.values.firstOrNull().toString()
+                )
 
-                binding.downloadWork.visibility = View.VISIBLE
+                binding.fileName.text = completedAttachment.fileName
+
+                binding.downloadLayout.visibility = View.VISIBLE
             } else {
-                binding.downloadWork.visibility = View.GONE
+                binding.downloadLayout.visibility = View.GONE
             }
 
             binding.buttonLayout.visibility = View.VISIBLE
@@ -276,22 +292,28 @@ class MyOrderDetailActivity : AppCompatActivity(),
     }
 
     private fun download() {
+        val downloadFile = if (downloading == "completedAttachment") {
+            completedAttachment
+        }else{
+            clientAttachment
+        }
         val file = File(
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileUrl
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+            downloadFile.fileUrl
         )
         if (file.exists()) {
             file.delete()
         }
 
-        val fileExtension = MimeTypeMap.getFileExtensionFromUrl(fileName)
+        val fileExtension = MimeTypeMap.getFileExtensionFromUrl(downloadFile.fileName)
         val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension)
 
-        val request = DownloadManager.Request(Uri.parse(fileUrl))
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
+        val request = DownloadManager.Request(Uri.parse(downloadFile.fileUrl))
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, downloadFile.fileName)
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
         request.setDescription("Downloading work...")
         request.setTitle("Download")
-        request.setTitle(fileName)
+        request.setTitle(downloadFile.fileName)
         if (mimeType != null) {
             request.setMimeType(mimeType)
         }
@@ -299,9 +321,10 @@ class MyOrderDetailActivity : AppCompatActivity(),
         val manager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
         val downloadId = manager.enqueue(request)
 
+        val query = DownloadManager.Query().setFilterById(downloadId)
         showDownloadProgressDialog()
 
-        val query = DownloadManager.Query().setFilterById(downloadId)
+
         val handler = Handler(Looper.getMainLooper())
         val maxIdleDuration = 30000 // Maximum idle duration in milliseconds
         var lastProgressUpdateTime = System.currentTimeMillis()
@@ -379,7 +402,7 @@ class MyOrderDetailActivity : AppCompatActivity(),
 
     private fun updateProgressDialog(progress: Int) {
         progressBar.progress = progress
-        tvProgress.text = "Downloading work... $progress%"
+        tvProgress.text = "Downloading attachment... $progress%"
     }
 
     private fun dismissProgressDialog() {

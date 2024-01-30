@@ -6,6 +6,7 @@ import com.example.stepupandroid.model.param.OrderServiceSummaryParam
 import com.example.stepupandroid.model.param.SignUpAsFreelancerParam
 import com.example.stepupandroid.model.param.SignUpAsGuestParam
 import com.example.stepupandroid.model.param.SignUpParam
+import com.example.stepupandroid.model.param.UpdateServiceStatusParam
 import com.example.stepupandroid.model.response.GetUserResponse
 import com.example.stepupandroid.model.response.LoginResponse
 import com.example.stepupandroid.model.response.MyOrderResponse
@@ -95,6 +96,12 @@ interface ServiceAPI {
         @Path("serviceId") serviceId: Int,
         @HeaderMap headers: Map<String, String>
     ): Observable<ApiResWrapper<ServiceDetailResponse>>
+
+    @POST("api/service/activation")
+    fun updateServiceStatus(
+        @HeaderMap headers: Map<String, String>,
+        @Body body: UpdateServiceStatusParam
+    ): Observable<ApiResWrapper<JsonElement>>
 
     @POST("api/service/purchase-summary")
     fun getOrderSummary(

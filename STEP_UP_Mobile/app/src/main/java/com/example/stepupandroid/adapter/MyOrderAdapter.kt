@@ -29,7 +29,7 @@ class MyOrderAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_my_work, parent, false)
+            .inflate(R.layout.item_my_order, parent, false)
         return ItemViewHolder(itemView)
     }
 
@@ -38,7 +38,7 @@ class MyOrderAdapter(
 
         holder.titleTextView.text = currentItem.order_title
         holder.descriptionTextView.text = currentItem.order_description
-        holder.nameTextView.text = currentItem.freelancer_id.toString()
+        holder.nameTextView.text = currentItem.contact.name
         holder.startDateTextView.text = Util.convertDate(
             "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
             "dd-MMM-yyyy",

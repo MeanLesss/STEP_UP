@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">STEP UP Android</string>
+    <string name="app_name">STEP UP</string>
 
     //General
     <string name="back">Back</string>
@@ -73,6 +73,10 @@
     <string name="attachment_text">Attachment :</string>
     <string name="service_has_been_created">Service has been created</string>
     <string name="service_attachment">Service Attachment</string>
+    <string name="activate">Activate Service</string>
+    <string name="deactivate">Deactivate Service</string>
+    <string name="reactivate_service">Reactivate Service</string>
+    <string name="please_select_start_and_end_date">Please select start and end date.</string>
 
     <string-array name="service_type_spinner">
         <item>Select A Service Type</item>
@@ -130,6 +134,9 @@
     <string name="upload">Upload</string>
     <string name="are_you_sure">Are you sure?</string>
     <string name="cancel_description_text">Cancel Description :</string>
+    <string name="download_work">Download Work</string>
+    <string name="file">File</string>
+    <string name="freelancer_has_completed_the_work">Freelancer has completed the work.</string>
 
     //My order screen
     <string name="freelancer_text">Freelancer :</string>

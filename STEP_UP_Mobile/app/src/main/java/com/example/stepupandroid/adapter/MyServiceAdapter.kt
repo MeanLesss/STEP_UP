@@ -3,14 +3,12 @@ package com.example.stepupandroid.adapter
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.drawable.GradientDrawable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -19,9 +17,16 @@ import com.example.stepupandroid.helper.Constants
 import com.example.stepupandroid.helper.Util
 import com.example.stepupandroid.model.response.MyServiceItem
 
-class MyServiceAdapter(private val context: Context, private val itemList: List<MyServiceItem>) :
+class MyServiceAdapter(
+    private val context: Context,
+    private val itemList: List<MyServiceItem>,
+    private val listener: OnServiceSelected
+) :
     RecyclerView.Adapter<MyServiceAdapter.ItemViewHolder>() {
 
+    interface OnServiceSelected {
+        fun onServiceSelected(serviceId: Int)
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_my_service, parent, false)
@@ -92,7 +97,7 @@ class MyServiceAdapter(private val context: Context, private val itemList: List<
                     )
                 }
 
-                Constants.Active-> {
+                Constants.Active -> {
                     backgroundDrawable.setStroke(
                         5,
                         ContextCompat.getColor(context, R.color.status_active)
@@ -109,7 +114,7 @@ class MyServiceAdapter(private val context: Context, private val itemList: List<
                     )
                 }
 
-                Constants.Cancel -> {
+                Constants.Inactive -> {
                     backgroundDrawable.setStroke(
                         5,
                         ContextCompat.getColor(context, R.color.status_fail)
@@ -150,7 +155,7 @@ class MyServiceAdapter(private val context: Context, private val itemList: List<
         }
 
         holder.containerLayout.setOnClickListener {
-            Toast.makeText(context, "In Progress", Toast.LENGTH_SHORT).show()
+            listener.onServiceSelected(currentItem.id)
         }
     }
 
