@@ -1,34 +1,47 @@
-export const ViewAllService = async () => {
+export const getUser = async(userToken) => {
   var myHeaders = new Headers();
   myHeaders.append("X-CSRF-TOKEN", "");
   myHeaders.append("Content-Type", "application/json");
-  myHeaders.append("Authorization", "684|7lJzPuZ5RdbaIahgh7UXumrlunalmwBxAyJ30t66f9107451");
-  myHeaders.append("Access-Control-Allow-Origin", "*");
-  var formdata = new FormData();
-  formdata.append("service_type", "");
-  formdata.append("range", "10");
-  formdata.append("page", "1");
+  myHeaders.append("Authorization", userToken);
 
   var requestOptions = {
-    method: 'POST',
-    mode: 'no-cors', // 'cors' by default
+    method: 'GET',
     headers: myHeaders,
-    body: formdata,
     redirect: 'follow'
   };
 
-  try {
-      const response = await fetch("http://step-up-kh.duckdns.org:168/api/service/data", requestOptions);
-      const result = await response.text();
-      if(response.status==='success'){
-        alert("res");
-      }
-      console.log(response);
-      return result;
-  } catch (error) {
-      console.log('error', error);
-  }
+  return fetch("/api/user", requestOptions)
+  .then(response => response.json())
+  .then(result =>  {console.log(result); return result })
+  .catch(error => console.log('error', error));
 }
+
+
+export const ViewAllService = async ({ userToken }) => { // Destructure userToken from the argument
+  var myHeaders = new Headers();
+  myHeaders.append("X-CSRF-TOKEN", "");
+  myHeaders.append("Content-Type", "application/json");
+  myHeaders.append("Authorization", userToken); // Use userToken directly
+
+  var raw = JSON.stringify({
+    "service_type": "",
+    "range": "10",
+    "page": "1"
+  });
+
+  var requestOptions = {
+    method: 'POST',
+    headers: myHeaders,
+    body: raw,
+    redirect: 'follow'
+  };
+
+  return fetch("/api/service/data", requestOptions)
+    .then(response => response.json())
+    .then(result =>  {console.log(result); return result })
+    .catch(error => console.log('error', error));
+}
+
 
   
 export const GetUserProduct = async()=>{}

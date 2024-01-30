@@ -17,6 +17,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import MailIcon from '@mui/icons-material/Mail';
 import Popup from "./components/PopUp.js";
 import LoginForm from "./LoginForm.js";
+import SignUp from "./SignUpForm.js";
 import { warning, red } from '@mui/material/colors';
 
 export default function Login(props) {
@@ -83,7 +84,8 @@ export default function Login(props) {
                 openPopup={openPopup}
                 setOpenPopup={setOpenPopup}
             >
-                <LoginForm closePopup={back} />
+                 {props.isSignIn ?<LoginForm closePopup={back} />: <SignUp closePopup={back} />}
+                
             </Popup>
 
             <Popup

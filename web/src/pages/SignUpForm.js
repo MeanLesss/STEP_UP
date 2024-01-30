@@ -2,12 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Button, TextField, Grid, Paper, Card, CardMedia, Typography, Container } from '@mui/material';
 import LoingPicture from '../wwwroot/images/Mask group.png';
 import { createRef } from 'react';
-import { getUser } from '../API';
 
 const LoginForm = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [userDetail, setUserDetail] = useState(0);
  //login
  const eref = createRef();
  const pref = createRef();
@@ -32,50 +30,39 @@ const LoginForm = (props) => {
       alert('Please enter both email and password');
     }
     var myHeaders = new Headers();
-    myHeaders.append("Pragma", "no-cache");
-    myHeaders.append("Cache-Control", "no-cache");
-    myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("Access-Control-Allow-Origin", "*");
-  
-    var raw = JSON.stringify({
-      "email": eref.current.value,
-      "password": pref.current.value
-    });
-  
-    var requestOptions = {
-      method: 'POST',
-      headers: myHeaders,
-      body: raw,
-      redirect: 'follow'
-    };
-  
-    fetch("/api/login ", requestOptions)
-      .then(response => response.json())
-      .then(result => {
-        console.log(result);
-        if (result.status === "success") {     
-          sessionStorage.setItem('user_token', result.data.user_token);        
-          // navigate('/' + result.user.role.toLowerCase(), { replace: true })
-        }
-        return result;
-      })
-      .catch(error => console.log('error', error));
+myHeaders.append("Pragma", "no-cache");
+myHeaders.append("Cache-Control", "no-cache");
+myHeaders.append("Content-Type", "application/json");
+myHeaders.append("Access-Control-Allow-Origin", "*");
+
+var raw = JSON.stringify({
+  "email": eref.current.value,
+  "password": pref.current.value
+});
+
+var requestOptions = {
+  method: 'POST',
+  // mode: 'no-cors', // 'cors' by default
+  headers: myHeaders,
+  body: raw,
+  redirect: 'follow'
+};
+
+  fetch("/api/login ", requestOptions)
+  .then(response => response.json())
+  .then(result => {
+    console.log(result);
+    if (result.status === "success") {
+      console.log('Go to dashboard');
+      // Store the user_token in sessionStorage
+      sessionStorage.setItem('user_token', result.data.user_token);
+      // navigate('/' + result.user.role.toLowerCase(), { replace: true })
+    }
+    return result;
+  })
+  .catch(error => console.log('error', error));
+
   };
-
-  // const userToken = sessionStorage.getItem('user_token');
-  
-  // useEffect(() => {
-  //   getUser({userToken}) // corrected here
-  //   .then(data => {
-  //     if (data.status === "success") {
-  //       sessionStorage.setItem('user_detail', JSON.stringify(data));
-  //       sessionStorage.setItem('role', data.user_info.role);
-  //       sessionStorage.setItem('is_guest', data.user_info.isGuest);
-  //     } 
-  //   })
-  // });
-
- 
   const style = {
     width: 350,
     display: 'flex',
@@ -121,7 +108,7 @@ const LoginForm = (props) => {
       <Paper elevation={3} sx={style} >
         <Container>
         <form onSubmit={handleSubmit}>
-            <Typography component="div" variant="h6" textAlign={'center'}>Continue with your email</Typography>
+            <Typography component="div" variant="h6" textAlign={'center'}>Continue sssswith your email</Typography>
             <Typography sx={{color:'#faff00',paddingTop:'30px'}}>Email</Typography>
             <TextField
                 hiddenLabel

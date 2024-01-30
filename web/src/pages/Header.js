@@ -89,7 +89,7 @@ const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
       )}
   </Toolbar>
 </AppBar> */}
-<AppBar sx={{ background: "#535A9D"}} position="static">
+<AppBar sx={{ background: "#0D0C22"}} position="static">
   <Toolbar >
       {isMatch ? (
         <>
@@ -98,7 +98,7 @@ const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
         </>
       ) : (
         <>
-        <img src={Logo} sx={{ transform: "scale(2)"}} ></img>
+        <img src={Logo} sx={{ transform: "scale(2)"}}></img>
          <Tabs
   sx={{ marginLeft: "auto" }}
   indicatorColor="secondary"
@@ -107,11 +107,11 @@ const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
   onChange={(e, value) => setValue(value)}
 >
 
-  <Tab label="Home" component={Link} to="/" sx={{paddingLeft:"0"}}/>
-  <Tab label="Service" component={Link} to="/service"/>
-  <Tab label="My Service" component={Link} to="/myservice" />
-  <Tab label="My Work" component={Link} to="/mywork" />
-  <Tab label="My Order" component={Link} to="/myorder" sx={{paddingRight:"0"}}/>
+  <Tab label="Home" component={Link} to="/" sx={{paddingLeft:"0",color:"#FAFF00"}}/>
+  <Tab label="Service" component={Link} to="/service" sx={{color:"#FAFF00"}}/>
+  <Tab label="My Service" component={Link} to="/myservice" sx={{color:"#FAFF00"}}/>
+  <Tab label="My Work" component={Link} to="/mywork" sx={{color:"#FAFF00"}}/>
+  <Tab label="My Order" component={Link} to="/myorder" sx={{paddingRight:"0",color:"#FAFF00"}}/>
 </Tabs>
         
           <div style={{marginLeft:"auto"}} >
@@ -139,7 +139,8 @@ const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
                 setOpenPopup={setOpenPopup}
                 closePopup={closePopup}
             >
-                <Login isSignIn={isSignIn}/>
+                <Login isSignIn={isSignIn} setOpenPopup={setOpenPopup} />
+
             </Popup>
             <Outlet/>
     </React.Fragment>
