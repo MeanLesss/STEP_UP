@@ -66,6 +66,7 @@
             android:background="@drawable/logo_color_border_drawable"
             android:hint="@string/max_price"
             android:imeOptions="actionDone"
+            android:inputType="number"
             android:paddingVertical="10dp"
             android:paddingStart="30dp"
             android:paddingEnd="10dp"
