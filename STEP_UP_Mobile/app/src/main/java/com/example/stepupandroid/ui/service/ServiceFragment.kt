@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Spinner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.stepupandroid.adapter.ServiceAdapter
@@ -22,7 +21,6 @@ class ServiceFragment : Fragment(), ServiceAdapter.OnServiceSelected, SearchServ
     private lateinit var viewModel: ServiceViewModel
 
     private lateinit var adapter: ServiceAdapter
-    private lateinit var serviceTypeSpinner: Spinner
 
     private var title = ""
     private var price = ""
