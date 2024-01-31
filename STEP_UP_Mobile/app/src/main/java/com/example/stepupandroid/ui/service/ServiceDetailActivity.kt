@@ -80,7 +80,7 @@ class ServiceDetailActivity : AppCompatActivity() {
             binding.rating.rating = result.result.service_rate.toFloat()
             binding.serviceType.text = result.result.service_type
             binding.description.text = result.result.description
-            binding.price.text = "$" + Util.formatStringToDecimal(result.result.price.toString())
+            binding.price.text = "$" + Util.formatStringToDecimal(result.result.price)
 
             if (result.result.isReadOnly) {
                 binding.buyBtn.isEnabled = false

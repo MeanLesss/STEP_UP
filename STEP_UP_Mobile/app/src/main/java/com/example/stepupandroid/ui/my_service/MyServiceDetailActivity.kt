@@ -58,8 +58,6 @@ class MyServiceDetailActivity : AppCompatActivity() {
         }
 
         binding.deactivateBtn.setOnClickListener {
-
-
             val dialog =
                 ConfirmDialog("Are you sure you want to deactivate?") {
                     val body = UpdateServiceStatusParam(
@@ -112,7 +110,7 @@ class MyServiceDetailActivity : AppCompatActivity() {
             binding.rating.rating = result.result.service_rate.toFloat()
             binding.serviceType.text = result.result.service_type
             binding.description.text = result.result.description
-            binding.price.text = "$" + Util.formatStringToDecimal(result.result.price.toString())
+            binding.price.text = "$" + Util.formatStringToDecimal(result.result.price)
 
             binding.activateBtn.visibility = View.GONE
             binding.deactivateBtn.visibility = View.GONE

@@ -94,10 +94,15 @@ class ServiceAdapter(
         val discountPercentage: TextView = itemView.findViewById(R.id.discountPercentage)
     }
 
-    // Method to add new items to the existing list
     @SuppressLint("NotifyDataSetChanged")
     fun addData(newData: List<ServiceItem>) {
         itemList.addAll(newData)
+        notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun clearData() {
+        itemList.clear()
         notifyDataSetChanged()
     }
 }

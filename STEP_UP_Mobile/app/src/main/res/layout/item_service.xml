@@ -165,8 +165,9 @@
 
                 <LinearLayout
                     android:id="@+id/priceButton"
-                    android:layout_width="50dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="25dp"
+                    android:paddingHorizontal="10dp"
                     android:background="@drawable/round_corner_primary_color"
                     android:gravity="center">
 

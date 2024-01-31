@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Spinner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.stepupandroid.adapter.ServiceAdapter
@@ -13,23 +14,41 @@ import com.example.stepupandroid.databinding.FragmentServiceBinding
 import com.example.stepupandroid.helper.Constants
 import com.example.stepupandroid.ui.dialog.CustomDialog
 import com.example.stepupandroid.model.param.GetServiceParam
+import com.example.stepupandroid.ui.dialog.SearchServiceDialog
 import com.example.stepupandroid.viewmodel.ServiceViewModel
 
-class ServiceFragment : Fragment(), ServiceAdapter.OnServiceSelected {
+class ServiceFragment : Fragment(), ServiceAdapter.OnServiceSelected, SearchServiceDialog.OnSearchListener {
     private lateinit var binding: FragmentServiceBinding
     private lateinit var viewModel: ServiceViewModel
 
     private lateinit var adapter: ServiceAdapter
+    private lateinit var serviceTypeSpinner: Spinner
+
+    private var title = ""
+    private var price = ""
+    private var serviceType = ""
     private val range = 10
     private var page = 1
+
     private var isLoading = false // Flag to track loading state
     private var isLastPage = false // Flag to track if it's the last page
-    private var isShown = false // Flag to track custom dialog
 
     override fun onServiceSelected(serviceId: Int) {
         val intent = Intent(requireActivity(), ServiceDetailActivity::class.java)
         intent.putExtra("serviceId", serviceId)
         startActivity(intent)
+    }
+
+    override fun onSearch(title: String, price: String, serviceType: String) {
+        this.title = title
+        this.price = price
+        this.serviceType = serviceType
+
+        // Reset pagination and reload data
+        adapter.clearData()
+        page = 1
+        isLastPage = false
+        loadServiceData()
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,7 +60,6 @@ class ServiceFragment : Fragment(), ServiceAdapter.OnServiceSelected {
 
         initViewModel()
 
-        // Initialize the RecyclerView and adapter
         initRecyclerView()
 
         // Load the initial data
@@ -65,18 +83,15 @@ class ServiceFragment : Fragment(), ServiceAdapter.OnServiceSelected {
                         // Load more data
                         loadServiceData()
                     }
-                } else if (!recyclerView.canScrollVertically(1)) {
-                    if (!isShown) {
-                        isShown = true
-//                        val customDialog = CustomDialog("", "No More Item", Constants.WARNING)
-//                        customDialog.onDismissListener = {
-//                            isShown = false
-//                        }
-//                        customDialog.show(childFragmentManager, "CustomDialog")
-                    }
                 }
             }
         })
+
+        binding.searchBtn.setOnClickListener {
+            val dialog = SearchServiceDialog()
+            dialog.setOnSearchListener(this)
+            dialog.show(childFragmentManager, "SearchServiceDialog")
+        }
         return binding.root
     }
 
@@ -88,7 +103,6 @@ class ServiceFragment : Fragment(), ServiceAdapter.OnServiceSelected {
     }
 
     private fun initViewModel() {
-
         viewModel.getServiceResultState.observe(requireActivity()) { result ->
             isLoading = false // Reset loading flag
             if (result.result.data.isNotEmpty()) {
@@ -112,7 +126,7 @@ class ServiceFragment : Fragment(), ServiceAdapter.OnServiceSelected {
 
     private fun loadServiceData() {
         isLoading = true // Set loading flag to true
-        val body = GetServiceParam("", range, page)
+        val body = GetServiceParam(serviceType, price, title, range, page)
         viewModel.getService(body)
     }
 }
