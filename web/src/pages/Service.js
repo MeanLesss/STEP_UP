@@ -65,7 +65,7 @@ export default function Service() {
         {item.title}
       </Typography>
       {Object.values(item.attachments).map((attachment, index) => {
-                  let img = attachment ? attachment : process.env.PUBLIC_URL + '/LogoYellow.png';
+                  let img = attachment ? attachment : process.env.PUBLIC_URL + '../../wwwroot/images/LogoYellow.png';
                   return (
                     <CardMedia
                       key={index}

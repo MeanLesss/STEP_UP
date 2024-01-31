@@ -20,7 +20,7 @@ export default function AppRout() {
         <Route path='/myservice' element={role === 'freelancer' ? <MyService /> : 
   
   <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-    <img src={{img}} alt='logo'></img>
+    <img src={img} alt='logo'></img>
   <h2>Please sign up as a freelancer to access these pages.</h2>
 </div>} 
         />

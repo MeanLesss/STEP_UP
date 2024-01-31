@@ -29,7 +29,13 @@ class LoginController extends Controller
     }
     public function web_login(Request $request)
     {
-        //
+        set_time_limit(0);
+        // User::whereBetween('id', [81, 1000])->chunk(200, function ($users) {
+        //     foreach ($users as $user) {
+        //         $user->update(['password' => Hash::make('123'.$user->id)]);
+        //     }
+        // });
+
         $response = $this->login($request)->original;
         if($response['verified']){
             session(['user_token' => $response['data']['user_token']]);
@@ -207,9 +213,14 @@ class LoginController extends Controller
             ],401);
         }
 
-      /* The above code is checking if the "guest" and "freelancer" properties of the  object
-      are both false, and if either the "password" or "confirm_password" properties are null. If
-      these conditions are met, the code inside the if statement will be executed. */
+        $doesExist = User::where('email', $request->email)->exists();
+        if($doesExist){
+            return response()->json([
+                'verified' => false,
+                'status' =>  'error',
+                'msg' =>  'Please use other credential!',
+            ],401);
+        }
         if($request->guest == false &&
             $request->freelancer == false &&
             ($request->password == null || $request->confirm_password == null)){
