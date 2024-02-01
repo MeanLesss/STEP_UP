@@ -123,6 +123,7 @@
     <string name="vat_text">VAT :</string>
     <string name="total_text">Total :</string>
     <string name="note_text">Note :</string>
+    <string name="discount_text">Discount :</string>
 
     //My work screen
     <string name="decline">Decline</string>

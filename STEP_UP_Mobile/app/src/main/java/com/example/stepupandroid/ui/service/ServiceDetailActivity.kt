@@ -6,6 +6,7 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.ImageButton
 import com.bumptech.glide.Glide
 import com.example.stepupandroid.R
@@ -81,6 +82,13 @@ class ServiceDetailActivity : AppCompatActivity() {
             binding.serviceType.text = result.result.service_type
             binding.description.text = result.result.description
             binding.price.text = "$" + Util.formatStringToDecimal(result.result.price)
+
+            if (result.result.discount == 0f) {
+                binding.discountLayout.visibility = View.GONE
+            } else {
+                binding.discountLayout.visibility = View.VISIBLE
+                binding.discount.text = String.format("%.2f", result.result.discount) + "%"
+            }
 
             if (result.result.isReadOnly) {
                 binding.buyBtn.isEnabled = false

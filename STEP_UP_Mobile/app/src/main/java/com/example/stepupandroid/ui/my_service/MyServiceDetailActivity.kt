@@ -112,6 +112,13 @@ class MyServiceDetailActivity : AppCompatActivity() {
             binding.description.text = result.result.description
             binding.price.text = "$" + Util.formatStringToDecimal(result.result.price)
 
+            if (result.result.discount == 0f) {
+                binding.discountLayout.visibility = View.GONE
+            } else {
+                binding.discountLayout.visibility = View.VISIBLE
+                binding.discount.text = String.format("%.2f", result.result.discount) + "%"
+            }
+
             binding.activateBtn.visibility = View.GONE
             binding.deactivateBtn.visibility = View.GONE
             if (result.result.stringStatus == Constants.Inactive) {

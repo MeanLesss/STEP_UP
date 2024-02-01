@@ -208,7 +208,7 @@ class MyWorkDetailActivity : AppCompatActivity(), SelectFileDialog.OnFileSelecte
             binding.endDate.text = Util.convertDate(
                 "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", "dd-MMM-yyyy", result.result.expected_end_date
             )
-            binding.price.text = result.result.service.price
+            binding.price.text = "$" + Util.formatStringToDecimal(result.result.service.price)
             binding.serviceType.text = result.result.service_order
             if (!result.result.accepted_at.isNullOrEmpty()) {
                 binding.acceptDate.text = Util.convertDate(
@@ -218,6 +218,14 @@ class MyWorkDetailActivity : AppCompatActivity(), SelectFileDialog.OnFileSelecte
                 binding.acceptDate.text = "Not Yet Accepted"
             }
 
+            if (result.result.service.discount == 0f) {
+                binding.discountText.visibility = View.GONE
+                binding.discount.visibility = View.GONE
+            } else {
+                binding.discountText.visibility = View.VISIBLE
+                binding.discount.visibility = View.VISIBLE
+                binding.discount.text = String.format("%.2f", result.result.service.discount) + "%"
+            }
 
             binding.pendingStatusButton.visibility = View.GONE
             binding.inProgressStatusButton.visibility = View.GONE

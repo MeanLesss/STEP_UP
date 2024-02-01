@@ -6,6 +6,7 @@ import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -54,6 +55,13 @@ class MyServiceAdapter(
             Util.convertDate("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", "dd-MMM-yyyy", currentItem.start_date)
         holder.endDateTextView.text =
             Util.convertDate("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", "dd-MMM-yyyy", currentItem.end_date)
+
+        if (currentItem.discount == 0f) {
+            holder.discountLayout.visibility = View.GONE
+        } else {
+            holder.discountLayout.visibility = View.VISIBLE
+            holder.discountPercentage.text = "-" + String.format("%.2f", currentItem.discount) + "%"
+        }
 
         // Set the background drawable with the border color
         val backgroundDrawable =
@@ -171,5 +179,7 @@ class MyServiceAdapter(
         val startDateTextView: TextView = itemView.findViewById(R.id.startDate)
         val endDateTextView: TextView = itemView.findViewById(R.id.endDate)
         val containerLayout: LinearLayout = itemView.findViewById(R.id.containerLayout)
+        val discountLayout: FrameLayout = itemView.findViewById(R.id.discountLayout)
+        val discountPercentage: TextView = itemView.findViewById(R.id.discountPercentage)
     }
 }

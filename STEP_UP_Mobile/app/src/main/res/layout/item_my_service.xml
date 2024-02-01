@@ -65,15 +65,45 @@
 
         </LinearLayout>
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/image"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:layout_marginTop="10dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/step_up_logo"
-            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.RoundCornerImageView" />
+            android:layout_marginTop="10dp">
 
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/image"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/step_up_logo"
+                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.RoundCornerImageView" />
+
+            <FrameLayout
+                android:id="@+id/discountLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:background="@drawable/discount_corner" />
+
+                <TextView
+                    android:id="@+id/discountPercentage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:rotation="45"
+                    android:text="-99%"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_gravity="center"
+                    android:textColor="@color/selected_color"
+                    android:textSize="15sp" />
+            </FrameLayout>
+        </RelativeLayout>
         <TextView
             android:id="@+id/description"
             android:layout_width="match_parent"

@@ -40,7 +40,7 @@ data class Service(
     val description: String,
     val price: String,
     val requirement: String,
-    val discount: String
+    val discount: Float
 )
 
 data class Contact(
