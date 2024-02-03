@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Logo from "C:/Users/Admin/Documents/STEP_UP/web/src/wwwroot/images/LogoYellow.png";
+import Logo from "../../wwwroot/images/LogoYellow.png";
 import {
   Drawer,
   IconButton,

@@ -108,7 +108,10 @@ class ServiceController extends Controller
             }
             if($request->has('price') && isset($request->price)){
                 //$result = Service::paginate($request->range);
-                $query->where('price',$request->price);
+                $query->whereBetween('price', [5, $request->price]);
+            }
+            if($request->has('title') && isset($request->title)){
+                $query->where('title', 'LIKE', '%' . $request->title . '%');
             }
 
             $query->where('status', 1);
@@ -278,7 +281,15 @@ class ServiceController extends Controller
 
                 $service =  Service::where('id',$request->service_id)->where('created_by',Auth::user()->id)->first();
 
-                if($service->status == 1){
+                if(!$service){
+                    return response()->json([
+                        'verified' => false,
+                        'status' =>  'warning',
+                        'msg' => 'Oop nothing found contact up for help!',
+                    ],401);
+                }
+
+                if($service->status == 1 && $request->is_active){
                     return response()->json([
                         'verified' => false,
                         'status' =>  'warning',
@@ -314,7 +325,7 @@ class ServiceController extends Controller
                 'Status: ' . $masterController->checkMyServiceStatus($service->status) . "\n\n" .
                 'Discount: ' . $service->discount . "%\n\n" .
                 'Price: $' . $service->price . "\n\n" .
-                'This amount will be display without tax included.' . "\n\n" .
+
                 'Thank you for choosing our platform.';
                 $emailController->sendTextEmail(Auth::user()->email, $subject, $content);
 
@@ -394,16 +405,28 @@ class ServiceController extends Controller
         $result = Service::where('id',$id)->increment('view');
         $result = Service::where('id',$id)->first();
 
+        if(!$result){
+            return response()->json([
+                'verified' => false,
+                'status' =>  'error',
+                'msg' => "Nothing Found!",
+            ],401);
+        }
+
+        $masterController = new MasterController();
+        $stringStatus = $masterController->checkMyServiceStatus($result->status);
+        $result->stringStatus = $stringStatus;
+
         $attachments = json_decode($result->attachments);
         foreach($attachments as &$attachment){
             // $attachment = env('APP_URL').$attachment;
             $attachment = asset('storage/'.$attachment);
         }
-        $result->attachments = $attachments;
+        $result->attachments = $attachments ? $attachments : new stdClass();
+
+
         $result->isReadOnly  = false;
-       /* The above code is incomplete and does not have any logic or condition specified within the if
-       statement. Therefore, it is not possible to determine what the code is intended to do without
-       further information. */
+
         if(isset($orderCheck)){
             $result->isReadOnly  = true;
             return response()->json([

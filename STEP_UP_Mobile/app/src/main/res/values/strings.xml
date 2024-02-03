@@ -105,6 +105,11 @@
     <string name="registered_as_freelancer">Registered as freelancer!</string>
 
     //Service screen
+    <string name="search">Search</string>
+    <string name="max_price">Max price</string>
+    <string name="search_by_service_title">Search by service title</string>
+    <string name="filter_by_service_price">Filter by service price</string>
+    <string name="filter_by_service_type">Filter by service type</string>
     <string name="buy">Buy</string>
     <string name="order_service">Order Service</string>
     <string name="terms_and_agreement">Terms and Agreement</string>
@@ -118,6 +123,7 @@
     <string name="vat_text">VAT :</string>
     <string name="total_text">Total :</string>
     <string name="note_text">Note :</string>
+    <string name="discount_text">Discount :</string>
 
     //My work screen
     <string name="decline">Decline</string>

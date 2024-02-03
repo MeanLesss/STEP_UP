@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import com.example.stepupandroid.databinding.ActivityWelcomeBinding
 import com.example.stepupandroid.helper.ApiKey
 import com.example.stepupandroid.helper.SharedPreferenceUtil
@@ -71,7 +72,7 @@ class WelcomeActivity : AppCompatActivity() {
         }
 
         binding.signInWithGoogle.setOnClickListener {
-            //todo
+            Toast.makeText(this, "Coming soon...", Toast.LENGTH_SHORT).show()
         }
 
         binding.backBtn.setOnClickListener {

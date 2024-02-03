@@ -7,6 +7,7 @@ use Exception;
 use App\Models\User;
 use App\Models\Service;
 use App\Models\UserDetail;
+use App\Models\Transaction;
 use Illuminate\Support\Str;
 use App\Models\ServiceOrder;
 use Illuminate\Http\Request;
@@ -80,12 +81,12 @@ class ServiceOrderController extends Controller
         }
     }
 
-    public function showOrdersForAll($isOrder = true){ //True for my orderand false for my work
+    public function showOrdersForAll($isOrder = true){ //True for my order and false for my work
         try{
             $isOrder = filter_var($isOrder, FILTER_VALIDATE_BOOLEAN);
             if(Auth::user()->tokenCan( 'serviceOrder:view')){
                 if(Auth::user()->role == 100){
-                    if($isOrder){ //True for my work and false for my order
+                    if($isOrder){ //True for my order and false for my work
                         $result = ServiceOrder::where('order_by', Auth::user()->id)->orderBy('created_at', 'desc')->get();
                     }else{
                         $result = ServiceOrder::where('freelancer_id',Auth::user()->id)->orderBy('created_at', 'desc')->get();
@@ -100,7 +101,7 @@ class ServiceOrderController extends Controller
                     // $request->merge(['order_by_name' => Carbon::now()]);
                     // foreach( $result as $data ){
                         // }
-                    $result->transform(function ($item, $key) {
+                    $result->transform(function ($item, $key) use ($isOrder) {
                         $masterController = new MasterController();
                         $status = $masterController->checkServiceStatus($item->order_status);
                         $item->stringStatus = $status;
@@ -128,6 +129,7 @@ class ServiceOrderController extends Controller
                                 $item->completed_attachments= new stdClass;
                             }
                         }
+                        $item->contact = User::select('name','email')->where('id',$isOrder ? $item->freelancer_id : $item->order_by)->first();
                         return $item;
                     });
                     return response()->json([
@@ -411,8 +413,11 @@ class ServiceOrderController extends Controller
                         ],401);
                     }
 
-                    $userDetail->balance -= $priceWithTax;
-                    $userDetail->update(['balance'=>$userDetail->balance]);
+                    // $userDetail->balance -= $priceWithTax;
+                    // $userDetail->update(['balance'=>$userDetail->balance]);
+                    $userDetail->decrement('balance',$totalPrice);
+                    // Update accountant balance
+                    UserDetail::where('user_id',2)->increment('balance',$totalPrice);
 
                     $serviceOrder = new ServiceOrder($request->all());
 
@@ -463,6 +468,22 @@ class ServiceOrderController extends Controller
                 $serviceOrder->updated_at = Carbon::now();
                 $serviceOrder->save();
                 $service->increment('service_ordered_count');
+
+                $transaction = new Transaction();
+                $transaction->client_id = $serviceOrder->order_by;
+                $transaction->free_id = $serviceOrder->freelancer_id;
+                $transaction->order_id = $serviceOrder->id;
+                $transaction->client_status = 0;
+                $transaction->freelancer_status = 0;
+                $transaction->isComplain = 0;
+                // $transaction->tranc_attachments = new stdClass();
+                $transaction->tranc_status = 0;
+                $transaction->created_by = Auth::user()->id;
+                $transaction->updated_by = Auth::user()->id;
+                $transaction->created_at = Carbon::now();
+                $transaction->updated_at = Carbon::now();
+                $transaction->save();
+
 
                 $masterController = new MasterController();
                 $emailController = new EmailController();

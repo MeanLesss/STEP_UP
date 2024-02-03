@@ -181,7 +181,7 @@ class TrancsactionController extends Controller
                 $transaction->client_id = $client->id;
                 $transaction->free_id = Auth::user()->id;
                 $transaction->order_id = $order->id;
-                $transaction->client_status = 0;
+                // $transaction->client_status = 0;
                 $transaction->freelancer_status = 2;
                 $transaction->isComplain = 0;
                 $transaction->tranc_attachments = isset($request->completed_attachments) ? $request->completed_attachments : new stdClass() ;
@@ -347,7 +347,9 @@ class TrancsactionController extends Controller
 
                 $user = User::where('id',$order->freelancer_id)->first();
                 //neeed to udpate balance
-                UserDetail::where('user_id',$user->id)->increment('balance',$service->price);
+                UserDetail::where('user_id',$user->id)->increment('balance',$masterController->calculateTotalAmount($service->price, $service->discount));
+                //Claim money from the accountamt
+                UserDetail::where('user_id',2)->decrement('balance',$masterController->calculateTotalAmount($service->price, $service->discount));
                 // Send to freelancer
                 $subject = 'Service Completion';
                 $content = 'Dear '.$user->name.',' . "\n\n" .
@@ -414,6 +416,7 @@ class TrancsactionController extends Controller
             ->where('order_by',$user->id)
             ->first();
             if($order){
+                $masterController = new MasterController();
                 $order->order_status = 4;
                 $order->cancel_desc = "Cancel while pending";
                 $order->cancel_at = Carbon::now();
@@ -432,8 +435,8 @@ class TrancsactionController extends Controller
                 $transaction->client_id = $user->id;
                 $transaction->free_id = $order->freelancer_id;
                 $transaction->order_id = $order->id;
-                $transaction->client_status = 2;
-                $transaction->freelancer_status = 0;
+                $transaction->client_status = 1;
+                // $transaction->freelancer_status = 0;
                 $transaction->isComplain = 0;
                 // $transaction->tranc_attachments = new stdClass();
                 $transaction->tranc_status = 1;
@@ -446,7 +449,9 @@ class TrancsactionController extends Controller
                 //service order cancel status is 4
                 if($user && $service){
                     //send back refund
-                    UserDetail::where('user_id', $user->id)->increment('balance', $service->price);
+                    UserDetail::where('user_id', $user->id)->increment('balance', $masterController->calculateTotalAmount($service->price, $service->discount));
+                    //Claim money from the accountamt
+                    UserDetail::where('user_id',2)->decrement('balance',$masterController->calculateTotalAmount($service->price, $service->discount));
                     //Send Email Client Part
                     $this->sendCancellationEmailClient1($user, $service, $order);
 
@@ -508,6 +513,7 @@ class TrancsactionController extends Controller
             ->first();
             if($order)
             {
+                $masterController = new MasterController();
                 $order->order_status = 4;
                 $order->cancel_desc = $request->cancel_desc;
                 $order->cancel_at = Carbon::now();
@@ -529,7 +535,7 @@ class TrancsactionController extends Controller
                     $transaction->free_id = $order->freelancer_id;
                     $transaction->order_id = $order->id;
                     $transaction->client_status = 1;
-                    $transaction->freelancer_status = 0;
+                    // $transaction->freelancer_status = 0;
                     $transaction->isComplain = 0;
                     // $transaction->tranc_attachments = new stdClass();
                     $transaction->tranc_status = 1;
@@ -541,12 +547,14 @@ class TrancsactionController extends Controller
 
 
                     //send back refund
-                    UserDetail::where('user_id', $user->id)->increment('balance', $service->price * 0.50);
+                    UserDetail::where('user_id', $user->id)->increment('balance', $masterController->calculateTotalAmount($service->price, $service->discount) * 0.50);
                     //Send Email Client Part
                     $this->sendCancellationEmailClient($user, $service, $order);
 
                     $freelancer = User::where('id',$order->freelancer_id)->first();
-                    UserDetail::where('user_id', $freelancer->id)->increment('balance', $service->price * 0.50);
+                    UserDetail::where('user_id', $freelancer->id)->increment('balance', $masterController->calculateTotalAmount($service->price, $service->discount) * 0.50);
+                    //Claim money from the accountamt
+                    UserDetail::where('user_id',2)->decrement('balance',$masterController->calculateTotalAmount($service->price, $service->discount));
                     $this->sendCancellationEmailFreelancer($freelancer, $service, $order);
 
                     //Refund part
@@ -602,6 +610,7 @@ class TrancsactionController extends Controller
             ->where('freelancer_id',$freelancer->id)
             ->first();
             if($order){
+                $masterController = new MasterController();
                 $order->order_status = 4;
                 $order->cancel_desc = $request->cancel_desc;
                 $order->cancel_at = Carbon::now();
@@ -622,7 +631,7 @@ class TrancsactionController extends Controller
                 $transaction->client_id = $order->order_by;
                 $transaction->free_id =  $freelancer->id;
                 $transaction->order_id = $order->id;
-                $transaction->client_status = 0;
+                // $transaction->client_status = 0;
                 $transaction->freelancer_status = 1;
                 $transaction->isComplain = 0;
                 // $transaction->tranc_attachments = new stdClass();
@@ -642,7 +651,9 @@ class TrancsactionController extends Controller
                     //Refund part
                     $user = User::where('id',$order->order_by)->first();
                     //Send refund to client 100%
-                    UserDetail::where('user_id', $user->id)->increment('balance', $service->price);
+                    UserDetail::where('user_id', $user->id)->increment('balance',$masterController->calculateTotalAmount($service->price, $service->discount));
+                    //Claim money from the accountamt
+                    UserDetail::where('user_id',2)->decrement('balance',$masterController->calculateTotalAmount($service->price, $service->discount));
                     $this->sendCancellationEmailClient2($user, $service, $order);
 
                 }
@@ -697,6 +708,7 @@ class TrancsactionController extends Controller
             ->where('order_by',$user->id)
             ->first();
             if($order){
+                $masterController = new MasterController();
                 $order->order_status = 4;
                 $order->cancel_desc = $request->cancel_desc;
                 $order->cancel_at = Carbon::now();
@@ -719,7 +731,7 @@ class TrancsactionController extends Controller
                     $transaction->free_id = $order->freelancer_id;
                     $transaction->order_id = $order->id;
                     $transaction->client_status = 2;
-                    $transaction->freelancer_status = 0;
+                    // $transaction->freelancer_status = 0;
                     $transaction->isComplain = 0;
                     // $transaction->tranc_attachments = new stdClass();
                     $transaction->tranc_status = 1;
@@ -730,16 +742,17 @@ class TrancsactionController extends Controller
                     $transaction->save();
 
                     //send back refund
-                    UserDetail::where('user_id', $user->id)->increment('balance', $service->price * 0.95);
+                    UserDetail::where('user_id', $user->id)->increment('balance', $masterController->calculateTotalAmount($service->price, $service->discount) * 0.95);
                     //Send Email Client Part
                     $this->sendCancellationEmailClient3($user, $service, $order);
 
                     $freelancer = User::where('id',$order->freelancer_id)->first();
-                    //UserDetail::where('user_id', $freelancer->id)->decrement('credit_score', 10)->increment('balance', $service->price * 0.05);
                     UserDetail::where('user_id', $freelancer->id)->update([
                         'credit_score' => DB::raw('credit_score - 10'),
-                        'balance' => DB::raw('balance + ' . ($service->price * 0.05))
+                        'balance' => DB::raw('balance + ' . ($masterController->calculateTotalAmount($service->price, $service->discount) * 0.05))
                     ]);
+                    //Claim money from the accountamt
+                    UserDetail::where('user_id',2)->decrement('balance',$masterController->calculateTotalAmount($service->price, $service->discount));
                     $this->sendCancellationEmailFreelancer3($freelancer, $service, $order);
 
                     //Refund part

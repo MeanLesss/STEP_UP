@@ -62,13 +62,14 @@ class RegisterAsFreelancerActivity : AppCompatActivity() {
         }
 
         binding.signUpBtn.setOnClickListener {
+            val jobType = if(user.user_detail.job_type.isNullOrEmpty()) "" else user.user_detail.job_type
             val body = SignUpAsFreelancerParam(
                 guest = false,
                 freelancer = true,
                 name = user.user_info.name,
                 email = user.user_info.email,
                 phone_number = user.user_detail.phone,
-                job_type = user.user_detail.job_type,
+                job_type = jobType,
                 id_number = binding.idNumber.text.toString()
             )
             signUpViewModel.signUpAsFreelancer(body)

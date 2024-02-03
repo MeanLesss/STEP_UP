@@ -11,8 +11,8 @@ data class MyServiceItem(
     val status: Int,
     val attachments: Map<String, String>, // Using a map to represent dynamic keys
     val requirement: String?, // Assuming it's nullable
-    val price: Int,
-    val discount: Int,
+    val price: String,
+    val discount: Float,
     val service_type: String,
     val start_date: String,
     val end_date: String,
