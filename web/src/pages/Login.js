@@ -19,6 +19,7 @@ import Popup from "./components/PopUp.js";
 import LoginForm from "./LoginForm.js";
 import SignUp from "./SignUpForm.js";
 import { warning, red } from '@mui/material/colors';
+import SignUpForm from "./SignUpForm.js";
 
 export default function Login(props) {
   const theme = useTheme();
@@ -84,7 +85,7 @@ export default function Login(props) {
                 openPopup={openPopup}
                 setOpenPopup={setOpenPopup}
             >
-                 {props.isSignIn ?<LoginForm closePopup={back} />: <SignUp closePopup={back} />}
+                 {props.isSignIn ?<LoginForm closePopup={back} />: <SignUpForm closePopup={back} />}
                 
             </Popup>
 

@@ -1,10 +1,8 @@
-const HOST = process.env.API_HOST;
-
-export const getUser = async(userToken) => {
+export const getUser = async({userToken}) => {
   var myHeaders = new Headers();
   myHeaders.append("X-CSRF-TOKEN", "");
   myHeaders.append("Content-Type", "application/json");
-  myHeaders.append("Authorization", userToken);
+  myHeaders.append("Authorization", "Bearer "+ userToken);
 
   var requestOptions = {
     method: 'GET',
@@ -24,7 +22,7 @@ export const ViewAllService = async ({ userToken }) => { // Destructure userToke
   var myHeaders = new Headers();
   myHeaders.append("X-CSRF-TOKEN", "");
   myHeaders.append("Content-Type", "application/json");
-  myHeaders.append("Authorization", userToken); // Use userToken directly
+  myHeaders.append("Authorization","Bearer "+ userToken); // Use userToken directly
 
   var raw = JSON.stringify({
     "service_type": "",

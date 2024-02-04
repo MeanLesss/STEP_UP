@@ -8,6 +8,8 @@ const LoginForm = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [userDetail, setUserDetail] = useState(0);
+  const userToken = sessionStorage.getItem('user_token');
+  
  //login
  const eref = createRef();
  const pref = createRef();
@@ -54,12 +56,18 @@ const LoginForm = (props) => {
       .then(result => {
         console.log(result);
         if (result.status === "success") {     
-          sessionStorage.setItem('user_token', result.data.user_token);        
-          // navigate('/' + result.user.role.toLowerCase(), { replace: true })
+          sessionStorage.setItem('user_token', result.data.user_token);       
+          getUser({userToken: sessionStorage.getItem('user_token')})     
+          .then(result => {
+            if (result && result.data && result.data.user_info) {     
+              sessionStorage.setItem('user_role',result.data.user_info.role)
+            }
+          });  
         }
         return result;
       })
       .catch(error => console.log('error', error));
+     
   };
 
   // const userToken = sessionStorage.getItem('user_token');
