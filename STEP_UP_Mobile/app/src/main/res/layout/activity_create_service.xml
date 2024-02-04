@@ -85,7 +85,7 @@
                     android:background="@drawable/logo_color_border_drawable"
                     android:gravity="start"
                     android:hint="@string/description"
-                    android:inputType="text"
+                    android:inputType="textMultiLine"
                     android:nextFocusDown="@+id/price"
                     android:paddingVertical="10dp"
                     android:paddingStart="30dp"
