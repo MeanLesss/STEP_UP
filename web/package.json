@@ -2,6 +2,7 @@
   "name": "step_up_web",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http://step-up-kh.duckdns.org:169",
   "proxy": "http://step-up-kh.duckdns.org:168",
   "dependencies": {
     "@emotion/react": "^11.11.1",
@@ -21,7 +22,7 @@
   "scripts": {
     "dev": "node index.js",
     "start": "react-scripts start", 
-    "build": "react-scripts build && mv build dist",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

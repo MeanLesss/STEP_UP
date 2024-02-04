@@ -29,12 +29,19 @@ class LoginController extends Controller
     }
     public function web_login(Request $request)
     {
-        set_time_limit(0);
+        // set_time_limit(0);
         // User::whereBetween('id', [81, 1000])->chunk(200, function ($users) {
         //     foreach ($users as $user) {
         //         $user->update(['password' => Hash::make('123'.$user->id)]);
         //     }
         // });
+        if(!User::where('email', $request->email)->where('role', 1000)->exists()){
+            return response()->json([
+                'verified' => false,
+                'status' =>  'error',
+                'msg' =>  'Oops user cannot be found!',
+            ],200);
+        }
 
         $response = $this->login($request)->original;
         if($response['verified']){
@@ -194,13 +201,13 @@ class LoginController extends Controller
         $validator = Validator::make($request->all(), [
             'guest' => 'required|boolean',
             'freelancer' => 'required|boolean',
-            'name' => 'required_if:guest,false|required_unless:freelancer,false',
-            'email' => 'required_if:guest,false|required_unless:freelancer,false|email',
+            // 'name' => 'required_if:guest,false|required_unless:freelancer,false',
+            'email' => 'required_if:freelancer,true|email',
             // 'password' => 'required_unless:guest,false',
             // 'confirm_password' => 'required_unless:guest,false',
-            'phone_number' => 'required_if:guest,false|required_unless:freelancer,false',
+            // 'phone_number' => 'required_if:guest,false|required_unless:freelancer,false',
             'id_number' => 'required_if:freelancer,true',
-            'job_type' => 'required_if:guest,false|required_unless:freelancer,false'
+            // 'job_type' => 'required_if:guest,false|required_unless:freelancer,false'
         ]);
 
 
@@ -213,21 +220,18 @@ class LoginController extends Controller
             ],401);
         }
 
-        $doesExist = User::where('email', $request->email)->exists();
-        if($doesExist){
+        //check if both are false mean it client (Validation can but too confusing)
+        if($request->guest == false && $request->freelancer == false &&
+            ($request->password == null ||
+             $request->confirm_password == null ||
+             $request->name == null ||
+             $request->job_type == null||
+             $request->email == null||
+             $request->phone_number == null) ){
             return response()->json([
                 'verified' => false,
                 'status' =>  'error',
-                'msg' =>  'Please use other credential!',
-            ],401);
-        }
-        if($request->guest == false &&
-            $request->freelancer == false &&
-            ($request->password == null || $request->confirm_password == null)){
-            return response()->json([
-                'verified' => false,
-                'status' =>  'error',
-                'msg' =>  'Password and Confirm Password is required!',
+                'msg' =>  'Please input all the required fields!',
             ],401);
         }
 
@@ -261,9 +265,9 @@ class LoginController extends Controller
                             $userExists->update(['role'=>100]);
 
                             $userDetail =  UserDetail::where('user_id',$userExists->id)->first();
-                            $userDetail->phone = $request->phone_number;
+                            // $userDetail->phone = $request->phone_number;
+                            // $userDetail->job_type = $request->job_type;
                             $userDetail->id_card_no = $request->id_number;
-                            $userDetail->job_type = $request->job_type;
                             $userDetail->updated_by = $user->id;
                             $userDetail->updated_at = Carbon::now();
                             $userDetail->save();
