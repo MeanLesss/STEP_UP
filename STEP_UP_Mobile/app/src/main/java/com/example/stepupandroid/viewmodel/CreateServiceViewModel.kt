@@ -23,7 +23,7 @@ class CreateServiceViewModel(context: Context) : BaseViewModel(context) {
         loadingDialog.show()
         dataSubscription = ApiImp().createService(body).subscribe({
             loadingDialog.hide()
-            createServiceLiveData.value = it.data
+            createServiceLiveData.value = it.data!!
         }, { throwable ->
             object : CallBackWrapper() {
                 override fun onCallbackWrapper(

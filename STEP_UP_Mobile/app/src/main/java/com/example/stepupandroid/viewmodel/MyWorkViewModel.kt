@@ -22,7 +22,7 @@ class MyWorkViewModel(context: Context) : BaseViewModel(context) {
         loadingDialog.show()
         dataSubscription = ApiImp().getMyWork().subscribe({
             loadingDialog.hide()
-            getMyWorkLiveData.value = it.data
+            getMyWorkLiveData.value = it.data!!
         }, { throwable ->
             object : CallBackWrapper() {
                 override fun onCallbackWrapper(
