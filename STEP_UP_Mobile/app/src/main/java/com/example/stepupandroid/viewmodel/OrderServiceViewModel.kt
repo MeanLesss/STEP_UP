@@ -25,7 +25,7 @@ class OrderServiceViewModel(context: Context) : BaseViewModel(context) {
         loadingDialog.show()
         dataSubscription = ApiImp().orderService(body).subscribe({
             loadingDialog.hide()
-            orderServiceLiveData.value = it.data
+            orderServiceLiveData.value = it.data!!
         }, { throwable ->
             object : CallBackWrapper() {
                 override fun onCallbackWrapper(
@@ -46,7 +46,7 @@ class OrderServiceViewModel(context: Context) : BaseViewModel(context) {
         loadingDialog.show()
             dataSubscription = ApiImp().getOrderSummary(body).subscribe({
             loadingDialog.hide()
-            getOrderSummaryLiveData.value = it.data
+            getOrderSummaryLiveData.value = it.data!!
         }, { throwable ->
             object : CallBackWrapper() {
                 override fun onCallbackWrapper(

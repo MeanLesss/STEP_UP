@@ -29,6 +29,7 @@ android {
                 "proguard-rules.pro"
             )
             buildConfigField("String", "BASE_URL", "\"http://step-up-kh.duckdns.org:168\"")
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {

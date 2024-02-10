@@ -42,7 +42,7 @@
                                         <h6>Service</h6>
                                         <select id="search-service" placeholder="Service" class="form-control my-3">
                                             <option value="">Choose..</option>
-                                            <option value="Software Developement">Software Developement</option>
+                                            <option value="Software Development">Software Development</option>
                                             <option value="Graphic Design">Graphic Design</option>
                                         </select>
                                     </div>
@@ -80,8 +80,12 @@
             var status = $('#search-status').val();
             var service = $('#search-service').val();
 
-            filterOrder(status, service);
-
+            //filterOrder(status, service);
+            Swal.fire({
+                icon: 'warning',
+                title: "In Progress",
+                text: 'Work in progress! Comming Soon.',
+            })
         });
 
         function ServiceTable(elementId, headers, data, status, service_type) {

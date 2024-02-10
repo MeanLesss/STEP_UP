@@ -80,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:ellipsize="end"
-                android:maxLines="1"
+                android:minLines="3"
                 android:text="@string/description_text"
                 android:textColor="@color/white"
                 android:textSize="15sp" />
