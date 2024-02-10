@@ -1,18 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { Button, TextField, Grid, Paper, Card, CardMedia, Typography, Container } from '@mui/material';
+import { Button, TextField, Grid, Paper, Card, CardMedia, Typography, Container, Dialog, DialogTitle, DialogContent, CircularProgress } from '@mui/material';
 import LoingPicture from '../wwwroot/images/Mask group.png';
 import { createRef } from 'react';
 import { getUser } from '../API';
-
+import { styled } from '@mui/system';
+import Swal from 'sweetalert2';
+import '../wwwroot/css/Global.css';
 const LoginForm = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [open, setOpen] = React.useState(false);
   const [userDetail, setUserDetail] = useState(0);
   const userToken = sessionStorage.getItem('user_token');
-  
+ 
  //login
  const eref = createRef();
  const pref = createRef();
+//  const CryptoJS = require("crypto-js");
+//  let secretKey = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+// // Encrypt the password
+// let encryptedPassword = CryptoJS.AES.encrypt(password, secretKey).toString();
  useEffect(()=>{
   localStorage.clear();
 },[])
@@ -26,13 +34,10 @@ const LoginForm = (props) => {
   };
 
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    if (eref && pref) {
-      alert('Logged in');
-    } else {
-      alert('Please enter both email and password');
-    }
+    setOpen(true);
+    setIsLoading(true); 
     var myHeaders = new Headers();
     myHeaders.append("Pragma", "no-cache");
     myHeaders.append("Cache-Control", "no-cache");
@@ -51,37 +56,43 @@ const LoginForm = (props) => {
       redirect: 'follow'
     };
   
-    fetch("/api/login ", requestOptions)
-      .then(response => response.json())
-      .then(result => {
-        console.log(result);
-        if (result.status === "success") {     
-          sessionStorage.setItem('user_token', result.data.user_token);       
-          getUser({userToken: sessionStorage.getItem('user_token')})     
-          .then(result => {
-            if (result && result.data && result.data.user_info) {     
-              sessionStorage.setItem('user_role',result.data.user_info.role)
-            }
-          });  
-        }
-        return result;
-      })
-      .catch(error => console.log('error', error));
-     
+    try {
+      const response = await fetch("/api/login ", requestOptions);
+      const result = await response.json();
+      console.log(result);
+      if (result.status === "success") {     
+        sessionStorage.setItem('user_token', result.data.user_token);   
+        const userToken = sessionStorage.getItem('user_token');
+        const userResult = await getUser(userToken);
+        if (userResult && userResult.data && userResult.data.user_info) {
+          sessionStorage.setItem('user_role', userResult.data.user_info.role);
+          sessionStorage.setItem('web', password);
+        }     
+        //reload
+        setIsLoading(false);         
+        window.location.reload();
+      } else {
+        setOpen(false);
+        setIsLoading(false); 
+        Swal.fire({
+          icon: result.status,
+          title: 'Invalid',
+          text: result.msg,
+        });
+      }
+      return result;
+    } catch (error) {
+      console.log('error', error);
+      setOpen(false);
+      setIsLoading(false); 
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Something went wrong!',
+      });
+    }
   };
-
-  // const userToken = sessionStorage.getItem('user_token');
   
-  // useEffect(() => {
-  //   getUser({userToken}) // corrected here
-  //   .then(data => {
-  //     if (data.status === "success") {
-  //       sessionStorage.setItem('user_detail', JSON.stringify(data));
-  //       sessionStorage.setItem('role', data.user_info.role);
-  //       sessionStorage.setItem('is_guest', data.user_info.isGuest);
-  //     } 
-  //   })
-  // });
 
  
   const style = {
@@ -114,7 +125,9 @@ const LoginForm = (props) => {
       },
     },
   };
-  
+  const TransparentPaper = styled(Paper)(({ theme }) => ({
+    backgroundColor: 'transparent',
+  }));
  
  
   
@@ -166,7 +179,12 @@ const LoginForm = (props) => {
           
         </form>
         </Container>
-        
+        <Dialog open={open} fullWidth PaperComponent={TransparentPaper}>
+          <DialogTitle>  </DialogTitle>
+          <DialogContent sx={{display:'flex', justifyContent:'center', alignContent:'center', alignItems:'center'}}>
+            {isLoading && <CircularProgress size={24} />}
+          </DialogContent>
+        </Dialog>
       </Paper>
     </Card>
   );

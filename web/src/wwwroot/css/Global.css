@@ -5,3 +5,6 @@
     --step-up-reject:#AF2A2A;
     
 }
+.swal2-popup-custom {
+    z-index: 10000 !important;
+}

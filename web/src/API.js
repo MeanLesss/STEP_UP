@@ -1,4 +1,4 @@
-export const getUser = async({userToken}) => {
+export const getUser = async(userToken) => {
   var myHeaders = new Headers();
   myHeaders.append("X-CSRF-TOKEN", "");
   myHeaders.append("Content-Type", "application/json");
@@ -12,12 +12,36 @@ export const getUser = async({userToken}) => {
 
   return fetch("/api/user", requestOptions)
   .then(response => response.json())
-  .then(result =>  {console.log(result); return result })
+  .then(result =>  {console.log(result); return result; })
   .catch(error => console.log('error', error));
 }
 
+export const GuestSignUp = async()=>{
 
-export const ViewAllService = async ({ userToken }) => { // Destructure userToken from the argument
+  var myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+
+  var raw = JSON.stringify({
+    "guest": true,
+    "freelancer": false,
+    "name": ""
+  });
+
+  var requestOptions = {
+    method: 'POST',
+    headers: myHeaders,
+    body: raw,
+    redirect: 'follow'
+  };
+
+  return fetch("/api/signup", requestOptions)
+    .then(response => response.json())
+    .then(result => {
+      return result;
+    })
+    .catch(error => console.log('error', error));
+}
+export const ViewAllService = async (userToken,page) => { // Destructure userToken from the argument
   var myHeaders = new Headers();
   myHeaders.append("X-CSRF-TOKEN", "");
   myHeaders.append("Content-Type", "application/json");
@@ -38,48 +62,136 @@ export const ViewAllService = async ({ userToken }) => { // Destructure userToke
 
   return fetch("/api/service/data", requestOptions)
     .then(response => response.json())
-    .then(result =>  {console.log(result); return result })
+    .then(result =>  {console.log(result); return result; })
     .catch(error => console.log('error', error));
 }
 
-
+export const Mywork = async ({ userToken }) => {
+  var myHeaders = new Headers();
+  myHeaders.append("Authorization", "Bearer "+userToken);
   
-export const GetUserProduct = async()=>{}
+  var raw = "";
+  
+  var requestOptions = {
+    method: 'GET',
+    headers: myHeaders,
+    body: raw,
+    redirect: 'follow'
+  };
+  
+  fetch("/api/service/ordered/freelancer/false", requestOptions)
+    .then(response => response.text())
+    .then(result => console.log(result))
+    .catch(error => console.log('error', error));
+}
+//Myorder
+export const MyOrderList = async(userToken) => {
+  var myHeaders = new Headers();
+  myHeaders.append("Authorization", "Bearer "+ userToken);
+
+  var requestOptions = {
+    method: 'GET',
+    headers: myHeaders,
+    redirect: 'follow'
+  };
+
+  return fetch("/api/service/ordered/freelancer/true", requestOptions)
+    .then(response => response.json())
+    .then(result => {
+      console.log(result); // Debug line
+      return result;
+    })
+    .catch(error => {
+      console.error('Error Fetching Data:', error); // Debug line
+      throw error;
+    });
+}
+export const TopUp = async(userToken,amount)=>{
+  var myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  myHeaders.append("Authorization", "Bearer "+userToken);
+
+  var raw = JSON.stringify({
+    "balance": amount
+  });
+
+  var requestOptions = {
+    method: 'POST',
+    headers: myHeaders,
+    body: raw,
+    redirect: 'follow'
+  };
+
+  return fetch("/api/balance/top-up", requestOptions)
+    .then(response => response.json())
+    .then(result =>{ return result;})
+    .catch(error => console.log('error', error));
+
+}
+
+
+
 export const ViewServiceProduct = async()=>{}
 export const GetSummaryProduct = async()=>{}
+
+export const GetAgreement = async(userToken)=>{
+
+  var myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  myHeaders.append("Authorization", "Bearer "+ userToken);
+
+  var requestOptions = {
+    method: 'GET',
+    headers: myHeaders,
+    redirect: 'follow'
+  };
+
+  return fetch("/api/service/agreement", requestOptions)
+    .then(response => response.json())
+    .then(result => {
+      return result;
+    })
+    .catch(error => console.log('error', error));
+}
+export const ViewAllMyService = async(userToken)=>{
+  var myHeaders = new Headers();
+  myHeaders.append("X-CSRF-TOKEN", "");
+  myHeaders.append("Content-Type", "application/json");
+  myHeaders.append("Authorization", "Bearer "+userToken);
+
+  var requestOptions = {
+    method: 'GET',
+    headers: myHeaders,
+    redirect: 'follow'
+  };
+
+  return fetch("/api/my-service/view", requestOptions)
+    .then(response => response.json())
+    .then(result => {   
+      console.log(result);
+      return result;
+    })
+    .catch(error => console.log('error', error));
+}
+export const ViewALLMywork= async(userToken)=>{
+
+  var myHeaders = new Headers();
+  myHeaders.append("Authorization", "Bearer "+userToken);
+
+  var requestOptions = {
+    method: 'GET',
+    headers: myHeaders,
+    redirect: 'follow'
+  };
+
+  return fetch("/api/service/ordered/freelancer/false", requestOptions)
+    .then(response => response.json())
+    .then(result =>{
+      return result; 
+      console.log(result);
+    })
+    .catch(error => console.log('error', error));
+}
 export const GetPurchaseConfirm = async()=>{}
-export const ShowAllOrderService = async()=>{}
-export const ViewOrder = async()=>{}
-export const ViewAllMyService = async()=>{}
-// export const ViewAllService = async()=>{}
-
-// export const GetSummary = async (summary) => {
-//     var myHeaders = new Headers();
-//     myHeaders.append("X-CSRF-TOKEN", "");
-//     myHeaders.append("Authorization", "Bearer 1");
-    
-//     var formdata = new FormData();
-//     formdata.append("service_id", "35");
-//     formdata.append("order_title", "test 32432453");
-//     formdata.append("order_description", "test");
-//     formdata.append("attachment_files[]", fileInput.files[0], "/D:/IT STEP ACADEMY/Side Web Project/Scripting project/supProcess.py");
-//     formdata.append("attachment_files[]", fileInput.files[0], "/D:/IT STEP ACADEMY/Side Web Project/Scripting project/supProcess.py");
-//     formdata.append("expected_start_date", "2023-12-20");
-//     formdata.append("expected_end_date", "20234-12-20");
-//     formdata.append("isAgreementAgreed", "1");
-    
-//     var requestOptions = {
-//       method: 'POST',
-//       headers: myHeaders,
-//       body: formdata,
-//       redirect: 'follow'
-//     };
-    
-//     fetch("http://192.168.1.18:8000/api/service/purchase-summary/", requestOptions)
-//       .then(response => response.text())
-//       .then(result => console.log(result))
-//       .catch(error => console.log('error', error));
-
-// }
 
 

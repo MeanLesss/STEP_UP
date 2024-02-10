@@ -26,6 +26,7 @@ export default function Login(props) {
   const [openPopup, setOpenPopup] = useState(false)
   const [openLogin, setOpenLogin] = useState(false)
   const [signIn, setSignIn] = useState(false); 
+  const [showPopup, setShowPopup] = useState(false);
   const back = () => {
     setOpenPopup(false);   
   };
@@ -46,9 +47,9 @@ export default function Login(props) {
                 alt="log in picture"
             />
             <Box sx={{ width: 350,
-                        border: 1,borderColor: '#FAFF00',borderLeft: 0, background:'#0D0C22' }}>
+                        border: 1,borderColor: '#FAFF00',borderLeft: 0, background:'#0D0C22' }} >
                 <CardContent sx={{ flex: '1 0 auto' }}>
-                <Typography component="div" variant="h5" sx={{color:'white',paddingTop:'20px',textAlign:'center'}} >
+                <Typography component="div" variant="h5" sx={{color:'white',paddingTop:'55px',textAlign:'center'}} >
                 {props.isSignIn ? "Sign in to your account" : "Create a new account"}
                 </Typography>
                 <Typography variant="subtitle1" sx={{color:'white',textAlign:'center'}} component="div">
@@ -72,9 +73,9 @@ export default function Login(props) {
                     onClick={()=>{setOpenPopup(true);}}>
                         Continue with Email
                     </Button> 
-                    <Button variant="outlined" sx={{my:1,width:'250px',borderRadius:'12px'}} style={{color:"#FAFF00"}} startIcon={<PersonIcon />}>
+                    {/* <Button variant="outlined" sx={{my:1,width:'250px',borderRadius:'12px'}} style={{color:"#FAFF00"}} startIcon={<PersonIcon />}>
                         Continue with Guest
-                    </Button>
+                    </Button> */}
                 </Box>
             </Box>
         
@@ -94,7 +95,7 @@ export default function Login(props) {
              openPopup={signIn}
              setOpenPopup={setSignIn}
          >
-             <Login/>
+             <Login />
          </Popup>
     </>
   );

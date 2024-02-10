@@ -27,6 +27,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { getUser } from "../API.js";
+import Swal from "sweetalert2";
 // import IconButton from '@mui/material/IconButton';
 
 const Header = () => {
@@ -36,7 +37,10 @@ const Header = () => {
   const [openPopup, setOpenPopup] = useState(false);
   const [isSignIn, setIsSignIn] = useState(false); 
   const userToken = sessionStorage.getItem('user_token');
+  const userRole = sessionStorage.getItem('user_role');
   /* const [isSignUp, setIsSignIn] = useState(false); /*  */
+  const [openEmailPopup, setOpenEmailPopup] = useState(false);
+
  
   const closePopup = (event, reason) => {
     if (reason === 'backdropClick') {
@@ -44,8 +48,22 @@ const Header = () => {
     }
   };
   const Logout = () => {
-    sessionStorage.clear();
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You will be logged out.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, log me out!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        sessionStorage.clear();
+        window.location.reload();
+      }
+    })
   };
+  
  
 ///theme
 const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
@@ -61,8 +79,10 @@ const handleMenu = (event) => {
 const handleClose = () => {
   setAnchorEl(null);
 };
+
 useEffect(() => {
-  if (userToken) {
+  const userRole = sessionStorage.getItem('user_role');
+  if (userToken && (userRole === '100' || userRole === '101')) {
     setAuth(true);
   } else {
     setAuth(false);
@@ -113,28 +133,26 @@ useEffect(() => {
                 <AccountCircle />
               </IconButton>
               <Menu
-  id="menu-appbar"
-  anchorEl={anchorEl}
-  anchorOrigin={{
-    vertical: 'top',
-    horizontal: 'right',
-  }}
-  transformOrigin={{
-    vertical: 'top',
-    horizontal: 'right',
-  }}
-  open={Boolean(anchorEl)}
-  onClose={handleClose}
-  sx={{ opacity: 1,
-    transform: 'none',
-    transition: 'opacity 232ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, transform 155ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
-    top: '50px',
-    right: '16px',
-    transformOrigin: '-16px -16px',}}
->
-<MenuItem onClick={handleClose} component={Link} to="/profile">Profile</MenuItem>
-  <MenuItem onClick={Logout}>Logout</MenuItem>
-</Menu>
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'center',
+                }}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+                sx={{ 
+                  opacity: 1,
+                  transform: 'none',
+                  transition: 'opacity 232ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, transform 155ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
+                }}
+              >
+                <MenuItem onClick={handleClose} component={Link} to="/profile">Profile</MenuItem>
+                <MenuItem onClick={Logout}>Logout</MenuItem>
+              </Menu>
+
+
+
 
             </div>
           )}
@@ -159,15 +177,15 @@ useEffect(() => {
 
 
 
-      <Popup
-                title="Employee Form"
-                openPopup={openPopup}
-                setOpenPopup={setOpenPopup}
-                closePopup={closePopup}
-            >
-                <Login isSignIn={isSignIn} setOpenPopup={setOpenPopup} />
+        <Popup
+          title="Employee Form"
+          openPopup={openPopup}
+          setOpenPopup={setOpenPopup}
+          closePopup={closePopup}
+        >
+          <Login isSignIn={isSignIn} setIsSignIn={setIsSignIn} setOpenPopup={setOpenPopup} />
+        </Popup>
 
-            </Popup>
             <Outlet/>
     </React.Fragment>
   );

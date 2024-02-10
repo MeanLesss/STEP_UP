@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@mui/styles';
-import { Card, CardContent, Typography, Avatar, Grid, Button, Box, TextField, IconButton } from '@mui/material';
-import { getUser } from '../API';
+import { Card, CardContent, Typography, Avatar, Grid, Button, Box, TextField, IconButton, Dialog, DialogContent, Slider } from '@mui/material';
+import { TopUp, getUser } from '../API';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import Swal from 'sweetalert2';
 
 const useStyles = makeStyles({
   root: {
@@ -28,16 +29,34 @@ const Profile = () => {
   const classes = useStyles();
   const userToken = sessionStorage.getItem('user_token');
   const [data, setData] = useState('');
+  const [amount, setAmount] = useState(0);
+  const [open, setOpen] = useState(false);
+  const amounts = [5, 10, 20, 50, 100, 200];
 
-useEffect(() => {    
-    getUser(userToken)     
-        .then(result => {
-            if (result) {     
-                setData(result.data)
-                sessionStorage.setItem('user_role',result.data.user_info.role)
-            }
-        });
-}, [userToken]);
+  useEffect(() => {    
+      getUser(userToken)     
+          .then(result => {
+              if (result) {     
+                  setData(result.data)
+                  sessionStorage.setItem('user_role',result.data.user_info.role)
+              }
+          });
+  }, [userToken]);
+
+  const handleTopUp = () => {
+    TopUp(userToken, amount).then(result => {   
+        // setIsLoading(false);
+        if(result.status==="success"){
+          Swal.fire({
+            icon: result.status,
+            title: result.status,
+            text: result.msg,
+          });
+          window.location.reload();
+        }      
+   
+    });
+  };
 
 const styleTextField = {
     '& .MuiOutlinedInput-root': {
@@ -58,6 +77,9 @@ const styleTextField = {
     },
 };
 
+function valuetext(value) {
+  return `${value}°C`;
+}
 return (
   <Box sx={{ 
       bgcolor: '#0D0C22', 
@@ -132,9 +154,9 @@ return (
                                   </Typography>
                                 </div>
                                   
-                                  <IconButton color="primary" aria-label="add to balance">
-                                      <AddCircleOutlineIcon />
-                                  </IconButton>
+                                <IconButton color="primary" aria-label="add to balance" onClick={() => setOpen(true)}>
+                                    <AddCircleOutlineIcon />
+                                </IconButton>
                               </CardContent>
                           </Card>
                       </div>
@@ -142,6 +164,86 @@ return (
               </Grid>
           </Card>
       )}
+
+       <Dialog open={open} fullWidth maxWidth="md" PaperProps={{ style: { borderRadius: '15px', background: "#0D0C22", backgroundColor: 'transparent' } }}>
+      <DialogContent>
+        <Card elevation={3} 
+          sx={{ 
+            bgcolor: '#535A9D', 
+            borderRadius: '15px',
+            border: 2, 
+            borderColor: '#0D0C22', 
+            p: '5%', 
+            overflowY: 'auto' 
+          }}>
+          <Typography variant="h4" color={"#faff00"}>Top Up Balance</Typography>
+          <Typography variant="h5" align='center' color={"#faff00"}>${amount}</Typography>
+
+          <Slider
+            sx={{ width: '100%', marginLeft: '20px' }}
+            aria-label="Price range"
+            defaultValue={0}
+            step={1}
+            marks
+            min={0}
+            max={500}
+            valueLabelDisplay="auto"
+            value={amount}
+            onChange={(event, newValue) => setAmount(newValue)}
+          />
+
+          <Grid container spacing={2}>
+            {amounts.map((value, index) => (
+              <Grid item xs={4} key={index}>
+                <Button
+                  variant="outlined"
+                  sx={{
+                    width: '100%',
+                    borderRadius: '9px',
+                    borderColor: '#FAFF00',
+                    color: '#FAFF00',
+                  }}
+                  onClick={() => setAmount(value)}
+                >
+                  {value}$
+                </Button>
+              </Grid>
+            ))}
+          </Grid>
+          <Box sx={{display:'flex' ,justifyContent:'center'}}>
+            <Button 
+              variant="outlined" 
+              onClick={()=>setOpen(false)} 
+              sx={{
+                width: '20%',
+                borderRadius: '9px',
+                borderColor: '#FAFF00',
+                color: '#0D0C22', 
+                bgcolor: '#FAFF00',            
+                mt:4,
+                mr:4,
+              }}
+            >
+              Close
+            </Button>
+            <Button 
+              variant="contained" 
+              onClick={handleTopUp} 
+              sx={{
+                width: '20%',
+                borderRadius: '9px',
+                borderColor: '#FAFF00',
+                color: '#0D0C22', 
+                bgcolor: '#FAFF00',            
+                mt:4,
+              }}
+            >
+              Top Up
+            </Button>
+          </Box>    
+        </Card>
+      </DialogContent>
+    </Dialog>
   </Box>
 );
 
